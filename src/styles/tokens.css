@@ -1,0 +1,35 @@
+/*
+ * Decisiones de marca de XIO · Active Wear.
+ * Solo colores, tipografía, radios y espaciados. La distribución vive en los componentes.
+ */
+:root {
+  /* Color */
+  --color-fondo: #323a35;       /* carbón verdoso (aclarado) */
+  --color-superficie: #3c4540;  /* tarjetas */
+  --color-texto: #ece8e1;
+  --color-texto-suave: #bcbeb6;
+  --color-salvia: #a8b5a2;      /* acento principal */
+  --color-lavanda: #b3aac4;     /* acento secundario */
+  --color-arena: #d8c8b0;       /* acento terciario */
+  --color-sobre-acento: #1c211e; /* texto sobre salvia, lavanda o arena */
+
+  /* Tipografía */
+  --fuente-titulos: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --fuente-base: "Inter Variable", "Inter", system-ui, sans-serif;
+  --texto-display: clamp(4.5rem, 22vw, 11rem);
+  --texto-titulo: clamp(2rem, 8vw, 4rem);
+  --texto-subtitulo: clamp(1.25rem, 4vw, 1.75rem);
+  --texto-base: 1rem;
+  --texto-pequeno: 0.8125rem;
+
+  /* Forma y espacio */
+  --radio: 12px;
+  --radio-chip: 999px;
+  --espacio-1: 0.5rem;
+  --espacio-2: 1rem;
+  --espacio-3: 2rem;
+  --espacio-4: 4rem;
+
+  /* Estados */
+  --opacidad-agotado: 0.4;
+}

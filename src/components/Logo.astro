@@ -1,0 +1,53 @@
+---
+/**
+ * Logotipo tipográfico. Para cambiarlo por una imagen, reemplazar solo este componente.
+ */
+interface Props {
+  tamano?: "grande" | "normal";
+  etiqueta?: "h1" | "p";
+}
+
+const { tamano = "normal", etiqueta: Etiqueta = "p" } = Astro.props;
+---
+
+<Etiqueta class:list={["logo", tamano]}>
+  <span class="marca">XIO</span>
+  <span class="descriptor">Active Wear</span>
+</Etiqueta>
+
+<style>
+  .logo {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+    font-family: var(--fuente-titulos);
+    line-height: 1;
+  }
+
+  .marca {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-size: var(--texto-titulo);
+  }
+
+  .descriptor {
+    margin-top: var(--espacio-1);
+    font-family: var(--fuente-base);
+    font-size: var(--texto-pequeno);
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-salvia);
+  }
+
+  .grande .marca {
+    font-size: var(--texto-display);
+    line-height: 0.85;
+  }
+
+  .grande .descriptor {
+    margin-top: var(--espacio-2);
+    padding-left: 0.2em;
+  }
+</style>

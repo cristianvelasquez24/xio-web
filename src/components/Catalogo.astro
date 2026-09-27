@@ -1,0 +1,100 @@
+---
+import { productos } from "../lib/productos";
+import Filtros from "./Filtros.astro";
+import TarjetaProducto from "./TarjetaProducto.astro";
+---
+
+<section id="catalogo" class="catalogo" aria-labelledby="catalogo-titulo">
+  <div class="cabecera">
+    <h2 id="catalogo-titulo">Colección</h2>
+    <p class="contador" data-contador aria-live="polite">{productos.length} prendas</p>
+  </div>
+
+  <Filtros />
+
+  <div class="grid">
+    {productos.map((producto) => <TarjetaProducto producto={producto} />)}
+  </div>
+
+  <div class="vacio" data-vacio hidden>
+    <p>Aún no hay prendas en esta combinación.</p>
+    <button type="button" class="limpiar" data-limpiar>Ver todo</button>
+  </div>
+</section>
+
+<script>
+  import "../scripts/filtros";
+  import "../scripts/galeria";
+</script>
+
+<style>
+  .catalogo {
+    display: grid;
+    gap: var(--espacio-3);
+    padding: var(--espacio-4) var(--espacio-2);
+    padding-bottom: calc(var(--espacio-4) + env(safe-area-inset-bottom, 0px));
+    scroll-margin-top: var(--espacio-2);
+  }
+
+  .cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--espacio-2);
+  }
+
+  h2 {
+    font-size: var(--texto-titulo);
+  }
+
+  .contador {
+    font-size: var(--texto-pequeno);
+    color: var(--color-texto-suave);
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espacio-3) var(--espacio-2);
+  }
+
+  .vacio {
+    display: grid;
+    justify-items: start;
+    gap: var(--espacio-2);
+    padding: var(--espacio-3);
+    border-radius: var(--radio);
+    background: var(--color-superficie);
+    color: var(--color-texto-suave);
+  }
+
+  .limpiar {
+    min-height: 2.75rem;
+    padding: 0 var(--espacio-2);
+    border: 0;
+    border-radius: var(--radio-chip);
+    background: var(--color-salvia);
+    color: var(--color-sobre-acento);
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  @media (min-width: 48rem) {
+    .catalogo {
+      padding-inline: var(--espacio-3);
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--espacio-4) var(--espacio-3);
+    }
+  }
+
+  @media (min-width: 72rem) {
+    .grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

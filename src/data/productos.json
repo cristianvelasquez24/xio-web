@@ -1,0 +1,520 @@
+[
+  {
+    "id": "polo-golf-blanco-rayas-adidas",
+    "nombre": "Camisa polo golf adidas blanca rayas azules amarillo",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 250000,
+    "tallas": [],
+    "imagen": "polo-golf-blanco-rayas-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "polo-golf-verde-adidas",
+    "nombre": "Camisa polo golf adidas verde puntos blancos",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 250000,
+    "tallas": [],
+    "imagen": "polo-golf-verde-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-tommy-verde",
+    "nombre": "Camiseta Tommy Hilfiger verde",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 130000,
+    "tallas": [],
+    "imagen": "camiseta-tommy-verde.jpg",
+    "agotado": false
+  },
+  {
+    "id": "crema-coco-victoria",
+    "nombre": "Crema Victoria's Secret Coconut Passion",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-coco-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "polo-rosa-us-polo",
+    "nombre": "Camisa polo U.S. Polo Assn. rosada",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 130000,
+    "tallas": ["XS"],
+    "imagen": "polo-rosa-us-polo.jpg",
+    "agotado": false
+  },
+  {
+    "id": "polo-vestido-tommy",
+    "nombre": "Vestido polo Tommy Hilfiger vinotinto",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 210000,
+    "tallas": ["XS"],
+    "imagen": "polo-vestido-tommy.jpg",
+    "agotado": false
+  },
+  {
+    "id": "buso-tommy-verde-tejido",
+    "nombre": "Buso tejido Tommy Hilfiger verde",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "buso-tommy-verde-tejido.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-verde-adidas",
+    "nombre": "Sudadera adidas verde",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "sudadera-verde-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-gris-adidas",
+    "nombre": "Sudadera adidas gris",
+    "genero": "hombre",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "sudadera-gris-adidas.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-celeste-nike",
+    "nombre": "Camiseta Nike celeste",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 130000,
+    "tallas": ["L"],
+    "imagen": "camiseta-celeste-nike.jpg",
+    "agotado": false
+  },
+  {
+    "id": "bolso-cuadrado-rosa-guess",
+    "nombre": "Bolso Guess rosado cuadrado",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "bolso-cuadrado-rosa-guess.webp",
+    "agotado": false
+  },
+  {
+    "id": "bolso-rosa-guess-redondo",
+    "nombre": "Bolso Guess rosado redondo",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "bolso-rosa-guess-redondo.jpg",
+    "agotado": false
+  },
+  {
+    "id": "buso-adidas-negro-algodon",
+    "nombre": "Buso adidas negro de algodón con capota",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 160000,
+    "tallas": ["XS"],
+    "imagen": "buso-adidas-negro-algodon.jpg",
+    "agotado": false
+  },
+  {
+    "id": "buso-lila-under-armour",
+    "nombre": "Buso Under Armour lila",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "buso-lila-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camisa-oversize-under-armour",
+    "nombre": "Camisa oversize Under Armour azul",
+    "genero": "unisex",
+    "linea": "sport",
+    "precio": 100000,
+    "tallas": ["XS"],
+    "imagen": "camisa-oversize-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-adidas-celeste",
+    "nombre": "Camiseta adidas celeste",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 110000,
+    "tallas": ["S"],
+    "imagen": "camiseta-adidas-celeste.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-esqueleto-adidas",
+    "nombre": "Camiseta esqueleto adidas negra",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "camiseta-esqueleto-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-marron-adidas",
+    "nombre": "Camiseta adidas marrón",
+    "genero": "unisex",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "camiseta-marron-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-rosa-under-armour",
+    "nombre": "Camiseta Under Armour rosada",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "camiseta-rosa-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "falda-adidas-azul",
+    "nombre": "Falda adidas azul celeste",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "falda-adidas-azul.webp",
+    "agotado": false
+  },
+  {
+    "id": "falda-adidas",
+    "nombre": "Falda adidas blanca",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 160000,
+    "tallas": ["XS"],
+    "imagen": "falda-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-corta-gris-under-armour",
+    "nombre": "Licra corta Under Armour gris",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-corta-gris-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-corta-negra-under",
+    "nombre": "Licra corta Under Armour negra",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-corta-negra-under.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-corta-rosa-under-armour",
+    "nombre": "Licra corta Under Armour rosada",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-corta-rosa-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-fucsia-media-under-armour",
+    "nombre": "Licra media Under Armour fucsia",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-fucsia-media-under-armour.webp",
+    "agotado": false
+  },
+  {
+    "id": "licra-media-negra-under-armour",
+    "nombre": "Licra media Under Armour negra",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-media-negra-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-under-media",
+    "nombre": "Licra media Under Armour gris",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "licra-under-media.webp",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-adidas-algodon",
+    "nombre": "Sudadera adidas negra de algodón",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 120000,
+    "tallas": ["XS"],
+    "imagen": "sudadera-adidas-algodon.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-adidas-roja",
+    "nombre": "Sudadera adidas roja",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "sudadera-adidas-roja.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-nike",
+    "nombre": "Sudadera Nike fucsia",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "sudadera-nike.webp",
+    "agotado": false
+  },
+  {
+    "id": "sudarera-amarilla-puma",
+    "nombre": "Sudadera Puma amarilla",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 150000,
+    "tallas": [
+      "M"
+    ],
+    "imagen": "sudarera-amarilla-puma.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-amarilla-puma",
+    "nombre": "Camiseta Puma amarilla",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 110000,
+    "tallas": [
+      "S"
+    ],
+    "imagen": "camiseta-amarilla-puma.jpg",
+    "agotado": false
+  },
+  {
+    "id": "pantalon-largo-rosa-victoria",
+    "nombre": "Pantalón largo Victoria's Secret rosado",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "pantalon-largo-rosa-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "pantalon-pijama-gris-victoria",
+    "nombre": "Short de pijama Victoria's Secret gris",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 80000,
+    "tallas": ["S"],
+    "imagen": "pantalon-pijama-gris-victoria.webp",
+    "agotado": false
+  },
+  {
+    "id": "pantalon-pijama-rosas",
+    "nombre": "Short de pijama con rosas",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "pantalon-pijama-rosas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "pantalon-pijama-victoria",
+    "nombre": "Short de pijama Victoria's Secret blanco",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 80000,
+    "tallas": ["S"],
+    "imagen": "pantalon-pijama-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sandalias-adidas",
+    "nombre": "Sandalias adidas",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "sandalias-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "us-polo-larga-negro",
+    "nombre": "Camisa polo larga U.S. Polo Assn. negra",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": ["XS"],
+    "imagen": "us-polo-larga-negro.webp",
+    "agotado": false
+  },
+  {
+    "id": "us-polo-negra",
+    "nombre": "Camisa polo U.S. Polo Assn. negra",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": null,
+    "tallas": [],
+    "imagen": "us-polo-negra.jpg",
+    "agotado": false
+  },
+  {
+    "id": "pantaloneta-crema-under-armour",
+    "nombre": "Pantaloneta Under Armour crema",
+    "genero": "hombre",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "pantaloneta-crema-under-armour.png",
+    "agotado": false
+  },
+  {
+    "id": "pantaloneta-gris-under-armour",
+    "nombre": "Pantaloneta Under Armour gris",
+    "genero": "hombre",
+    "linea": "sport",
+    "precio": null,
+    "tallas": [],
+    "imagen": "pantaloneta-gris-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "crema-biscott-delight-victoria",
+    "nombre": "Crema PINK Biscott Delight",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-biscott-delight-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "crema-vanilla-dream-victoria",
+    "nombre": "Crema PINK Vanilla Dream",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-vanilla-dream-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "crema-velvet-petals-victoria",
+    "nombre": "Crema Victoria's Secret Velvet Petals Joy",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-velvet-petals-victoria.webp",
+    "agotado": false
+  },
+  {
+    "id": "crema-victoria-cool-bright-vicotria",
+    "nombre": "Crema PINK Cool & Bright",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-victoria-cool-bright-vicotria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "crema-creme-cool-bright-victoria",
+    "nombre": "Crema PINK Crème Cool & Bright",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "crema-creme-cool-bright-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "victorias-secret-gilded-vanilla-crema-perfumada-236ml",
+    "nombre": "Crema perfumada Victoria's Secret Gilded Vanilla",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [
+      "236 ml"
+    ],
+    "imagen": "victorias-secret-gilded-vanilla-crema-perfumada-236ml.jpg",
+    "agotado": false
+  },
+  {
+    "id": "splash-love-spell-victoria",
+    "nombre": "Splash Victoria's Secret Love Spell Brûlée",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": null,
+    "tallas": [],
+    "imagen": "splash-love-spell-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "splash-pure-seduction-victoria",
+    "nombre": "Splash Victoria's Secret Pure Seduction Brûlée",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": null,
+    "tallas": [],
+    "imagen": "splash-pure-seduction-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "splash-vanilla-gelato",
+    "nombre": "Splash Vanilla Gelato",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": null,
+    "tallas": [],
+    "imagen": "splash-vanilla-gelato.jpg",
+    "agotado": false
+  }
+]

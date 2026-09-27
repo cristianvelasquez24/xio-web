@@ -11,8 +11,10 @@ Jóvenes de 18 a 30 años. Llegan casi siempre desde el celular → **mobile-fir
 ## Identidad
 - Nombre: **XIO** con descriptor pequeño **Active Wear**. Logotipo tipográfico (sin imagen), fácil de reemplazar.
 - Líneas:
-  - **Active** → deportiva. Es la protagonista.
-  - **Smart** → formal. Se presenta como extensión de la marca, no como otra tienda.
+  - **Sport** → deportiva. Es la protagonista.
+  - **Casual** → ropa casual, no deportiva. Se presenta como extensión de la marca, no como otra tienda.
+  - **Beauty** → perfumes y cremas (especialmente Victoria's Secret).
+- "Active Wear" es el descriptor del logo, no una línea: no se renombra.
 - Estilo: atractivo, minimalista, moderno, tipo lookbook. Fotos grandes, poco texto, títulos grandes.
 - Opcional (pendiente de decidir): una línea breve en la portada que haga guiño al apodo "Xio".
 
@@ -22,10 +24,10 @@ como variables CSS. Ningún componente debe tener colores o fuentes escritos a m
 
 ```css
 :root {
-  --color-fondo: #1c211e;       /* carbón verdoso */
-  --color-superficie: #262c28;  /* tarjetas */
+  --color-fondo: #323a35;       /* carbón verdoso (aclarado) */
+  --color-superficie: #3c4540;  /* tarjetas */
   --color-texto: #ece8e1;
-  --color-texto-suave: #a9aba4;
+  --color-texto-suave: #bcbeb6;
   --color-salvia: #a8b5a2;      /* acento principal */
   --color-lavanda: #b3aac4;     /* acento secundario */
   --color-arena: #d8c8b0;       /* acento terciario */
@@ -53,7 +55,7 @@ Mantener contraste de texto mínimo WCAG AA.
 ## Estructura de la página
 Una sola página:
 1. **Portada**: imagen destacada grande + marca.
-2. **Dos accesos**: Active (más peso visual) y Smart.
+2. **Tres accesos**: Sport (más peso visual), Casual y Beauty.
 3. **Catálogo**: grid de tarjetas con filtros.
 
 ### Catálogo
@@ -61,9 +63,9 @@ Una sola página:
 - Grid: 2 columnas en móvil, 3–4 en escritorio.
 - **Filtros** como chips horizontales:
   - Género: Todos / Mujer / Hombre (las prendas `unisex` aparecen en ambos).
-  - Línea: Todo / Active / Smart.
+  - Línea: Todo / Sport / Casual / Beauty. El grid se ordena en ese mismo orden.
 - Todas las prendas se renderizan en el HTML; los filtros solo muestran/ocultan con JS ligero.
-- El estado de los filtros se refleja en la URL (`?linea=smart&genero=mujer`) para que los accesos
+- El estado de los filtros se refleja en la URL (`?linea=casual&genero=mujer`) para que los accesos
   de la portada lleven al catálogo ya filtrado.
 
 ## Esquema de `productos.json`
@@ -73,17 +75,22 @@ Una sola página:
     "id": "leggins-core-salvia",
     "nombre": "Leggins Core",
     "genero": "mujer",
-    "linea": "active",
+    "linea": "sport",
     "precio": 89000,
+    "tallas": ["S", "M", "L"],
     "imagen": "leggins-core-salvia.jpg",
     "agotado": false
   }
 ]
 ```
 - `genero`: `"mujer" | "hombre" | "unisex"`
-- `linea`: `"active" | "smart"`
+- `linea`: `"sport" | "casual" | "beauty"`
 - `precio`: número o `null` (si es null no se muestra).
+- `tallas`: lista de textos (`["S", "M"]`, `["32"]`) o `[]` si no aplica (bolsos). Se muestra en la tarjeta.
+  En Beauty se usa para la presentación (`["236 ml"]`) y se muestra como "Presentación".
 - `imagen`: nombre del archivo en `src/assets/productos/`. Coincide con el `id`.
+- Fotos adicionales: archivos `<id>-2.jpg`, `<id>-3.jpg`… se detectan solos y se muestran como galería
+  deslizable en la tarjeta. No se listan en el JSON.
 - Validar el JSON al compilar (content collection o esquema zod). Un error de datos debe romper el build,
   no la página.
 
@@ -112,6 +119,6 @@ Una sola página:
 - ❌ Más filtros que género y línea (el volumen no lo justifica).
 
 ## Primera tarea sugerida
-Crear el proyecto base con: `tokens.css`, `config.ts`, portada, accesos Active/Smart, catálogo con
+Crear el proyecto base con: `tokens.css`, `config.ts`, portada, accesos Sport/Casual, catálogo con
 filtros y etiqueta de agotado, y **8 productos de ejemplo** (mezcla de géneros y líneas, 2 agotados)
 con imágenes provisionales.

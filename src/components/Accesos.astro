@@ -1,0 +1,143 @@
+---
+import { Picture } from "astro:assets";
+import { NOMBRE_LINEA, productos, type Linea } from "../lib/productos";
+
+interface Acceso {
+  linea: Linea;
+  texto: string;
+}
+
+// El primero es el protagonista (más grande).
+const accesos: Acceso[] = [
+  { linea: "sport", texto: "Para moverte" },
+  { linea: "casual", texto: "Para el resto del día" },
+  { linea: "beauty", texto: "Fragancias y cuidado" },
+];
+
+// La foto de cada acceso es la primera prenda disponible de esa línea.
+const fotoDe = (linea: Linea) =>
+  (productos.find((p) => p.linea === linea && !p.agotado) ?? productos.find((p) => p.linea === linea))?.fotos[0];
+---
+
+<nav class="accesos" aria-label="Líneas">
+  {
+    accesos.map(({ linea, texto }, i) => {
+      const foto = fotoDe(linea);
+      return (
+        <a class:list={["acceso", linea, { principal: i === 0 }]} href={`?linea=${linea}#catalogo`} data-acceso-linea={linea}>
+          {foto && (
+            <Picture
+              src={foto}
+              alt=""
+              formats={["avif", "webp"]}
+              widths={[400, 800, 1200]}
+              sizes={i === 0 ? "(min-width: 48rem) 50vw, 100vw" : "(min-width: 48rem) 25vw, 50vw"}
+              class="foto"
+              pictureAttributes={{ class: "marco" }}
+            />
+          )}
+          <span class="texto">
+            <span class="nombre">{NOMBRE_LINEA[linea]}</span>
+            <span class="detalle">{texto}</span>
+          </span>
+        </a>
+      );
+    })
+  }
+</nav>
+
+<style>
+  /* Móvil: Sport a todo el ancho; Casual y Beauty lado a lado debajo. */
+  .accesos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espacio-2);
+    padding: var(--espacio-4) var(--espacio-2) 0;
+  }
+
+  .acceso {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: var(--color-superficie);
+    text-decoration: none;
+    isolation: isolate;
+    aspect-ratio: 4 / 5;
+  }
+
+  .principal {
+    grid-column: 1 / -1;
+  }
+
+  .marco {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: var(--espacio-2);
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-fondo) 85%, transparent), transparent 60%);
+  }
+
+  .nombre {
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    font-size: var(--texto-subtitulo);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .principal .nombre {
+    font-size: var(--texto-titulo);
+  }
+
+  .sport .nombre {
+    color: var(--color-salvia);
+  }
+
+  .casual .nombre {
+    color: var(--color-lavanda);
+  }
+
+  .beauty .nombre {
+    color: var(--color-arena);
+  }
+
+  .detalle {
+    font-size: var(--texto-pequeno);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .acceso:hover .foto {
+      transform: scale(1.03);
+    }
+  }
+
+  /* Escritorio: los tres en fila; Sport ocupa el doble. */
+  @media (min-width: 48rem) {
+    .accesos {
+      grid-template-columns: 2fr 1fr 1fr;
+      align-items: end;
+      padding-inline: var(--espacio-3);
+    }
+
+    .principal {
+      grid-column: auto;
+    }
+  }
+</style>
