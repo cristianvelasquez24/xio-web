@@ -66,8 +66,8 @@
     "nombre": "Buso tejido Tommy Hilfiger verde",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
-    "tallas": [],
+    "precio": 250000,
+    "tallas": ["XS"],
     "imagen": "buso-tommy-verde-tejido.jpg",
     "agotado": false
   },
@@ -76,17 +76,17 @@
     "nombre": "Sudadera adidas verde",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 140000,
     "tallas": [],
     "imagen": "sudadera-verde-adidas.jpg",
     "agotado": false
   },
   {
     "id": "sudadera-gris-adidas",
-    "nombre": "Sudadera adidas gris",
-    "genero": "hombre",
+    "nombre": "Sudadera adidas gris sport",
+    "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 145000,
     "tallas": [],
     "imagen": "sudadera-gris-adidas.jpeg",
     "agotado": false
@@ -106,7 +106,7 @@
     "nombre": "Bolso Guess rosado cuadrado",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 150000,
     "tallas": [],
     "imagen": "bolso-cuadrado-rosa-guess.webp",
     "agotado": false
@@ -116,9 +116,9 @@
     "nombre": "Bolso Guess rosado redondo",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 150000,
     "tallas": [],
-    "imagen": "bolso-rosa-guess-redondo.jpg",
+    "imagen": "bolso-rosa-guess-redondo.jpeg",
     "agotado": false
   },
   {
@@ -144,7 +144,7 @@
   {
     "id": "camisa-oversize-under-armour",
     "nombre": "Camisa oversize Under Armour azul",
-    "genero": "unisex",
+    "genero": "mujer",
     "linea": "sport",
     "precio": 100000,
     "tallas": ["XS"],
@@ -163,18 +163,18 @@
   },
   {
     "id": "camiseta-esqueleto-adidas",
-    "nombre": "Camiseta esqueleto adidas negra",
+    "nombre": "Vestido esqueleto adidas negro",
     "genero": "mujer",
     "linea": "sport",
     "precio": null,
     "tallas": [],
-    "imagen": "camiseta-esqueleto-adidas.jpg",
+    "imagen": "camiseta-esqueleto-adidas.jpeg",
     "agotado": false
   },
   {
     "id": "camiseta-marron-adidas",
     "nombre": "Camiseta adidas marrón",
-    "genero": "unisex",
+    "genero": "mujer",
     "linea": "sport",
     "precio": null,
     "tallas": [],
@@ -296,7 +296,7 @@
     "nombre": "Sudadera Nike fucsia",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 140000,
     "tallas": [],
     "imagen": "sudadera-nike.webp",
     "agotado": false
@@ -327,7 +327,7 @@
   },
   {
     "id": "pantalon-largo-rosa-victoria",
-    "nombre": "Pantalón largo Victoria's Secret rosado",
+    "nombre": "Pantalón largo calvin klein rosado",
     "genero": "mujer",
     "linea": "casual",
     "precio": null,
@@ -370,29 +370,29 @@
     "nombre": "Sandalias adidas",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 120000,
     "tallas": [],
     "imagen": "sandalias-adidas.jpg",
     "agotado": false
   },
   {
     "id": "us-polo-larga-negro",
-    "nombre": "Camisa polo larga U.S. Polo Assn. negra",
+    "nombre": "Vestido polo U.S. Polo Assn. negro rojo",
     "genero": "mujer",
     "linea": "casual",
     "precio": 150000,
     "tallas": ["XS"],
-    "imagen": "us-polo-larga-negro.webp",
+    "imagen": "us-polo-larga-negro.jpg",
     "agotado": false
   },
   {
     "id": "us-polo-negra",
-    "nombre": "Camisa polo U.S. Polo Assn. negra",
+    "nombre": "Vestido polo U.S. Polo Assn. negro blanco",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 150000,
     "tallas": [],
-    "imagen": "us-polo-negra.jpg",
+    "imagen": "us-polo-negra.jpeg",
     "agotado": false
   },
   {
@@ -492,7 +492,7 @@
     "nombre": "Splash Victoria's Secret Love Spell Brûlée",
     "genero": "mujer",
     "linea": "beauty",
-    "precio": null,
+    "precio": 80000,
     "tallas": [],
     "imagen": "splash-love-spell-victoria.jpg",
     "agotado": false
@@ -502,7 +502,7 @@
     "nombre": "Splash Victoria's Secret Pure Seduction Brûlée",
     "genero": "mujer",
     "linea": "beauty",
-    "precio": null,
+    "precio": 80000,
     "tallas": [],
     "imagen": "splash-pure-seduction-victoria.jpg",
     "agotado": false
@@ -512,7 +512,7 @@
     "nombre": "Splash Vanilla Gelato",
     "genero": "mujer",
     "linea": "beauty",
-    "precio": null,
+    "precio": 80000,
     "tallas": [],
     "imagen": "splash-vanilla-gelato.jpg",
     "agotado": false
