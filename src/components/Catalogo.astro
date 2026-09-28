@@ -1,5 +1,6 @@
 ---
 import { productos } from "../lib/productos";
+import Detalle from "./Detalle.astro";
 import Filtros from "./Filtros.astro";
 import TarjetaProducto from "./TarjetaProducto.astro";
 ---
@@ -21,6 +22,8 @@ import TarjetaProducto from "./TarjetaProducto.astro";
     <button type="button" class="limpiar" data-limpiar>Ver todo</button>
   </div>
 </section>
+
+<Detalle />
 
 <script>
   import "../scripts/filtros";

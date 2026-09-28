@@ -18,6 +18,7 @@
   --fuente-base: "Inter Variable", "Inter", system-ui, sans-serif;
   --texto-display: clamp(4.5rem, 22vw, 11rem);
   --texto-titulo: clamp(2rem, 8vw, 4rem);
+  --texto-titulo-medio: clamp(1.75rem, 3vw, 2.5rem);
   --texto-subtitulo: clamp(1.25rem, 4vw, 1.75rem);
   --texto-base: 1rem;
   --texto-pequeno: 0.8125rem;

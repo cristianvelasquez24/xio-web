@@ -65,6 +65,9 @@ Una sola página:
   - Género: Todos / Mujer / Hombre (las prendas `unisex` aparecen en ambos).
   - Línea: Todo / Sport / Casual / Beauty. El grid se ordena en ese mismo orden.
 - Todas las prendas se renderizan en el HTML; los filtros solo muestran/ocultan con JS ligero.
+- **Detalle**: tocar la foto o el nombre abre un modal (`<dialog>` nativo) con la foto grande, galería,
+  línea, género, precio y tallas. Tocar la foto dentro del modal la muestra a pantalla completa.
+  La URL cambia a `#producto-<id>` (enlace compartible; "atrás" cierra). Sin acciones de compra.
 - El estado de los filtros se refleja en la URL (`?linea=casual&genero=mujer`) para que los accesos
   de la portada lleven al catálogo ya filtrado.
 

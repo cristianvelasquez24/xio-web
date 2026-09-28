@@ -19,6 +19,12 @@ export const NOMBRE_LINEA: Record<Linea, string> = {
   beauty: "Beauty",
 };
 
+export const NOMBRE_GENERO: Record<Genero, string> = {
+  mujer: "Mujer",
+  hombre: "Hombre",
+  unisex: "Unisex",
+};
+
 const esquemaProducto = z
   .strictObject({
     id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "solo minúsculas, números y guiones, sin tildes ni espacios"),

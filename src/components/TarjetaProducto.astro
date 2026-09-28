@@ -2,7 +2,7 @@
 import { Picture } from "astro:assets";
 import { config } from "../config";
 import { formatearPrecio } from "../lib/precio";
-import { altProducto, NOMBRE_LINEA, type Producto } from "../lib/productos";
+import { altProducto, NOMBRE_GENERO, NOMBRE_LINEA, type Producto } from "../lib/productos";
 
 interface Props {
   producto: Producto;
@@ -19,9 +19,20 @@ const variasFotos = p.fotos.length > 1;
 
 <article
   class:list={["tarjeta", { agotado: p.agotado }]}
+  id={`producto-${p.id}`}
   data-producto
+  data-id={p.id}
   data-genero={p.genero}
   data-linea={p.linea}
+  data-detalle={JSON.stringify({
+    nombre: p.nombre,
+    linea: NOMBRE_LINEA[p.linea],
+    genero: NOMBRE_GENERO[p.genero],
+    precio,
+    etiquetaTallas: p.tallas.length > 0 ? etiquetaTallas : null,
+    tallas: p.tallas,
+    agotado: p.agotado,
+  })}
 >
   <div class="foto-marco">
     <div class="galeria" data-galeria tabindex={variasFotos ? 0 : undefined} aria-label={variasFotos ? `Fotos de ${p.nombre}` : undefined}>
@@ -53,7 +64,9 @@ const variasFotos = p.fotos.length > 1;
     {p.agotado && <span class="etiqueta">Agotado</span>}
   </div>
   <div class="info">
-    <h3 class="nombre">{p.nombre}</h3>
+    <h3 class="nombre">
+      <button type="button" class="abrir" data-abrir-detalle aria-haspopup="dialog">{p.nombre}</button>
+    </h3>
     <p class="linea">{NOMBRE_LINEA[p.linea]}</p>
     {tallas && <p class="tallas">{tallas}</p>}
     {precio && <p class="precio">{precio}</p>}
@@ -173,6 +186,26 @@ const variasFotos = p.fotos.length > 1;
     font-weight: 500;
     line-height: 1.25;
     letter-spacing: 0;
+  }
+
+  /* El nombre abre el detalle (igual que tocar la foto); se ve como texto normal. */
+  .abrir {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .abrir:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .galeria {
+    cursor: zoom-in;
   }
 
   .linea {
