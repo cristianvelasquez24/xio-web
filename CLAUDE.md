@@ -13,6 +13,7 @@ Jóvenes de 18 a 30 años. Llegan casi siempre desde el celular → **mobile-fir
 - Líneas:
   - **Sport** → deportiva. Es la protagonista.
   - **Casual** → ropa casual, no deportiva. Se presenta como extensión de la marca, no como otra tienda.
+  - **Bolsos** → bolsos y carteras.
   - **Beauty** → perfumes y cremas (especialmente Victoria's Secret).
 - "Active Wear" es el descriptor del logo, no una línea: no se renombra.
 - Estilo: atractivo, minimalista, moderno, tipo lookbook. Fotos grandes, poco texto, títulos grandes.
@@ -55,7 +56,7 @@ Mantener contraste de texto mínimo WCAG AA.
 ## Estructura de la página
 Una sola página:
 1. **Portada**: imagen destacada grande + marca.
-2. **Tres accesos**: Sport (más peso visual), Casual y Beauty.
+2. **Cuatro accesos**: Sport (más peso visual), Casual, Bolsos y Beauty, en ese orden.
 3. **Catálogo**: grid de tarjetas con filtros.
 
 ### Catálogo
@@ -63,7 +64,7 @@ Una sola página:
 - Grid: 2 columnas en móvil, 3–4 en escritorio.
 - **Filtros** como chips horizontales:
   - Género: Todos / Mujer / Hombre (las prendas `unisex` aparecen en ambos).
-  - Línea: Todo / Sport / Casual / Beauty. El grid se ordena en ese mismo orden.
+  - Línea: Todo / Sport / Casual / Bolsos / Beauty. El grid se ordena en ese mismo orden.
 - Todas las prendas se renderizan en el HTML; los filtros solo muestran/ocultan con JS ligero.
 - **Detalle**: tocar la foto o el nombre abre un modal (`<dialog>` nativo) con la foto grande, galería,
   línea, género, precio y tallas. Tocar la foto dentro del modal la muestra a pantalla completa.
@@ -87,10 +88,12 @@ Una sola página:
 ]
 ```
 - `genero`: `"mujer" | "hombre" | "unisex"`
-- `linea`: `"sport" | "casual" | "beauty"`
+- `linea`: `"sport" | "casual" | "bolsos" | "beauty"`
 - `precio`: número o `null` (si es null no se muestra).
 - `tallas`: lista de textos (`["S", "M"]`, `["32"]`) o `[]` si no aplica (bolsos). Se muestra en la tarjeta.
   En Beauty se usa para la presentación (`["236 ml"]`) y se muestra como "Presentación".
+- `destacado` (opcional, `false` por defecto): si es `true`, la prenda va de primera en el catálogo,
+  antes de cualquier línea. Si además está agotada, va al final como las demás agotadas.
 - `imagen`: nombre del archivo en `src/assets/productos/`. Coincide con el `id`.
 - Fotos adicionales: archivos `<id>-2.jpg`, `<id>-3.jpg`… se detectan solos y se muestran como galería
   deslizable en la tarjeta. No se listan en el JSON.

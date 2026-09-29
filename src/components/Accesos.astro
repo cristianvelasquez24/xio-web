@@ -11,6 +11,7 @@ interface Acceso {
 const accesos: Acceso[] = [
   { linea: "sport", texto: "Para moverte" },
   { linea: "casual", texto: "Para el resto del día" },
+  { linea: "bolsos", texto: "Para llevarlo todo" },
   { linea: "beauty", texto: "Fragancias y cuidado" },
 ];
 
@@ -31,7 +32,7 @@ const fotoDe = (linea: Linea) =>
               alt=""
               formats={["avif", "webp"]}
               widths={[400, 800, 1200]}
-              sizes={i === 0 ? "(min-width: 48rem) 50vw, 100vw" : "(min-width: 48rem) 25vw, 50vw"}
+              sizes={i === 0 ? "(min-width: 48rem) 40vw, 100vw" : "(min-width: 48rem) 20vw, 50vw"}
               class="foto"
               pictureAttributes={{ class: "marco" }}
             />
@@ -47,7 +48,8 @@ const fotoDe = (linea: Linea) =>
 </nav>
 
 <style>
-  /* Móvil: Sport a todo el ancho; Casual y Beauty lado a lado debajo. */
+  /* Móvil: Sport a todo el ancho y el resto de a dos por fila.
+     Si el último queda solo en su fila, ocupa todo el ancho en formato apaisado. */
   .accesos {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -68,6 +70,11 @@ const fotoDe = (linea: Linea) =>
 
   .principal {
     grid-column: 1 / -1;
+  }
+
+  .acceso:not(.principal):last-child:nth-child(even) {
+    grid-column: 1 / -1;
+    aspect-ratio: 2 / 1;
   }
 
   .marco {
@@ -112,6 +119,10 @@ const fotoDe = (linea: Linea) =>
     color: var(--color-lavanda);
   }
 
+  .bolsos .nombre {
+    color: var(--color-texto);
+  }
+
   .beauty .nombre {
     color: var(--color-arena);
   }
@@ -128,16 +139,18 @@ const fotoDe = (linea: Linea) =>
     }
   }
 
-  /* Escritorio: los tres en fila; Sport ocupa el doble. */
+  /* Escritorio: todos en una fila; Sport ocupa el doble. */
   @media (min-width: 48rem) {
     .accesos {
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2fr repeat(3, 1fr);
       align-items: end;
       padding-inline: var(--espacio-3);
     }
 
-    .principal {
+    .principal,
+    .acceso:not(.principal):last-child:nth-child(even) {
       grid-column: auto;
+      aspect-ratio: 4 / 5;
     }
   }
 </style>

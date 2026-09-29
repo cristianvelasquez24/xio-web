@@ -19,6 +19,7 @@ export const FILTROS = [
       { valor: "todo", texto: "Todo" },
       { valor: "sport", texto: "Sport" },
       { valor: "casual", texto: "Casual" },
+      { valor: "bolsos", texto: "Bolsos" },
       { valor: "beauty", texto: "Beauty" },
     ],
   },

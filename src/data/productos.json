@@ -1,32 +1,34 @@
 [
   {
+    "id": "buso-tommy-verde-tejido",
+    "nombre": "Buso tejido Tommy Hilfiger verde",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 250000,
+    "tallas": ["XS"],
+    "imagen": "buso-tommy-verde-tejido.jpg",
+    "agotado": false,
+    "destacado": true
+  },
+  {
     "id": "polo-golf-blanco-rayas-adidas",
     "nombre": "Camisa polo golf adidas blanca rayas azules amarillo",
     "genero": "hombre",
     "linea": "casual",
-    "precio": 250000,
+    "precio": 220000,
     "tallas": [],
     "imagen": "polo-golf-blanco-rayas-adidas.jpg",
-    "agotado": false
+    "agotado": false,
+    "destacado": true
   },
   {
     "id": "polo-golf-verde-adidas",
     "nombre": "Camisa polo golf adidas verde puntos blancos",
     "genero": "hombre",
     "linea": "casual",
-    "precio": 250000,
+    "precio": 220000,
     "tallas": [],
     "imagen": "polo-golf-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-tommy-verde",
-    "nombre": "Camiseta Tommy Hilfiger verde",
-    "genero": "hombre",
-    "linea": "casual",
-    "precio": 130000,
-    "tallas": [],
-    "imagen": "camiseta-tommy-verde.jpg",
     "agotado": false
   },
   {
@@ -62,73 +64,44 @@
     "agotado": false
   },
   {
-    "id": "buso-tommy-verde-tejido",
-    "nombre": "Buso tejido Tommy Hilfiger verde",
-    "genero": "mujer",
-    "linea": "casual",
-    "precio": 250000,
-    "tallas": ["XS"],
-    "imagen": "buso-tommy-verde-tejido.jpg",
-    "agotado": false
-  },
-  {
-    "id": "sudadera-verde-adidas",
-    "nombre": "Sudadera adidas verde",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 140000,
-    "tallas": [],
-    "imagen": "sudadera-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "sudadera-gris-adidas",
-    "nombre": "Sudadera adidas gris sport",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 145000,
-    "tallas": [],
-    "imagen": "sudadera-gris-adidas.jpeg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-celeste-nike",
-    "nombre": "Camiseta Nike celeste",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 130000,
-    "tallas": ["L"],
-    "imagen": "camiseta-celeste-nike.jpg",
-    "agotado": false
-  },
-  {
     "id": "bolso-cuadrado-rosa-guess",
     "nombre": "Bolso Guess rosado cuadrado",
     "genero": "mujer",
-    "linea": "casual",
-    "precio": 150000,
+    "linea": "bolsos",
+    "precio": 250000,
     "tallas": [],
     "imagen": "bolso-cuadrado-rosa-guess.webp",
-    "agotado": false
+    "agotado": false,
+    "destacado": true
   },
   {
     "id": "bolso-rosa-guess-redondo",
     "nombre": "Bolso Guess rosado redondo",
     "genero": "mujer",
-    "linea": "casual",
-    "precio": 150000,
+    "linea": "bolsos",
+    "precio": 200000,
     "tallas": [],
     "imagen": "bolso-rosa-guess-redondo.jpeg",
     "agotado": false
   },
   {
-    "id": "buso-adidas-negro-algodon",
-    "nombre": "Buso adidas negro de algodón con capota",
+    "id": "bolso-blanco-polo",
+    "nombre": "Bolso U.S. Polo Blanco",
     "genero": "mujer",
-    "linea": "sport",
-    "precio": 160000,
-    "tallas": ["XS"],
-    "imagen": "buso-adidas-negro-algodon.jpg",
+    "linea": "bolsos",
+    "precio": 100000,
+    "tallas": [],
+    "imagen": "bolso-blanco-polo.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "bolso-blanco-polo-cuadrado",
+    "nombre": "Bolso U.S. Polo Blanco",
+    "genero": "mujer",
+    "linea": "bolsos",
+    "precio": 200000,
+    "tallas": [],
+    "imagen": "bolso-blanco-polo-cuadrado.jpeg",
     "agotado": false
   },
   {
@@ -136,19 +109,9 @@
     "nombre": "Buso Under Armour lila",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 160000,
+    "tallas": ["S"],
     "imagen": "buso-lila-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camisa-oversize-under-armour",
-    "nombre": "Camisa oversize Under Armour azul",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 100000,
-    "tallas": ["XS"],
-    "imagen": "camisa-oversize-under-armour.jpg",
     "agotado": false
   },
   {
@@ -166,9 +129,19 @@
     "nombre": "Vestido esqueleto adidas negro",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 200000,
+    "tallas": ["S"],
     "imagen": "camiseta-esqueleto-adidas.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-gris-adidas",
+    "nombre": "Sudadera adidas gris sport",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 145000,
+    "tallas": [],
+    "imagen": "sudadera-gris-adidas.webp",
     "agotado": false
   },
   {
@@ -176,8 +149,8 @@
     "nombre": "Camiseta adidas marrón",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 90000,
+    "tallas": ["M"],
     "imagen": "camiseta-marron-adidas.jpg",
     "agotado": false
   },
@@ -186,8 +159,8 @@
     "nombre": "Camiseta Under Armour rosada",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 90000,
+    "tallas": ["XS"],
     "imagen": "camiseta-rosa-under-armour.jpg",
     "agotado": false
   },
@@ -196,9 +169,19 @@
     "nombre": "Falda adidas azul celeste",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "falda-adidas-azul.webp",
+    "precio": 120000,
+    "tallas": ["M"],
+    "imagen": "falda-adidas-azul.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-celeste-nike",
+    "nombre": "Camiseta Nike celeste",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 130000,
+    "tallas": ["L"],
+    "imagen": "camiseta-celeste-nike.jpg",
     "agotado": false
   },
   {
@@ -258,17 +241,7 @@
     "linea": "sport",
     "precio": null,
     "tallas": [],
-    "imagen": "licra-media-negra-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "licra-under-media",
-    "nombre": "Licra media Under Armour gris",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "licra-under-media.webp",
+    "imagen": "licra-media-negra-under-armour.webp",
     "agotado": false
   },
   {
@@ -286,10 +259,11 @@
     "nombre": "Sudadera adidas roja",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 260000,
+    "tallas": ["S"],
     "imagen": "sudadera-adidas-roja.jpg",
-    "agotado": false
+    "agotado": false,
+    "destacado": true
   },
   {
     "id": "sudadera-nike",
@@ -332,7 +306,7 @@
     "linea": "casual",
     "precio": null,
     "tallas": [],
-    "imagen": "pantalon-largo-rosa-victoria.jpg",
+    "imagen": "pantalon-largo-rosa-victoria.webp",
     "agotado": false
   },
   {
@@ -400,19 +374,9 @@
     "nombre": "Pantaloneta Under Armour crema",
     "genero": "hombre",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 150000,
+    "tallas": ["L"],
     "imagen": "pantaloneta-crema-under-armour.png",
-    "agotado": false
-  },
-  {
-    "id": "pantaloneta-gris-under-armour",
-    "nombre": "Pantaloneta Under Armour gris",
-    "genero": "hombre",
-    "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "pantaloneta-gris-under-armour.jpg",
     "agotado": false
   },
   {
@@ -509,12 +473,32 @@
   },
   {
     "id": "splash-vanilla-gelato",
-    "nombre": "Splash Vanilla Gelato",
+    "nombre": "Splash Victoria's Secret Vanilla Gelato",
     "genero": "mujer",
     "linea": "beauty",
     "precio": 80000,
     "tallas": [],
     "imagen": "splash-vanilla-gelato.jpg",
+    "agotado": false
+  },
+  {
+    "id": "tenis-rosa-new-balance",
+    "nombre": "Tenis new balance rosa",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 400000,
+    "tallas": ["37"],
+    "imagen": "tenis-rosa-new-balance.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "tenis-gris-skechers",
+    "nombre": "Tenis gris skechers",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 300000,
+    "tallas": ["37"],
+    "imagen": "tenis-gris-skechers.jpeg",
     "agotado": false
   }
 ]
