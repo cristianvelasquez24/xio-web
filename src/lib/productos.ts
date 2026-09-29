@@ -8,7 +8,7 @@ import datos from "../data/productos.json";
 
 export const GENEROS = ["mujer", "hombre", "unisex"] as const;
 /** El orden de este arreglo es el orden de las líneas en el grid. */
-export const LINEAS = ["sport", "casual", "beauty"] as const;
+export const LINEAS = ["sport", "casual", "bolsos", "beauty"] as const;
 
 export type Genero = (typeof GENEROS)[number];
 export type Linea = (typeof LINEAS)[number];
@@ -16,6 +16,7 @@ export type Linea = (typeof LINEAS)[number];
 export const NOMBRE_LINEA: Record<Linea, string> = {
   sport: "Sport",
   casual: "Casual",
+  bolsos: "Bolsos",
   beauty: "Beauty",
 };
 
@@ -35,6 +36,7 @@ const esquemaProducto = z
     tallas: z.array(z.string().trim().min(1)).default([]),
     imagen: z.string().regex(/^[a-z0-9-]+\.(jpg|jpeg|png|webp)$/, "archivo .jpg, .jpeg, .png o .webp en minúsculas"),
     agotado: z.boolean().default(false),
+    destacado: z.boolean().default(false),
   })
   .refine((p) => p.imagen.replace(/\.[a-z]+$/, "") === p.id, {
     message: "el nombre de la imagen debe coincidir con el id",
@@ -95,12 +97,16 @@ function cargar() {
 export type Producto = ReturnType<typeof cargar>[number];
 
 /**
- * Orden del grid: disponibles antes que agotadas y, dentro de cada grupo,
- * las líneas en el orden de LINEAS (Sport, Casual, Beauty). El resto respeta el orden
- * del JSON (sort estable).
+ * Orden del grid:
+ * 1. Destacadas disponibles (sin importar la línea).
+ * 2. El resto de disponibles, por línea en el orden de LINEAS (Sport, Casual, Bolsos, Beauty).
+ * 3. Agotadas al final, también por línea (aunque estén destacadas).
+ * Dentro de cada grupo se respeta el orden del JSON (sort estable).
  */
 function peso(p: Producto): number {
-  return (p.agotado ? LINEAS.length : 0) + LINEAS.indexOf(p.linea);
+  if (p.agotado) return LINEAS.length + LINEAS.indexOf(p.linea);
+  if (p.destacado) return -1;
+  return LINEAS.indexOf(p.linea);
 }
 
 export const productos: Producto[] = cargar().sort((a, b) => peso(a) - peso(b));
