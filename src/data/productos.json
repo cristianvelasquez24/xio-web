@@ -16,7 +16,7 @@
     "genero": "hombre",
     "linea": "casual",
     "precio": 220000,
-    "tallas": [],
+    "tallas": ["M"],
     "imagen": "polo-golf-blanco-rayas-adidas.jpg",
     "agotado": false,
     "destacado": true
@@ -29,18 +29,6 @@
     "precio": 220000,
     "tallas": [],
     "imagen": "polo-golf-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "crema-coco-victoria",
-    "nombre": "Crema Victoria's Secret Coconut Passion",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-coco-victoria.jpg",
     "agotado": false
   },
   {
@@ -115,16 +103,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-adidas-celeste",
-    "nombre": "Camiseta adidas celeste",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 110000,
-    "tallas": ["S"],
-    "imagen": "camiseta-adidas-celeste.jpg",
-    "agotado": false
-  },
-  {
     "id": "camiseta-esqueleto-adidas",
     "nombre": "Vestido esqueleto adidas negro",
     "genero": "mujer",
@@ -140,7 +118,7 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 145000,
-    "tallas": [],
+    "tallas": ["M"],
     "imagen": "sudadera-gris-adidas.webp",
     "agotado": false
   },
@@ -320,13 +298,23 @@
     "agotado": false
   },
   {
-    "id": "pantalon-pijama-rosas",
+    "id": "short-rosas-victoria",
     "nombre": "Short de pijama con rosas",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
-    "tallas": [],
-    "imagen": "pantalon-pijama-rosas.jpg",
+    "precio": 80000,
+    "tallas": ["M"],
+    "imagen": "short-rosas-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "short-pijama-negro-victoria",
+    "nombre": "Short de pijama negro",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 80000,
+    "tallas": ["M"],
+    "imagen": "short-pijama-negro-victoria.jpg",
     "agotado": false
   },
   {
@@ -404,54 +392,6 @@
     "agotado": false
   },
   {
-    "id": "crema-velvet-petals-victoria",
-    "nombre": "Crema Victoria's Secret Velvet Petals Joy",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-velvet-petals-victoria.webp",
-    "agotado": false
-  },
-  {
-    "id": "crema-victoria-cool-bright-vicotria",
-    "nombre": "Crema PINK Cool & Bright",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-victoria-cool-bright-vicotria.jpg",
-    "agotado": false
-  },
-  {
-    "id": "crema-creme-cool-bright-victoria",
-    "nombre": "Crema PINK Crème Cool & Bright",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-creme-cool-bright-victoria.jpg",
-    "agotado": false
-  },
-  {
-    "id": "victorias-secret-gilded-vanilla-crema-perfumada-236ml",
-    "nombre": "Crema perfumada Victoria's Secret Gilded Vanilla",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "victorias-secret-gilded-vanilla-crema-perfumada-236ml.jpg",
-    "agotado": false
-  },
-  {
     "id": "splash-love-spell-victoria",
     "nombre": "Splash Victoria's Secret Love Spell Brûlée",
     "genero": "mujer",
@@ -499,6 +439,16 @@
     "precio": 300000,
     "tallas": ["37"],
     "imagen": "tenis-gris-skechers.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "blusa-deportiva-rosa-under",
+    "nombre": "blusa deportiva rosa under armour",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 300000,
+    "tallas": ["37"],
+    "imagen": "blusa-deportiva-rosa-under.jpeg",
     "agotado": false
   }
 ]

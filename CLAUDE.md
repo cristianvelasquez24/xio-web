@@ -56,7 +56,8 @@ Mantener contraste de texto mínimo WCAG AA.
 ## Estructura de la página
 Una sola página:
 1. **Portada**: imagen destacada grande + marca.
-2. **Cuatro accesos**: Sport (más peso visual), Casual, Bolsos y Beauty, en ese orden.
+2. **Tres accesos**: Sport (más peso visual), Casual y Bolsos. Beauty no tiene acceso (solo filtro).
+   La foto de cada acceso se elige al azar en cada visita entre los productos disponibles de su línea.
 3. **Catálogo**: grid de tarjetas con filtros.
 
 ### Catálogo
