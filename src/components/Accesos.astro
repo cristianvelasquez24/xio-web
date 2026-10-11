@@ -7,45 +7,61 @@ interface Acceso {
   texto: string;
 }
 
-// El primero es el protagonista (más grande).
+// El primero es el protagonista (más grande). Beauty no tiene acceso: solo filtro.
 const accesos: Acceso[] = [
   { linea: "sport", texto: "Para moverte" },
   { linea: "casual", texto: "Para el resto del día" },
   { linea: "bolsos", texto: "Para llevarlo todo" },
-  { linea: "beauty", texto: "Fragancias y cuidado" },
 ];
 
-// La foto de cada acceso es la primera prenda disponible de esa línea.
-const fotoDe = (linea: Linea) =>
-  (productos.find((p) => p.linea === linea && !p.agotado) ?? productos.find((p) => p.linea === linea))?.fotos[0];
+/** Máximo de fotos candidatas por acceso (cada una suma un poco de HTML, no de descarga). */
+const MAX_CANDIDATAS = 10;
+
+// Candidatas: la foto principal de cada producto disponible de la línea.
+// Si todos están agotados, se usa el primero para no dejar la tarjeta vacía.
+const candidatasDe = (linea: Linea) => {
+  const disponibles = productos.filter((p) => p.linea === linea && !p.agotado);
+  const lista = disponibles.length > 0 ? disponibles : productos.filter((p) => p.linea === linea).slice(0, 1);
+  return lista.slice(0, MAX_CANDIDATAS).map((p) => p.fotos[0]);
+};
 ---
 
-<nav class="accesos" aria-label="Líneas">
+<nav class="accesos" aria-label="Líneas" style={`--secundarios: ${accesos.length - 1}`}>
   {
-    accesos.map(({ linea, texto }, i) => {
-      const foto = fotoDe(linea);
-      return (
-        <a class:list={["acceso", linea, { principal: i === 0 }]} href={`?linea=${linea}#catalogo`} data-acceso-linea={linea}>
-          {foto && (
-            <Picture
-              src={foto}
-              alt=""
-              formats={["avif", "webp"]}
-              widths={[400, 800, 1200]}
-              sizes={i === 0 ? "(min-width: 48rem) 40vw, 100vw" : "(min-width: 48rem) 20vw, 50vw"}
-              class="foto"
-              pictureAttributes={{ class: "marco" }}
-            />
-          )}
-          <span class="texto">
-            <span class="nombre">{NOMBRE_LINEA[linea]}</span>
-            <span class="detalle">{texto}</span>
-          </span>
-        </a>
-      );
-    })
+    accesos.map(({ linea, texto }, i) => (
+      <a class:list={["acceso", linea, { principal: i === 0 }]} href={`?linea=${linea}#catalogo`} data-acceso-linea={linea}>
+        {candidatasDe(linea).map((foto, j) => (
+          <Picture
+            src={foto}
+            alt=""
+            formats={["avif", "webp"]}
+            widths={[400, 800, 1200]}
+            sizes={i === 0 ? "(min-width: 48rem) 45vw, 100vw" : "(min-width: 48rem) 25vw, 50vw"}
+            class="foto"
+            pictureAttributes={{ class: "marco", "data-candidata": "", hidden: j !== 0 }}
+          />
+        ))}
+        <span class="texto">
+          <span class="nombre">{NOMBRE_LINEA[linea]}</span>
+          <span class="detalle">{texto}</span>
+        </span>
+      </a>
+    ))
   }
 </nav>
+
+<!--
+  Foto al azar en cada visita. Corre en línea, justo después del HTML de los accesos y antes
+  de que se vean: las fotos son de carga diferida y las ocultas nunca se descargan.
+  Sin JavaScript se ve la primera candidata.
+-->
+<script is:inline>
+  for (const acceso of document.querySelectorAll(".accesos [data-acceso-linea]")) {
+    const fotos = acceso.querySelectorAll("[data-candidata]");
+    const elegida = Math.floor(Math.random() * fotos.length);
+    fotos.forEach((foto, i) => (foto.hidden = i !== elegida));
+  }
+</script>
 
 <style>
   /* Móvil: Sport a todo el ancho y el resto de a dos por fila.
@@ -123,10 +139,6 @@ const fotoDe = (linea: Linea) =>
     color: var(--color-texto);
   }
 
-  .beauty .nombre {
-    color: var(--color-arena);
-  }
-
   .detalle {
     font-size: var(--texto-pequeno);
     letter-spacing: 0.08em;
@@ -142,7 +154,7 @@ const fotoDe = (linea: Linea) =>
   /* Escritorio: todos en una fila; Sport ocupa el doble. */
   @media (min-width: 48rem) {
     .accesos {
-      grid-template-columns: 2fr repeat(3, 1fr);
+      grid-template-columns: 2fr repeat(var(--secundarios), 1fr);
       align-items: end;
       padding-inline: var(--espacio-3);
     }
