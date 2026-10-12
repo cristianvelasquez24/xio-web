@@ -5,7 +5,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 250000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "buso-tommy-verde-tejido.jpg",
     "agotado": false,
     "destacado": true
@@ -16,7 +18,9 @@
     "genero": "hombre",
     "linea": "casual",
     "precio": 220000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "polo-golf-blanco-rayas-adidas.jpg",
     "agotado": false,
     "destacado": true
@@ -27,7 +31,9 @@
     "genero": "hombre",
     "linea": "casual",
     "precio": 220000,
-    "tallas": [],
+    "tallas": [
+      "M"
+    ],
     "imagen": "polo-golf-verde-adidas.jpg",
     "agotado": false
   },
@@ -37,7 +43,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 130000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "polo-rosa-us-polo.jpg",
     "agotado": false
   },
@@ -47,7 +55,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 210000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "polo-vestido-tommy.jpg",
     "agotado": false
   },
@@ -98,7 +108,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 160000,
-    "tallas": ["S"],
+    "tallas": [
+      "S"
+    ],
     "imagen": "buso-lila-under-armour.jpg",
     "agotado": false
   },
@@ -108,7 +120,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 200000,
-    "tallas": ["S"],
+    "tallas": [
+      "S"
+    ],
     "imagen": "camiseta-esqueleto-adidas.jpeg",
     "agotado": false
   },
@@ -118,7 +132,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 145000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "sudadera-gris-adidas.webp",
     "agotado": false
   },
@@ -128,7 +144,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 90000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "camiseta-marron-adidas.jpg",
     "agotado": false
   },
@@ -138,7 +156,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 90000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "camiseta-rosa-under-armour.jpg",
     "agotado": false
   },
@@ -148,7 +168,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 120000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "falda-adidas-azul.jpg",
     "agotado": false
   },
@@ -158,7 +180,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 130000,
-    "tallas": ["L"],
+    "tallas": [
+      "L"
+    ],
     "imagen": "camiseta-celeste-nike.jpg",
     "agotado": false
   },
@@ -168,18 +192,10 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 160000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "falda-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "licra-corta-gris-under-armour",
-    "nombre": "Licra corta Under Armour gris",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "licra-corta-gris-under-armour.jpg",
     "agotado": false
   },
   {
@@ -208,7 +224,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": null,
-    "tallas": [],
+    "tallas": [
+      "S/M"
+    ],
     "imagen": "licra-fucsia-media-under-armour.webp",
     "agotado": false
   },
@@ -218,7 +236,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": null,
-    "tallas": [],
+    "tallas": [
+      "S/M"
+    ],
     "imagen": "licra-media-negra-under-armour.webp",
     "agotado": false
   },
@@ -228,7 +248,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 120000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "sudadera-adidas-algodon.jpg",
     "agotado": false
   },
@@ -238,7 +260,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 260000,
-    "tallas": ["S"],
+    "tallas": [
+      "S"
+    ],
     "imagen": "sudadera-adidas-roja.jpg",
     "agotado": false,
     "destacado": true
@@ -249,7 +273,9 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 140000,
-    "tallas": [],
+    "tallas": [
+      "M"
+    ],
     "imagen": "sudadera-nike.webp",
     "agotado": false
   },
@@ -279,11 +305,13 @@
   },
   {
     "id": "pantalon-largo-rosa-victoria",
-    "nombre": "Pantalón largo calvin klein rosado",
+    "nombre": "Pantalón largo calvin klein rosado pijama",
     "genero": "mujer",
     "linea": "casual",
     "precio": null,
-    "tallas": [],
+    "tallas": [
+      "S"
+    ],
     "imagen": "pantalon-largo-rosa-victoria.webp",
     "agotado": false
   },
@@ -293,7 +321,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 80000,
-    "tallas": ["S"],
+    "tallas": [
+      "S"
+    ],
     "imagen": "pantalon-pijama-gris-victoria.webp",
     "agotado": false
   },
@@ -303,7 +333,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 80000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "short-rosas-victoria.jpg",
     "agotado": false
   },
@@ -313,7 +345,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 80000,
-    "tallas": ["M"],
+    "tallas": [
+      "M"
+    ],
     "imagen": "short-pijama-negro-victoria.jpg",
     "agotado": false
   },
@@ -323,7 +357,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 80000,
-    "tallas": ["S"],
+    "tallas": [
+      "S"
+    ],
     "imagen": "pantalon-pijama-victoria.jpg",
     "agotado": false
   },
@@ -333,7 +369,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 120000,
-    "tallas": [],
+    "tallas": [
+      "10.5/42"
+    ],
     "imagen": "sandalias-adidas.jpg",
     "agotado": false
   },
@@ -343,7 +381,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 150000,
-    "tallas": ["XS"],
+    "tallas": [
+      "XS"
+    ],
     "imagen": "us-polo-larga-negro.jpg",
     "agotado": false
   },
@@ -353,7 +393,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 150000,
-    "tallas": [],
+    "tallas": [
+      "S"
+    ],
     "imagen": "us-polo-negra.jpeg",
     "agotado": false
   },
@@ -363,7 +405,9 @@
     "genero": "hombre",
     "linea": "sport",
     "precio": 150000,
-    "tallas": ["L"],
+    "tallas": [
+      "L"
+    ],
     "imagen": "pantaloneta-crema-under-armour.png",
     "agotado": false
   },
@@ -427,7 +471,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 400000,
-    "tallas": ["37"],
+    "tallas": [
+      "37"
+    ],
     "imagen": "tenis-rosa-new-balance.jpeg",
     "agotado": false
   },
@@ -437,7 +483,9 @@
     "genero": "mujer",
     "linea": "casual",
     "precio": 300000,
-    "tallas": ["37"],
+    "tallas": [
+      "37"
+    ],
     "imagen": "tenis-gris-skechers.jpeg",
     "agotado": false
   },
@@ -447,8 +495,230 @@
     "genero": "mujer",
     "linea": "sport",
     "precio": 300000,
-    "tallas": ["37"],
+    "tallas": [
+      "37"
+    ],
     "imagen": "blusa-deportiva-rosa-under.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "licra-capri-fucsia-under-armour",
+    "nombre": "Licra capri Under Armour fucsia",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 105000,
+    "tallas": ["M"],
+    "imagen": "licra-capri-fucsia-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-capri-coral-under-armour",
+    "nombre": "Licra capri Under Armour coral",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 105000,
+    "tallas": ["M"],
+    "imagen": "licra-capri-coral-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-corta-verde-under-armour",
+    "nombre": "Licra corta Under Armour verde",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 105000,
+    "tallas": ["M"],
+    "imagen": "licra-corta-verde-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-corta-coral-under-armour",
+    "nombre": "Licra corta Under Armour coral",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 105000,
+    "tallas": ["M"],
+    "imagen": "licra-corta-coral-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "jogger-negro-under-armour",
+    "nombre": "Licra Under Armour negro bolsillos",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 120000,
+    "tallas": ["M"],
+    "imagen": "jogger-negro-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "short-fucsia-under-armour",
+    "nombre": "Short deportivo Under Armour fucsia",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 70000,
+    "tallas": ["S"],
+    "imagen": "short-fucsia-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "short-negro-under-armour",
+    "nombre": "Short deportivo Under Armour negro",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 70000,
+    "tallas": ["S"],
+    "imagen": "short-negro-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-azul-under-armour",
+    "nombre": "Camiseta Under Armour azul",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "camiseta-azul-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-cuello-v-beige-under-armour",
+    "nombre": "Camiseta cuello V Under Armour beige",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "camiseta-cuello-v-beige-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "licra-capri-negra-under-armour",
+    "nombre": "Licra capri Under Armour negra",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 105000,
+    "tallas": ["M"],
+    "imagen": "licra-capri-negra-under-armour.jpg",
+    "agotado": false
+  },
+  {
+    "id": "pijama-calvin-klein-nude",
+    "nombre": "Pijama Calvin Klein camisola y pantalón",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 220000,
+    "tallas": ["S"],
+    "imagen": "pijama-calvin-klein-nude.jpg",
+    "agotado": false
+  },
+  {
+    "id": "bralette-negro-victoria",
+    "nombre": "Bralette Victoria's Secret negro",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "bralette-negro-victoria.jpg",
+    "agotado": false
+  },
+  {
+    "id": "bralettes-algodon-cafe-negro",
+    "nombre": "Bralettes de algodón café o negro (C/U)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "bralettes-algodon-cafe-negro.jpg",
+    "agotado": false
+  },
+  {
+    "id": "bralettes-encaje-negro-rojo",
+    "nombre": "Bralettes de encaje negro y rojo (C/U)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "bralettes-encaje-negro-rojo.jpg",
+    "agotado": false
+  },
+  {
+    "id": "bralettes-encaje-rosado-lila",
+    "nombre": "Bralettes de encaje rosado y lila (C/U)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 90000,
+    "tallas": ["S"],
+    "imagen": "bralettes-encaje-rosado-lila.jpg",
+    "agotado": false
+  },
+  {
+    "id": "shorts-pijama-victoria-blanco-negro",
+    "nombre": "Shorts de pijama Victoria's Secret blanco y negro (C/U)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 80000,
+    "tallas": ["S"],
+    "imagen": "shorts-pijama-victoria-blanco-negro.jpg",
+    "agotado": false
+  },
+  {
+    "id": "polo-verde-tommy",
+    "nombre": "Polo Tommy Hilfiger verde oliva con cremallera",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 210000,
+    "tallas": ["L"],
+    "imagen": "polo-verde-tommy.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-adidas-originals-azul",
+    "nombre": "Sudadera adidas Originals azul",
+    "genero": "unisex",
+    "linea": "sport",
+    "precio": 210000,
+    "tallas": ["M"],
+    "imagen": "sudadera-adidas-originals-azul.jpg",
+    "agotado": false
+  },
+  {
+    "id": "sudadera-adidas-originals-verde",
+    "nombre": "Licra adidas Originals verde acampanada",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 150000,
+    "tallas": ["M"],
+    "imagen": "sudadera-adidas-originals-verde.jpg",
+    "agotado": false
+  },
+  {
+    "id": "conjunto-encaje-nude",
+    "nombre": "Conjunto de encaje nude (top y culotte)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": ["S"],
+    "imagen": "conjunto-encaje-nude.jpg",
+    "agotado": false
+  },
+  {
+    "id": "conjunto-encaje-rojo",
+    "nombre": "Conjunto de encaje rojo (top y culotte)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": ["S"],
+    "imagen": "conjunto-encaje-rojo.jpg",
+    "agotado": false
+  },
+  {
+    "id": "brasieres-victoria-negro-rosado-cafe",
+    "nombre": "Brasieres Victoria's Secret negro, rosado y café (C/U)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 100000,
+    "tallas": ["S"],
+    "imagen": "brasieres-victoria-negro-rosado-cafe.jpg",
     "agotado": false
   }
 ]
