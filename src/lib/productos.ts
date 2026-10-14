@@ -34,7 +34,12 @@ const esquemaProducto = z
     linea: z.enum(LINEAS),
     precio: z.number().int().positive().nullable(),
     tallas: z.array(z.string().trim().min(1)).default([]),
-    imagen: z.string().regex(/^[a-z0-9-]+\.(jpg|jpeg|png|webp)$/, "archivo .jpg, .jpeg, .png o .webp en minúsculas"),
+    imagen: z
+      .string()
+      .regex(
+        /^[a-z0-9-]+\.(jpg|jpeg|png|webp|avif)$/,
+        "archivo .jpg, .jpeg, .png, .webp o .avif en minúsculas (.jxl y .heic no sirven: convertir a .jpg)",
+      ),
     agotado: z.boolean().default(false),
     destacado: z.boolean().default(false),
   })
@@ -54,7 +59,7 @@ const esquemaCatalogo = z.array(esquemaProducto).superRefine((productos, ctx) =>
 });
 
 const archivos = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/productos/*.{jpg,jpeg,png,webp}",
+  "../assets/productos/*.{jpg,jpeg,png,webp,avif}",
   { eager: true },
 );
 
