@@ -550,18 +550,6 @@
     "agotado": false
   },
   {
-    "id": "jogger-negro-under-armour",
-    "nombre": "Licra Under Armour negro bolsillos",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 120000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "jogger-negro-under-armour.jpg",
-    "agotado": false
-  },
-  {
     "id": "short-fucsia-under-armour",
     "nombre": "Short deportivo Under Armour fucsia",
     "genero": "mujer",
@@ -666,7 +654,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "bralettes-encaje-rosado-lila.jpg",
+    "imagen": "bralettes-encaje-rosado-lila.jpeg",
     "agotado": false
   },
   {
@@ -738,7 +726,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "conjunto-encaje-rojo.jpg",
+    "imagen": "conjunto-encaje-rojo.jpeg",
     "agotado": false
   },
   {
@@ -750,7 +738,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "brasieres-victoria-negro-rosado-cafe.jpg",
+    "imagen": "brasieres-victoria-negro-rosado-cafe.jpeg",
     "agotado": false
   },
   {
@@ -774,7 +762,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "top-deportivo-nike-lila.jpg",
+    "imagen": "top-deportivo-nike-lila.jpeg",
     "agotado": false
   },
   {
