@@ -1,0 +1,174 @@
+---
+/**
+ * Cierre de la página: colores invertidos y la marca de margen a margen, que sube al aparecer.
+ * Sin redes ni contacto (decisión de marca): solo las líneas y cómo leer el catálogo.
+ */
+import { config } from "../config";
+import { NOMBRE_LINEA, resumen, type Linea } from "../lib/productos";
+
+const lineas: Linea[] = ["sport", "casual", "bolsos", "beauty"];
+const anio = new Date().getFullYear();
+---
+
+<footer class="cierre">
+  <div class="columnas">
+    <nav aria-labelledby="cierre-lineas">
+      <p id="cierre-lineas" class="cabeza">Líneas</p>
+      <ul>
+        {
+          lineas.map((l) => (
+            <li>
+              <a href={`?linea=${l}#catalogo`} data-acceso-linea={l}>
+                {NOMBRE_LINEA[l]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div>
+      <p class="cabeza">Colección</p>
+      <ul>
+        <li>{resumen.total} prendas</li>
+        <li>{resumen.unaTalla} en una sola talla</li>
+        <li>Las agotadas quedan al final</li>
+      </ul>
+    </div>
+    <div>
+      <p class="cabeza">Tallas</p>
+      <ul>
+        <li>Cada tarjeta muestra su talla</li>
+        <li>En Beauty, la presentación</li>
+      </ul>
+    </div>
+    <div>
+      <p class="cabeza">{config.mostrarPrecio ? "Precios" : "Página"}</p>
+      <ul>
+        {config.mostrarPrecio && <li>En pesos colombianos</li>}
+        <li><a href="#">Volver arriba</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pie">
+    <p class="marca" data-entra><span></span></p>
+    <p class="legal">© {anio} XIO · Active Wear</p>
+  </div>
+</footer>
+
+<style>
+  .cierre {
+    display: grid;
+    gap: var(--espacio-seccion);
+    padding: var(--espacio-3) var(--margen) calc(var(--margen) + env(safe-area-inset-bottom, 0px));
+    background: var(--color-texto);
+    color: var(--color-fondo);
+  }
+
+  .columnas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espacio-3) var(--espacio-2);
+  }
+
+  .cabeza {
+    font-weight: 600;
+  }
+
+  ul {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: color-mix(in srgb, var(--color-fondo) 78%, var(--color-texto));
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--t-hover) ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  .pie {
+    display: grid;
+    gap: var(--espacio-1);
+  }
+
+  /* La marca de margen a margen: "XIO" mide unas 1,42 veces su tamaño de letra.
+     En pantallas bajas se limita por la altura para que el cierre quepa entero. */
+  .marca {
+    margin-left: -0.03em;
+    font-family: var(--fuente-titulos);
+    font-size: min(calc((100vw - 2 * var(--margen)) / 1.42), 62svh);
+    font-weight: 700;
+    line-height: 0.76;
+    letter-spacing: var(--tracking-display);
+    white-space: nowrap;
+  }
+
+  .marca > span {
+    display: block;
+  }
+
+  /* La marca sube un poco al aparecer; siempre está visible. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .marca[data-entra] {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(.js) .marca > span {
+      transform: translateY(18%);
+      transition: transform 1100ms var(--ease-expo);
+    }
+
+    :global(.js) .marca.entro > span {
+      transform: none;
+    }
+  }
+
+  .legal {
+    font-size: var(--texto-pequeno);
+  }
+
+  @media (min-width: 48rem) {
+    .cierre {
+      padding-top: var(--espacio-4);
+    }
+
+    .columnas {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* La marca sube con el scroll hasta quedar en su sitio al final de la página. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .marca > span {
+        animation-name: marca-sube;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  @keyframes marca-sube {
+    from {
+      translate: 0 45%;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
+</style>

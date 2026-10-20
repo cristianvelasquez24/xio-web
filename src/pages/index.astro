@@ -1,6 +1,8 @@
 ---
 import Accesos from "../components/Accesos.astro";
 import Catalogo from "../components/Catalogo.astro";
+import Cierre from "../components/Cierre.astro";
+import Piezas from "../components/Piezas.astro";
 import Portada from "../components/Portada.astro";
 import Base from "../layouts/Base.astro";
 ---
@@ -9,6 +11,12 @@ import Base from "../layouts/Base.astro";
   <Portada />
   <main>
     <Accesos />
+    <Piezas />
     <Catalogo />
   </main>
+  <Cierre />
 </Base>
+
+<script>
+  import "../scripts/entradas";
+</script>

@@ -13,12 +13,12 @@ const { producto: p } = Astro.props;
 const precio = config.mostrarPrecio && !p.agotado && p.precio !== null ? formatearPrecio(p.precio) : null;
 // En Beauty el campo `tallas` es la presentación (ej. "236 ml").
 const etiquetaTallas = p.linea === "beauty" ? "Presentación" : p.tallas.length === 1 ? "Talla" : "Tallas";
-const tallas = p.tallas.length > 0 ? `${etiquetaTallas} ${p.tallas.join(" · ")}` : null;
 const variasFotos = p.fotos.length > 1;
 ---
 
 <article
   class:list={["tarjeta", { agotado: p.agotado }]}
+  data-entra
   id={`producto-${p.id}`}
   data-producto
   data-id={p.id}
@@ -67,13 +67,27 @@ const variasFotos = p.fotos.length > 1;
     <h3 class="nombre">
       <button type="button" class="abrir" data-abrir-detalle aria-haspopup="dialog">{p.nombre}</button>
     </h3>
-    <p class="linea">{NOMBRE_LINEA[p.linea]}</p>
-    {tallas && <p class="tallas">{tallas}</p>}
-    {precio && <p class="precio">{precio}</p>}
+    {
+      p.tallas.length > 0 && (
+        <p class:list={["talla", { larga: p.tallas.join("").length > 3 }]}>
+          <span class="valor">{p.tallas.join(" · ")}</span>
+          <span class="rotulo">{etiquetaTallas}</span>
+        </p>
+      )
+    }
+    <p class="meta">
+      {NOMBRE_LINEA[p.linea]}
+      {precio && <span class="precio">{precio}</span>}
+    </p>
   </div>
 </article>
 
 <style>
+  /* Las tarjetas nunca parten invisibles: solo suben un poco al entrar en pantalla. */
+  :global(.js) .tarjeta[data-entra] {
+    opacity: 1;
+  }
+
   .tarjeta {
     display: flex;
     flex-direction: column;
@@ -106,6 +120,7 @@ const variasFotos = p.fotos.length > 1;
   .slide {
     position: relative;
     flex: 0 0 100%;
+    overflow: clip; /* el zoom de entrada no debe ensanchar la galería */
     scroll-snap-align: start;
   }
 
@@ -155,6 +170,7 @@ const variasFotos = p.fotos.length > 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: scale 600ms var(--ease-soft);
   }
 
   .agotado .foto {
@@ -177,11 +193,14 @@ const variasFotos = p.fotos.length > 1;
 
   .info {
     display: grid;
-    gap: 0.125rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.25rem var(--espacio-1);
     padding-inline: 0.125rem;
   }
 
   .nombre {
+    grid-column: 1;
+    font-family: var(--fuente-base);
     font-size: var(--texto-base);
     font-weight: 500;
     line-height: 1.25;
@@ -196,33 +215,100 @@ const variasFotos = p.fotos.length > 1;
     font: inherit;
     letter-spacing: inherit;
     text-align: start;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
     cursor: pointer;
+    transition: text-decoration-color var(--t-hover) ease;
   }
 
-  .abrir:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+  @media (hover: hover) and (pointer: fine) {
+    .abrir:hover {
+      text-decoration-color: currentColor;
+    }
+
+    .tarjeta:hover .foto {
+      scale: 1.04;
+    }
   }
 
   .galeria {
     cursor: zoom-in;
   }
 
-  .linea {
-    font-size: var(--texto-pequeno);
-    color: var(--color-texto-suave);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  /* La talla, grande, como la etiqueta que cuelga de la prenda (el rótulo va debajo). */
+  .talla {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: grid;
+    justify-items: end;
+    align-content: start;
+    text-align: end;
   }
 
-  .tallas {
+  .talla .rotulo {
+    font-size: var(--texto-pequeno);
+    color: var(--color-texto-suave);
+  }
+
+  .talla .valor {
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-arena);
+  }
+
+  .larga .valor {
+    font-size: var(--texto-base);
+    line-height: 1.4;
+  }
+
+  .meta {
+    grid-column: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
     font-size: var(--texto-pequeno);
     color: var(--color-texto-suave);
   }
 
   .precio {
-    font-size: var(--texto-pequeno);
+    color: var(--color-texto);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Movimiento ligado al scroll: la foto se acomoda con un leve zoom al entrar en pantalla.
+     La línea de tiempo se nombra en la tarjeta porque la galería es su propio contenedor de scroll. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tarjeta {
+        view-timeline: --tarjeta block;
+      }
+
+      .foto-picture {
+        animation-name: acomodar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --tarjeta;
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  @keyframes acomodar {
+    from {
+      transform: scale(1.18);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  /* Al tocar la foto en el celular, la tarjeta responde antes de abrir el detalle. */
+  .galeria:active .foto {
+    scale: 0.97;
   }
 </style>

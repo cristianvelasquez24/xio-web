@@ -175,22 +175,12 @@
     "agotado": false
   },
   {
-    "id": "licra-corta-negra-under",
-    "nombre": "Licra corta Under Armour negra",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "licra-corta-negra-under.jpg",
-    "agotado": false
-  },
-  {
     "id": "licra-corta-rosa-under-armour",
     "nombre": "Licra corta Under Armour rosada",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 105000,
+    "tallas": ["M"],
     "imagen": "licra-corta-rosa-under-armour.jpg",
     "agotado": false
   },
@@ -199,9 +189,9 @@
     "nombre": "Licra media Under Armour fucsia",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 105000,
     "tallas": [
-      "S/M"
+      "M"
     ],
     "imagen": "licra-fucsia-media-under-armour.webp",
     "agotado": false
@@ -211,9 +201,9 @@
     "nombre": "Licra media Under Armour negra",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 120000,
     "tallas": [
-      "S/M"
+      "M"
     ],
     "imagen": "licra-media-negra-under-armour.webp",
     "agotado": false
@@ -272,7 +262,7 @@
     "nombre": "Conjunto Pijama calvin klein rosado pijama",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 220000,
     "tallas": [
       "S"
     ],
@@ -646,18 +636,6 @@
     "agotado": false
   },
   {
-    "id": "conjunto-encaje-nude",
-    "nombre": "Conjunto de encaje nude (top y culotte)",
-    "genero": "mujer",
-    "linea": "casual",
-    "precio": 150000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "conjunto-encaje-nude.jpg",
-    "agotado": false
-  },
-  {
     "id": "conjunto-encaje-rojo",
     "nombre": "Conjunto de encaje rojo (top y culotte)",
     "genero": "mujer",
@@ -667,6 +645,18 @@
       "S"
     ],
     "imagen": "conjunto-encaje-rojo.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "conjunto-encaje-beige",
+    "nombre": "Conjunto de encaje nude (top y culotte)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": [
+      "S"
+    ],
+    "imagen": "conjunto-encaje-beige.jpg",
     "agotado": false
   },
   {

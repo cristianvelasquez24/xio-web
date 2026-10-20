@@ -5,3 +5,5 @@ dist/
 .DS_Store
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+# Capturas y notas de la skill de diseño
+.taste-skill/

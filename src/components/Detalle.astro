@@ -64,8 +64,7 @@
   }
 
   .detalle::backdrop {
-    background: color-mix(in srgb, var(--color-fondo) 80%, transparent);
-    backdrop-filter: blur(6px);
+    background: rgb(0 0 0 / 0.62);
   }
 
   /* Bloquea el scroll de la página mientras el modal está abierto. */
@@ -93,7 +92,6 @@
     background: color-mix(in srgb, var(--color-fondo) 75%, transparent);
     color: var(--color-texto);
     cursor: pointer;
-    backdrop-filter: blur(6px);
   }
 
   .medios {
@@ -201,16 +199,15 @@
     aspect-ratio: 4 / 5;
     padding: 0;
     overflow: hidden;
-    border: 1px solid transparent;
+    border: 0;
     border-radius: calc(var(--radio) / 2);
     background: var(--color-superficie);
     opacity: 0.55;
     cursor: pointer;
-    transition: opacity 0.15s ease, border-color 0.15s ease;
+    transition: opacity var(--t-hover) ease;
   }
 
   .miniaturas :global(.miniatura[aria-current="true"]) {
-    border-color: var(--color-texto);
     opacity: 1;
   }
 
@@ -229,20 +226,18 @@
   }
 
   .contexto {
-    font-size: var(--texto-pequeno);
     color: var(--color-salvia);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-weight: 500;
   }
 
   .nombre {
-    font-size: var(--texto-subtitulo);
-    line-height: 1.15;
+    font-size: var(--texto-titulo);
+    line-height: 1.1;
   }
 
   .precio {
     font-family: var(--fuente-titulos);
-    font-size: var(--texto-subtitulo);
+    font-size: var(--texto-titulo);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
   }
@@ -256,14 +251,11 @@
     display: grid;
     gap: var(--espacio-1);
     padding-top: var(--espacio-2);
-    border-top: 1px solid var(--color-superficie);
   }
 
   .rotulo {
     font-size: var(--texto-pequeno);
     color: var(--color-texto-suave);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
   .tallas {
@@ -277,18 +269,21 @@
 
   .tallas :global(li) {
     min-width: 2.75rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-texto-suave);
+    padding: 0.5rem 1rem;
     border-radius: var(--radio-chip);
-    font-size: var(--texto-pequeno);
-    font-weight: 500;
+    background: var(--color-superficie);
+    color: var(--color-arena);
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 700;
+    line-height: 1;
     text-align: center;
   }
 
   /* Entrada suave; sin animación si el usuario la reduce. */
   @media (prefers-reduced-motion: no-preference) {
     .detalle[open] {
-      animation: entrar 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+      animation: entrar 360ms var(--ease-out);
     }
 
     .detalle[open]::backdrop {
@@ -299,7 +294,8 @@
   @keyframes entrar {
     from {
       opacity: 0;
-      translate: 0 1rem;
+      translate: 0 2rem;
+      scale: 0.98;
     }
   }
 
@@ -385,7 +381,7 @@
     }
 
     .nombre {
-      font-size: var(--texto-titulo-medio);
+      font-size: var(--texto-titulo);
     }
   }
 </style>

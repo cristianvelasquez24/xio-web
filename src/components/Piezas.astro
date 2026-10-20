@@ -1,0 +1,353 @@
+---
+/**
+ * "Una pieza, una talla": casi todas las prendas vienen en una sola talla.
+ * Bajo el titular caen tres fotos de prendas, como copias impresas; se eligen al azar
+ * en cada visita entre las disponibles de una sola talla. Tocar una abre su detalle.
+ */
+import { Picture } from "astro:assets";
+import { altProducto, productos, resumen } from "../lib/productos";
+
+/** Candidatas: prendas disponibles de una sola talla (las ocultas no se descargan). */
+const MAX_CANDIDATAS = 12;
+// Las destacadas ya salen en la portada y al inicio del catálogo: aquí no se repiten.
+const candidatas = productos.filter((p) => !p.agotado && !p.destacado && p.tallas.length === 1).slice(0, MAX_CANDIDATAS);
+---
+
+<section class="piezas" aria-labelledby="piezas-titulo">
+  <h2 id="piezas-titulo" class="titulo" data-entra>
+    <span class="linea"><span style="--i: 0">Una pieza,</span></span>
+    <span class="linea"><span style="--i: 1">una talla.</span></span>
+  </h2>
+
+  <div class="mesa" data-mesa>
+    {
+      candidatas.map((p, i) => (
+        <a class="copia" href={`#producto-${p.id}`} data-abrir-producto={p.id} data-copia data-lugar={i < 3 ? i + 1 : undefined} hidden={i >= 3}>
+          <span class="papel" data-entra={String(240 + (i % 3) * 140)}>
+            <Picture
+              src={p.fotos[0]}
+              alt={altProducto(p)}
+              formats={["avif", "webp"]}
+              widths={[400, 800]}
+              sizes="(min-width: 48rem) 26vw, 52vw"
+              class="foto"
+              pictureAttributes={{ class: "marco" }}
+            />
+            <span class="pie">
+              <span class="talla">{p.tallas[0]}</span>
+              <span class="nombre">{p.nombre}</span>
+            </span>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="nota">
+    {resumen.unaTalla} de las {resumen.total} prendas vienen en una sola talla. Toca una foto para verla de cerca.
+  </p>
+</section>
+
+<!-- Tres copias al azar en cada visita. Sin JavaScript se ven las tres primeras. -->
+<script is:inline>
+  {
+    const copias = [...document.querySelectorAll("[data-mesa] [data-copia]")];
+    const elegidas = copias.sort(() => Math.random() - 0.5).slice(0, 3);
+    copias.forEach((c) => {
+      const lugar = elegidas.indexOf(c);
+      c.hidden = lugar < 0;
+      if (lugar >= 0) c.dataset.lugar = String(lugar + 1);
+      else delete c.dataset.lugar;
+    });
+  }
+</script>
+
+<style>
+  .piezas {
+    display: grid;
+    gap: var(--espacio-3);
+    margin-top: var(--espacio-seccion);
+    padding: var(--espacio-4) var(--margen);
+    overflow: clip;
+    background: var(--color-lavanda);
+    color: var(--color-sobre-acento);
+  }
+
+  .titulo {
+    font-size: var(--texto-display);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: var(--tracking-display);
+    white-space: nowrap;
+  }
+
+  .linea {
+    display: block;
+    overflow: clip;
+    padding-bottom: 0.08em;
+  }
+
+  .linea > span {
+    display: block;
+  }
+
+  /* La mesa: las copias caen sueltas, una sobre otra, nunca sobre el titular. */
+  .mesa {
+    position: relative;
+    height: 96vw;
+  }
+
+  .copia {
+    position: absolute;
+    width: 52vw;
+    color: inherit;
+    text-decoration: none;
+    rotate: var(--giro);
+    transition: rotate 200ms var(--ease-out);
+  }
+
+  .copia[data-lugar="1"] {
+    --giro: -6deg;
+    top: 2%;
+    left: 0;
+    z-index: 1;
+  }
+
+  .copia[data-lugar="2"] {
+    --giro: 5deg;
+    top: 10%;
+    right: 0;
+    z-index: 2;
+  }
+
+  /* En móvil solo dos copias. */
+  .copia[data-lugar="3"] {
+    display: none;
+  }
+
+  .papel {
+    display: grid;
+    gap: 0.5rem;
+    padding: var(--borde-foto) var(--borde-foto) 0.75rem;
+    border-radius: 4px;
+    background: var(--color-texto);
+  }
+
+  .marco {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--color-superficie);
+  }
+
+  .foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* La talla va a la izquierda: la copia de al lado solo tapa el borde derecho. */
+  .pie {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: var(--texto-pequeno);
+    line-height: 1.25;
+  }
+
+  .nombre {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .talla {
+    flex: none;
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .nota {
+    max-width: 34ch;
+    font-size: var(--texto-base);
+    font-weight: 500;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .copia:hover,
+    .copia:focus-visible {
+      z-index: 3;
+      rotate: 0deg;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .piezas {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      padding-block: var(--espacio-4);
+    }
+
+    .mesa {
+      grid-area: 2 / 1;
+      height: calc(30vw + 9rem);
+      margin-top: var(--espacio-3);
+    }
+
+    .copia {
+      width: 20vw;
+    }
+
+    .copia[data-lugar="1"] {
+      --giro: -8deg;
+      top: 4%;
+      left: 34%;
+      right: auto;
+    }
+
+    .copia[data-lugar="2"] {
+      --giro: 6deg;
+      top: 12%;
+      left: 48%;
+      right: auto;
+    }
+
+    .copia[data-lugar="3"] {
+      --giro: 3deg;
+      display: block;
+      top: 14%;
+      left: 72%;
+      width: 15vw;
+      z-index: 1;
+    }
+
+    /* La nota queda al pie de la mesa, en el lado libre de copias. */
+    .nota {
+      grid-area: 2 / 1;
+      align-self: end;
+      z-index: 1;
+    }
+  }
+
+  /* Las copias caen sobre la mesa: llegan de más arriba y más grandes. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .papel[data-entra] {
+      transform: translateY(-3rem) scale(1.08);
+    }
+
+    :global(.js) .papel[data-entra].entro {
+      transform: none;
+    }
+
+    /* El titular no se desvanece: cada línea sube desde detrás de su propia máscara. */
+    :global(.js) .titulo[data-entra] {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(.js) .titulo .linea > span {
+      transform: translateY(105%);
+      transition: transform 900ms var(--ease-expo) calc(var(--i) * 110ms);
+    }
+
+    :global(.js) .titulo.entro .linea > span {
+      transform: none;
+    }
+  }
+
+  /* Movimiento ligado al scroll: las dos líneas del titular entran desde lados opuestos
+     y las copias caen girando sobre la mesa a medida que se baja. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .piezas {
+        view-timeline: --piezas block;
+      }
+
+      .titulo .linea:first-child > span {
+        animation-name: desde-izquierda;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --piezas;
+        animation-range: entry 0% entry 90%;
+      }
+
+      .titulo .linea:last-child > span {
+        animation-name: desde-derecha;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --piezas;
+        animation-range: entry 10% entry 100%;
+      }
+
+      .mesa {
+        view-timeline: --mesa block;
+      }
+
+      .copia .papel {
+        animation-name: caer;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --mesa;
+        animation-range: entry 0% cover 45%;
+      }
+
+      .copia[data-lugar="1"] {
+        --desde-x: -30vw;
+      }
+
+      .copia[data-lugar="2"] {
+        --desde-x: 30vw;
+      }
+
+      .copia[data-lugar="3"] {
+        --desde-x: 20vw;
+      }
+
+      /* En pantallas anchas el recorrido lateral es menor: las copias no tocan el borde. */
+      @media (min-width: 48rem) {
+        .copia[data-lugar="1"] {
+          --desde-x: -12vw;
+        }
+
+        .copia[data-lugar="2"] {
+          --desde-x: 12vw;
+        }
+
+        .copia[data-lugar="3"] {
+          --desde-x: 8vw;
+        }
+      }
+    }
+  }
+
+  @keyframes desde-izquierda {
+    from {
+      translate: -40% 0;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes desde-derecha {
+    from {
+      translate: 40% 0;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes caer {
+    from {
+      translate: var(--desde-x, 0) -40%;
+      rotate: calc(var(--giro, 0deg) * -3);
+    }
+    to {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+  }
+</style>

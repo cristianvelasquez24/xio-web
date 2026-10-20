@@ -71,7 +71,7 @@ for (const p of productos) {
   });
 }
 
-await crear(join(raiz, "src/assets/portada.jpg"), {
+await crear(join(raiz, "src/assets/portada.png"), {
   titulo: "XIO",
   subtitulo: "FOTO DE PORTADA PROVISIONAL",
   colores: tonos.salvia,

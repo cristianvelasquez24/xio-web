@@ -1,13 +1,13 @@
 ---
 import { Picture } from "astro:assets";
-import { NOMBRE_LINEA, productos, type Linea } from "../lib/productos";
+import { NOMBRE_LINEA, productos, resumen, type Linea } from "../lib/productos";
 
 interface Acceso {
   linea: Linea;
   texto: string;
 }
 
-// El primero es el protagonista (más grande). Beauty no tiene acceso: solo filtro.
+// El primero es el protagonista (el panel más ancho). Beauty no tiene acceso: solo filtro.
 const accesos: Acceso[] = [
   { linea: "sport", texto: "Para moverte" },
   { linea: "casual", texto: "Para el resto del día" },
@@ -18,7 +18,7 @@ const accesos: Acceso[] = [
 const MAX_CANDIDATAS = 10;
 
 // Candidatas: la foto principal de cada producto disponible de la línea.
-// Si todos están agotados, se usa el primero para no dejar la tarjeta vacía.
+// Si todos están agotados, se usa el primero para no dejar el panel vacío.
 const candidatasDe = (linea: Linea) => {
   const disponibles = productos.filter((p) => p.linea === linea && !p.agotado);
   const lista = disponibles.length > 0 ? disponibles : productos.filter((p) => p.linea === linea).slice(0, 1);
@@ -26,29 +26,37 @@ const candidatasDe = (linea: Linea) => {
 };
 ---
 
-<nav class="accesos" aria-label="Líneas" style={`--secundarios: ${accesos.length - 1}`}>
-  {
-    accesos.map(({ linea, texto }, i) => (
-      <a class:list={["acceso", linea, { principal: i === 0 }]} href={`?linea=${linea}#catalogo`} data-acceso-linea={linea}>
-        {candidatasDe(linea).map((foto, j) => (
-          <Picture
-            src={foto}
-            alt=""
-            formats={["avif", "webp"]}
-            widths={[400, 800, 1200]}
-            sizes={i === 0 ? "(min-width: 48rem) 45vw, 100vw" : "(min-width: 48rem) 25vw, 50vw"}
-            class="foto"
-            pictureAttributes={{ class: "marco", "data-candidata": "", hidden: j !== 0 }}
-          />
-        ))}
-        <span class="texto">
-          <span class="nombre">{NOMBRE_LINEA[linea]}</span>
-          <span class="detalle">{texto}</span>
-        </span>
-      </a>
-    ))
-  }
-</nav>
+<section class="accesos" aria-labelledby="accesos-titulo">
+  <h2 id="accesos-titulo" class="titulo" data-entra>Elige tu línea</h2>
+
+  <nav class="banda" aria-labelledby="accesos-titulo">
+    {
+      accesos.map(({ linea, texto }, i) => (
+        <a class:list={["acceso", linea]} href={`?linea=${linea}#catalogo`} data-acceso-linea={linea} data-entra style={`--crece: ${[5, 3, 2][i] ?? 2}`}>
+          {candidatasDe(linea).map((foto, j) => (
+            <Picture
+              src={foto}
+              alt=""
+              formats={["avif", "webp"]}
+              widths={[400, 800, 1200]}
+              sizes={i === 0 ? "(min-width: 48rem) 50vw, 100vw" : "(min-width: 48rem) 30vw, 60vw"}
+              class="foto"
+              pictureAttributes={{ class: "marco", "data-candidata": "", hidden: j !== 0 }}
+            />
+          ))}
+          <span class="texto">
+            <span class="nombre">{NOMBRE_LINEA[linea]}</span>
+            <span class="detalle">
+              {texto} · {resumen.porLinea[linea]}
+            </span>
+          </span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <p class="nota" data-entra>Beauty, con perfumes y cremas, está en la colección.</p>
+</section>
 
 <!--
   Foto al azar en cada visita. Corre en línea, justo después del HTML de los accesos y antes
@@ -64,33 +72,42 @@ const candidatasDe = (linea: Linea) => {
 </script>
 
 <style>
-  /* Móvil: Sport a todo el ancho y el resto de a dos por fila.
-     Si el último queda solo en su fila, ocupa todo el ancho en formato apaisado. */
   .accesos {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--espacio-2);
-    padding: var(--espacio-4) var(--espacio-2) 0;
+    gap: var(--espacio-3);
+    padding-top: var(--espacio-seccion);
+  }
+
+  .titulo,
+  .nota {
+    padding-inline: var(--margen);
+  }
+
+  .titulo {
+    font-size: var(--texto-titulo);
+  }
+
+  /* Móvil: Sport arriba a todo el ancho; Casual y Bolsos debajo, en anchos desiguales. */
+  .banda {
+    display: grid;
+    grid-template-columns: 64fr 36fr;
+    grid-template-rows: 1.2fr 1fr;
+    height: 84svh;
+    min-height: 32rem;
   }
 
   .acceso {
     position: relative;
     display: grid;
-    overflow: hidden;
-    border-radius: var(--radio);
+    overflow: clip;
     background: var(--color-superficie);
+    color: var(--color-texto);
     text-decoration: none;
     isolation: isolate;
-    aspect-ratio: 4 / 5;
   }
 
-  .principal {
+  .sport {
     grid-column: 1 / -1;
-  }
-
-  .acceso:not(.principal):last-child:nth-child(even) {
-    grid-column: 1 / -1;
-    aspect-ratio: 2 / 1;
   }
 
   .marco {
@@ -103,66 +120,129 @@ const candidatasDe = (linea: Linea) => {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: scale 900ms var(--ease-soft);
   }
 
+  /* El nombre va arriba a la izquierda, sobre una sombra neutra que solo cubre esa esquina. */
   .texto {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-self: start;
+    justify-self: start;
+    display: grid;
     gap: 0.25rem;
-    padding: var(--espacio-2);
-    background: linear-gradient(to top, color-mix(in srgb, var(--color-fondo) 85%, transparent), transparent 60%);
+    margin: var(--espacio-2);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radio);
+    background: rgb(0 0 0 / 0.42);
   }
 
   .nombre {
     font-family: var(--fuente-titulos);
-    font-weight: 600;
-    font-size: var(--texto-subtitulo);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .principal .nombre {
     font-size: var(--texto-titulo);
-  }
-
-  .sport .nombre {
-    color: var(--color-salvia);
-  }
-
-  .casual .nombre {
-    color: var(--color-lavanda);
-  }
-
-  .bolsos .nombre {
-    color: var(--color-texto);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
   .detalle {
     font-size: var(--texto-pequeno);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .acceso:hover .foto {
-      transform: scale(1.03);
-    }
+  .nota {
+    color: var(--color-texto-suave);
   }
 
-  /* Escritorio: todos en una fila; Sport ocupa el doble. */
+  /* Escritorio: una sola banda de borde a borde; al pasar el cursor, el panel se abre. */
   @media (min-width: 48rem) {
-    .accesos {
-      grid-template-columns: 2fr repeat(var(--secundarios), 1fr);
-      align-items: end;
-      padding-inline: var(--espacio-3);
+    .titulo {
+      padding-left: calc(var(--margen) + (100% - 2 * var(--margen)) / 6);
     }
 
-    .principal,
-    .acceso:not(.principal):last-child:nth-child(even) {
-      grid-column: auto;
-      aspect-ratio: 4 / 5;
+    .banda {
+      display: flex;
+      height: 68svh;
+      min-height: 28rem;
     }
+
+    .acceso {
+      flex: var(--crece) 1 0;
+      min-width: 0;
+      /* Se suman las transiciones de entrada (global.css) para no pisarlas. */
+      transition:
+        flex-grow 500ms var(--ease-in-out),
+        opacity 700ms var(--ease-out) var(--retraso, 0ms),
+        transform 900ms var(--ease-expo) var(--retraso, 0ms);
+    }
+
+    .nombre {
+      font-size: var(--texto-titulo);
+    }
+  }
+
+  @media (min-width: 48rem) and (hover: hover) and (pointer: fine) {
+    .banda:hover .acceso:hover {
+      flex-grow: 6;
+    }
+
+    .acceso:hover .foto {
+      scale: 1.05;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .acceso,
+    .foto {
+      transition: none;
+    }
+  }
+
+  /* Movimiento ligado al scroll (pensado para el celular, donde no hay cursor):
+     al bajar, cada foto se aleja un poco y el nombre entra desde la izquierda. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .acceso {
+        view-timeline: --panel block;
+      }
+
+      .marco {
+        animation-name: alejar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --panel;
+        animation-range: entry 0% cover 60%;
+      }
+
+      .texto {
+        animation-name: deslizar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --panel;
+        animation-range: entry 20% entry 100%;
+      }
+    }
+  }
+
+  @keyframes alejar {
+    from {
+      transform: scale(1.25) translateY(6%);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes deslizar {
+    from {
+      opacity: 0;
+      translate: -2.5rem 0;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* Al tocar un panel en el celular, la foto responde. */
+  .acceso:active .foto {
+    scale: 1.04;
   }
 </style>

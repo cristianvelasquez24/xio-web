@@ -44,24 +44,31 @@ import { FILTROS } from "../scripts/filtros-estado";
   .chip {
     flex: none;
     min-height: 2.75rem;
-    padding: 0 0.875rem;
-    border: 1px solid var(--color-texto-suave);
+    padding: 0 1.125rem;
+    border: 0;
     border-radius: var(--radio-chip);
-    background: transparent;
-    font-size: var(--texto-pequeno);
+    background: var(--color-superficie);
+    font-size: var(--texto-base);
     font-weight: 500;
-    letter-spacing: 0.04em;
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+      background-color var(--t-hover) ease,
+      color var(--t-hover) ease,
+      transform var(--t-press) var(--ease-out);
   }
 
-  .chip:hover {
-    border-color: var(--color-texto);
+  .chip:active {
+    transform: scale(0.94);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .chip:hover {
+      background: color-mix(in srgb, var(--color-superficie), var(--color-texto) 14%);
+    }
   }
 
   .chip[aria-pressed="true"] {
     background: var(--color-salvia);
-    border-color: var(--color-salvia);
     color: var(--color-sobre-acento);
   }
 
