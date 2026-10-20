@@ -115,18 +115,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-esqueleto-adidas",
-    "nombre": "Vestido esqueleto adidas negro",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 200000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-esqueleto-adidas.jpeg",
-    "agotado": false
-  },
-  {
     "id": "sudadera-gris-adidas",
     "nombre": "Sudadera adidas gris sport",
     "genero": "mujer",
@@ -172,18 +160,6 @@
       "M"
     ],
     "imagen": "falda-adidas-azul.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-celeste-nike",
-    "nombre": "Camiseta Nike celeste",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 130000,
-    "tallas": [
-      "L"
-    ],
-    "imagen": "camiseta-celeste-nike.jpg",
     "agotado": false
   },
   {
@@ -289,18 +265,6 @@
       "M"
     ],
     "imagen": "sudarera-amarilla-puma.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-amarilla-puma",
-    "nombre": "Camiseta Puma amarilla",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 110000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-amarilla-puma.jpg",
     "agotado": false
   },
   {
@@ -559,30 +523,6 @@
       "S"
     ],
     "imagen": "short-fucsia-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "short-negro-under-armour",
-    "nombre": "Short deportivo Under Armour negro",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 70000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "short-negro-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-azul-under-armour",
-    "nombre": "Camiseta Under Armour azul",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 90000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-azul-under-armour.jpg",
     "agotado": false
   },
   {
