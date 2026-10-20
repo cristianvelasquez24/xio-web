@@ -16,12 +16,12 @@
   /* Tipografía */
   --fuente-titulos: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
   --fuente-base: "Inter Variable", "Inter", system-ui, sans-serif;
-  --texto-display: clamp(4.5rem, 22vw, 11rem);
-  --texto-titulo: clamp(2rem, 8vw, 4rem);
-  --texto-titulo-medio: clamp(1.75rem, 3vw, 2.5rem);
-  --texto-subtitulo: clamp(1.25rem, 4vw, 1.75rem);
+  /* Cuatro tamaños hacen todo el trabajo: el monumento, los títulos, el texto y las notas. */
+  --texto-display: clamp(3.75rem, 14vw, 13.5rem);
+  --texto-titulo: clamp(1.5rem, 2.5vw, 2.25rem);
   --texto-base: 1rem;
   --texto-pequeno: 0.8125rem;
+  --tracking-display: -0.05em;
 
   /* Forma y espacio */
   --radio: 12px;
@@ -30,6 +30,10 @@
   --espacio-2: 1rem;
   --espacio-3: 2rem;
   --espacio-4: 4rem;
+  --espacio-seccion: clamp(6rem, 12vw, 10rem);
+  --margen: clamp(1rem, 2vw, 1.5rem);
+  --separacion-mosaico: 0.5rem;
+  --borde-foto: 0.5rem; /* marco tipo foto impresa */
 
   /* Estados */
   --opacidad-agotado: 0.4;

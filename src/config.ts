@@ -12,6 +12,10 @@ export const config = {
   lemaPortada: null as string | null,
 
   portada: {
-    alt: "Mujer caminando con bolsas de compras de marcas",
+    alt: "Mujer con gorra, top y sudadera rosados y bolso pequeño, echándose perfume",
+    /** Frase que acompaña a la marca en la portada: dice qué es XIO. */
+    frase: "Ropa deportiva y casual de marca, para mujer y hombre.",
+    /** Marcas que se nombran en la portada. Mantener al día con el catálogo. */
+    marcas: ["Under Armour", "adidas", "Nike", "Tommy Hilfiger", "Victoria's Secret"],
   },
 };

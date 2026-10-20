@@ -6,12 +6,14 @@ import TarjetaProducto from "./TarjetaProducto.astro";
 ---
 
 <section id="catalogo" class="catalogo" aria-labelledby="catalogo-titulo">
-  <div class="cabecera">
+  <div class="cabecera" data-entra>
     <h2 id="catalogo-titulo">Colección</h2>
     <p class="contador" data-contador aria-live="polite">{productos.length} prendas</p>
   </div>
 
-  <Filtros />
+  <div data-entra>
+    <Filtros />
+  </div>
 
   <div class="grid">
     {productos.map((producto) => <TarjetaProducto producto={producto} />)}
@@ -28,30 +30,34 @@ import TarjetaProducto from "./TarjetaProducto.astro";
 <script>
   import "../scripts/filtros";
   import "../scripts/galeria";
+  import "../scripts/abrir-producto";
 </script>
 
 <style>
   .catalogo {
     display: grid;
     gap: var(--espacio-3);
-    padding: var(--espacio-4) var(--espacio-2);
+    padding: var(--espacio-seccion) var(--margen);
     padding-bottom: calc(var(--espacio-4) + env(safe-area-inset-bottom, 0px));
     scroll-margin-top: var(--espacio-2);
   }
 
   .cabecera {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: var(--espacio-2);
+    gap: var(--espacio-1) var(--espacio-2);
   }
 
   h2 {
-    font-size: var(--texto-titulo);
+    font-size: var(--texto-display);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: var(--tracking-display);
   }
 
   .contador {
-    font-size: var(--texto-pequeno);
+    font-size: var(--texto-base);
     color: var(--color-texto-suave);
     white-space: nowrap;
   }
@@ -85,10 +91,6 @@ import TarjetaProducto from "./TarjetaProducto.astro";
   }
 
   @media (min-width: 48rem) {
-    .catalogo {
-      padding-inline: var(--espacio-3);
-    }
-
     .grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--espacio-4) var(--espacio-3);
@@ -98,6 +100,28 @@ import TarjetaProducto from "./TarjetaProducto.astro";
   @media (min-width: 72rem) {
     .grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* El título entra deslizándose con el scroll. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      h2 {
+        animation-name: titulo-entra;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  @keyframes titulo-entra {
+    from {
+      translate: -30% 0;
+    }
+    to {
+      translate: 0 0;
     }
   }
 </style>

@@ -115,18 +115,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-esqueleto-adidas",
-    "nombre": "Vestido esqueleto adidas negro",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 200000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-esqueleto-adidas.jpeg",
-    "agotado": false
-  },
-  {
     "id": "sudadera-gris-adidas",
     "nombre": "Sudadera adidas gris sport",
     "genero": "mujer",
@@ -139,18 +127,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-marron-adidas",
-    "nombre": "Camiseta adidas marrón",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 90000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "camiseta-marron-adidas.jpg",
-    "agotado": false
-  },
-  {
     "id": "camiseta-rosa-under-armour",
     "nombre": "Camiseta Under Armour rosada",
     "genero": "mujer",
@@ -159,7 +135,7 @@
     "tallas": [
       "XS"
     ],
-    "imagen": "camiseta-rosa-under-armour.jpeg",
+    "imagen": "camiseta-rosa-under-armour.png",
     "agotado": false
   },
   {
@@ -175,18 +151,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-celeste-nike",
-    "nombre": "Camiseta Nike celeste",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 130000,
-    "tallas": [
-      "L"
-    ],
-    "imagen": "camiseta-celeste-nike.jpg",
-    "agotado": false
-  },
-  {
     "id": "falda-adidas",
     "nombre": "Falda adidas blanca",
     "genero": "mujer",
@@ -199,22 +163,12 @@
     "agotado": false
   },
   {
-    "id": "licra-corta-negra-under",
-    "nombre": "Licra corta Under Armour negra",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": null,
-    "tallas": [],
-    "imagen": "licra-corta-negra-under.jpg",
-    "agotado": false
-  },
-  {
     "id": "licra-corta-rosa-under-armour",
     "nombre": "Licra corta Under Armour rosada",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
-    "tallas": [],
+    "precio": 105000,
+    "tallas": ["M"],
     "imagen": "licra-corta-rosa-under-armour.jpg",
     "agotado": false
   },
@@ -223,9 +177,9 @@
     "nombre": "Licra media Under Armour fucsia",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 105000,
     "tallas": [
-      "S/M"
+      "M"
     ],
     "imagen": "licra-fucsia-media-under-armour.webp",
     "agotado": false
@@ -235,9 +189,9 @@
     "nombre": "Licra media Under Armour negra",
     "genero": "mujer",
     "linea": "sport",
-    "precio": null,
+    "precio": 120000,
     "tallas": [
-      "S/M"
+      "M"
     ],
     "imagen": "licra-media-negra-under-armour.webp",
     "agotado": false
@@ -292,23 +246,11 @@
     "agotado": false
   },
   {
-    "id": "camiseta-amarilla-puma",
-    "nombre": "Camiseta Puma amarilla",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 110000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-amarilla-puma.jpg",
-    "agotado": false
-  },
-  {
     "id": "pantalon-largo-rosa-victoria",
     "nombre": "Conjunto Pijama calvin klein rosado pijama",
     "genero": "mujer",
     "linea": "casual",
-    "precio": null,
+    "precio": 220000,
     "tallas": [
       "S"
     ],
@@ -496,9 +438,21 @@
     "linea": "sport",
     "precio": 120000,
     "tallas": [
-      "37"
+      "XS"
     ],
     "imagen": "blusa-deportiva-rosa-under.jpeg",
+    "agotado": false
+  },
+   {
+    "id": "camiseta-adidas-marron-animal",
+    "nombre": "Camiseta Adidas Marron Animal",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 100000,
+    "tallas": [
+      "M"
+    ],
+    "imagen": "camiseta-adidas-marron-animal.jpg",
     "agotado": false
   },
   {
@@ -559,30 +513,6 @@
       "S"
     ],
     "imagen": "short-fucsia-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "short-negro-under-armour",
-    "nombre": "Short deportivo Under Armour negro",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 70000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "short-negro-under-armour.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-azul-under-armour",
-    "nombre": "Camiseta Under Armour azul",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 90000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "camiseta-azul-under-armour.jpg",
     "agotado": false
   },
   {
@@ -706,18 +636,6 @@
     "agotado": false
   },
   {
-    "id": "conjunto-encaje-nude",
-    "nombre": "Conjunto de encaje nude (top y culotte)",
-    "genero": "mujer",
-    "linea": "casual",
-    "precio": 150000,
-    "tallas": [
-      "S"
-    ],
-    "imagen": "conjunto-encaje-nude.jpg",
-    "agotado": false
-  },
-  {
     "id": "conjunto-encaje-rojo",
     "nombre": "Conjunto de encaje rojo (top y culotte)",
     "genero": "mujer",
@@ -727,6 +645,18 @@
       "S"
     ],
     "imagen": "conjunto-encaje-rojo.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "conjunto-encaje-beige",
+    "nombre": "Conjunto de encaje nude (top y culotte)",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": [
+      "S"
+    ],
+    "imagen": "conjunto-encaje-beige.jpg",
     "agotado": false
   },
   {

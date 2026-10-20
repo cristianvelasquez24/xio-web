@@ -1,40 +1,239 @@
 ---
+/**
+ * Portada en mosaico: la marca enorme corre de lado a lado en una banda, debajo las líneas,
+ * la foto de portada con la frase que dice qué es XIO, una prenda destacada, las marcas
+ * y una columna de bloques de color con las cifras del catálogo y el botón principal.
+ */
 import { Picture } from "astro:assets";
-import foto from "../assets/portada.jpg";
+import foto from "../assets/portada.png";
 import { config } from "../config";
+import { altProducto, NOMBRE_LINEA, productos, resumen, type Linea } from "../lib/productos";
 import Logo from "./Logo.astro";
+
+const lineas: Linea[] = ["sport", "casual", "bolsos", "beauty"];
+const destacada = productos.find((p) => p.destacado && !p.agotado) ?? productos.find((p) => !p.agotado) ?? productos[0];
+
+const cifras = [
+  { valor: resumen.total, texto: "prendas" },
+  { valor: resumen.mujer, texto: "para mujer" },
+  { valor: resumen.hombre, texto: "para hombre" },
+  { valor: resumen.unaTalla, texto: "en una sola talla" },
+];
+
+/** Copias de la marca en la banda: suficientes para cubrir el ancho de una pantalla grande. */
+const COPIAS = 3;
 ---
 
 <header class="portada">
-  <Picture
-    src={foto}
-    alt={config.portada.alt}
-    formats={["avif", "webp"]}
-    widths={[400, 800, 1200, 1600]}
-    sizes="(min-width: 60rem) 50vw, 100vw"
-    loading="eager"
-    fetchpriority="high"
-    class="foto"
-    pictureAttributes={{ class: "marco" }}
-  />
-  <div class="texto">
-    <Logo tamano="grande" etiqueta="h1" />
-    {config.lemaPortada && <p class="lema">{config.lemaPortada}</p>}
-    <a class="bajar" href="#catalogo">Ver colección</a>
+  <div class="banda marquee">
+    <div class="pista">
+      {
+        [0, 1].map((mitad) => (
+          <div class="mitad" aria-hidden={mitad === 1 ? "true" : undefined}>
+            {Array.from({ length: COPIAS }, (_, i) =>
+              mitad === 0 && i === 0 ? (
+                <Logo tamano="monumento" etiqueta="h1" />
+              ) : (
+                <Logo tamano="monumento" etiqueta="span" decorativo />
+              ),
+            )}
+          </div>
+        ))
+      }
+    </div>
   </div>
+
+  <nav class="enlaces" aria-label="Ir a una línea">
+    {
+      lineas.map((linea, i) => (
+        <a class="enlace" href={`?linea=${linea}#catalogo`} data-acceso-linea={linea} data-carga style={`--d: ${120 + i * 60}ms`}>
+          <span>{NOMBRE_LINEA[linea]}</span>
+          <span class="cuenta">{resumen.porLinea[linea]}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="principal" data-carga-foto>
+    <Picture
+      src={foto}
+      alt={config.portada.alt}
+      formats={["avif", "webp"]}
+      widths={[400, 800, 1200, 1600]}
+      sizes="(min-width: 60rem) 66vw, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="foto"
+      pictureAttributes={{ class: "foto-marco" }}
+    />
+  </div>
+
+  <div class="frase" data-carga style="--d: 420ms">
+    <p>{config.portada.frase}</p>
+    {config.lemaPortada && <p class="lema">{config.lemaPortada}</p>}
+  </div>
+
+  <a class="retrato" href={`#producto-${destacada.id}`} data-abrir-producto={destacada.id} data-carga style="--d: 300ms">
+    <Picture
+      src={destacada.fotos[0]}
+      alt={altProducto(destacada)}
+      formats={["avif", "webp"]}
+      widths={[400, 800]}
+      sizes="(min-width: 60rem) 16vw, 1px"
+      class="foto"
+      pictureAttributes={{ class: "foto-marco" }}
+    />
+    <span class="pie">{destacada.nombre}</span>
+  </a>
+
+  <div class="marcas" data-carga style="--d: 360ms">
+    <p class="rotulo">Marcas</p>
+    <ul>
+      {config.portada.marcas.map((m) => <li>{m}</li>)}
+    </ul>
+  </div>
+
+  <ul class="cifras">
+    {
+      cifras.map((c, i) => (
+        <li class="cifra" data-carga style={`--d: ${360 + i * 70}ms`}>
+          <span class="valor">{c.valor}</span>
+          <span>{c.texto}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a class="accion" href="#catalogo" data-carga style="--d: 640ms">
+    <span>Ver la colección</span>
+    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+      <path d="M12 4v16M5 13l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+    </svg>
+  </a>
 </header>
 
 <style>
+  /* ---------- Móvil: los bloques se apilan ---------- */
   .portada {
-    position: relative;
     display: grid;
-    min-height: 100svh;
-    overflow: hidden;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--separacion-mosaico);
+    padding: var(--margen);
+    padding-top: calc(var(--margen) + env(safe-area-inset-top, 0px));
   }
 
-  .marco,
-  .texto {
-    grid-area: 1 / 1;
+  .banda,
+  .enlace,
+  .principal,
+  .frase,
+  .retrato,
+  .marcas,
+  .cifra,
+  .accion {
+    border-radius: var(--radio);
+  }
+
+  /* Banda con la marca: corre de lado a lado, recortada por los bordes. */
+  .banda {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-block: 0.5rem 0.75rem;
+    background: var(--color-superficie);
+  }
+
+  .pista {
+    display: flex;
+    flex: none;
+  }
+
+  .mitad {
+    display: flex;
+    flex: none;
+  }
+
+  .mitad > :global(*) {
+    padding-right: 0.4em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pista {
+      animation: correr 28s linear infinite;
+    }
+
+    .banda:hover .pista {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes correr {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Líneas */
+  .enlaces {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--separacion-mosaico);
+  }
+
+  .enlace {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 4rem;
+    padding: var(--espacio-2);
+    background: var(--color-superficie);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+  }
+
+  .enlace:active {
+    transform: scale(0.97);
+  }
+
+  .cuenta {
+    color: var(--color-texto-suave);
+    font-family: var(--fuente-base);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .enlace:hover {
+      background: var(--color-texto);
+      color: var(--color-sobre-acento);
+    }
+
+    .enlace:hover .cuenta {
+      color: inherit;
+    }
+  }
+
+  /* Foto principal: de cuerpo entero (4:5). En el celular se ve completa, sin recortes. */
+  .principal {
+    grid-column: 1 / -1;
+    overflow: clip;
+    aspect-ratio: 4 / 5;
+    background: var(--color-superficie);
+  }
+
+  /* Tablet: misma proporción, pero sin pasar de una pantalla de alto. */
+  @media (min-width: 30rem) and (max-width: 59.99rem) {
+    .principal {
+      justify-self: center;
+      width: min(100%, 72svh * 4 / 5);
+    }
+  }
+
+  .foto-marco {
+    height: 100%;
   }
 
   .foto {
@@ -43,48 +242,313 @@ import Logo from "./Logo.astro";
     object-fit: cover;
   }
 
-  .texto {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: var(--espacio-3);
-    padding: var(--espacio-3) var(--espacio-2);
-    padding-bottom: calc(var(--espacio-4) + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(to top, var(--color-fondo) 8%, transparent 65%);
+  .frase {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--espacio-1);
+    padding: var(--espacio-2) var(--espacio-2) var(--espacio-3);
+    background: var(--color-fondo);
+  }
+
+  .frase p:first-child {
+    max-width: 22ch;
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 
   .lema {
-    max-width: 28ch;
     color: var(--color-texto-suave);
   }
 
-  .bajar {
-    font-size: var(--texto-pequeno);
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding-bottom: 0.25em;
-    border-bottom: 1px solid var(--color-salvia);
+  /* Prenda destacada: solo en escritorio. */
+  .retrato {
+    display: none;
   }
 
-  /* Escritorio: marca a la izquierda, foto vertical a la derecha. */
+  .marcas {
+    grid-column: 1 / -1;
+    padding: var(--espacio-2);
+    background: var(--color-superficie);
+  }
+
+  .rotulo {
+    color: var(--color-texto-suave);
+    font-size: var(--texto-pequeno);
+  }
+
+  .marcas ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-weight: 500;
+  }
+
+  /* Cifras en bloques de color, de claro a oscuro. */
+  .cifras {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--separacion-mosaico);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cifra {
+    display: grid;
+    align-content: start;
+    gap: 0.25rem;
+    padding: var(--espacio-2);
+    color: var(--color-sobre-acento);
+  }
+
+  .cifra:nth-child(1) {
+    background: var(--color-texto);
+  }
+
+  .cifra:nth-child(2) {
+    background: var(--color-arena);
+  }
+
+  .cifra:nth-child(3) {
+    background: var(--color-lavanda);
+  }
+
+  .cifra:nth-child(4) {
+    background: var(--color-superficie);
+    color: var(--color-texto);
+  }
+
+  .valor {
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Botón principal: el bloque en salvia. */
+  .accion {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 4rem;
+    padding: var(--espacio-2);
+    background: var(--color-salvia);
+    color: var(--color-sobre-acento);
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+  }
+
+  .accion:active {
+    transform: scale(0.98);
+  }
+
+  .accion svg {
+    transition: transform var(--t-ui) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .accion:hover {
+      background: var(--color-texto);
+    }
+
+    .accion:hover svg {
+      transform: translateY(4px);
+    }
+  }
+
+  /* Móvil: la marca, qué es, la foto y el botón caben en la primera pantalla. */
+  .banda {
+    grid-row: 1;
+  }
+  .frase {
+    grid-row: 2;
+  }
+  .principal {
+    grid-row: 3;
+  }
+  .accion {
+    grid-row: 4;
+  }
+  .enlaces {
+    grid-row: 5;
+  }
+
+  /* ---------- Escritorio: mosaico de una pantalla ---------- */
   @media (min-width: 60rem) {
     .portada {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: auto auto repeat(5, minmax(0, 1fr));
+      height: 100svh;
+      min-height: 40rem;
     }
 
-    .marco {
-      grid-area: 1 / 2;
+    .banda {
+      grid-row: 1;
     }
 
-    .texto {
-      grid-area: 1 / 1;
-      justify-content: center;
-      padding: var(--espacio-4);
-      background: none;
+    .enlaces {
+      grid-row: 2;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* La foto de portada es vertical: ocupa el centro, alta, para que se vea entera la escena. */
+    .principal {
+      grid-column: 5 / 11;
+      grid-row: 3 / 8;
+      aspect-ratio: auto;
+    }
+
+    /* En el mosaico la foto queda más ancha que alta: se encuadra hacia la cara y el perfume. */
+    .principal .foto {
+      object-position: 50% 28%;
+    }
+
+    .frase {
+      grid-column: 1 / 5;
+      grid-row: 3 / 5;
+      align-content: end;
+      padding: var(--espacio-3);
+      background: var(--color-superficie);
+    }
+
+    .retrato {
+      grid-column: 3 / 5;
+      grid-row: 5 / 8;
+      position: relative;
+      display: block;
+      overflow: clip;
+      background: var(--color-superficie);
+      text-decoration: none;
+    }
+
+    .retrato .foto {
+      transition: transform 600ms var(--ease-soft);
+    }
+
+    .pie {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: var(--espacio-1) 0.75rem;
+      background: var(--color-fondo);
+      font-size: var(--texto-pequeno);
+      line-height: 1.3;
+    }
+
+    .marcas {
+      grid-column: 1 / 3;
+      grid-row: 5 / 8;
+      align-content: end;
+      display: grid;
+    }
+
+    .marcas ul {
+      flex-direction: column;
+    }
+
+    .cifras {
+      grid-column: 11 / 13;
+      grid-row: 3 / 7;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+    }
+
+    .accion {
+      grid-column: 11 / 13;
+      grid-row: 7;
+      align-items: flex-end;
+      font-size: var(--texto-base);
+    }
+  }
+
+  @media (min-width: 60rem) and (hover: hover) and (pointer: fine) {
+    .retrato:hover .foto {
+      transform: scale(1.04);
+    }
+  }
+
+  /* ---------- Llegada: todo listo en 1,2 s ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .portada [data-carga] {
+      opacity: 0;
+      transform: translateY(1rem);
+      animation: llegar 600ms var(--ease-out) forwards;
+      animation-delay: var(--d, 0ms);
+    }
+
+    :global(.js) .portada [data-carga-foto] {
+      clip-path: inset(0 0 100% 0 round var(--radio));
+      animation: abrir 1000ms var(--ease-in-out) 150ms forwards;
+    }
+
+    :global(.js) .portada [data-carga-foto] .foto {
+      scale: 1.12;
+      animation: asentar 1400ms var(--ease-expo) 100ms forwards;
+    }
+
+    .banda {
+      animation: aparecer 500ms ease-out both;
+    }
+  }
+
+  /* Al bajar, la foto se desliza un poco dentro de su marco. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .principal .foto-marco {
+        animation-name: deriva;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: cover 40% cover 100%;
+      }
+    }
+  }
+
+  @keyframes llegar {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes abrir {
+    to {
+      clip-path: inset(0 0 0 0 round var(--radio));
+    }
+  }
+
+  @keyframes asentar {
+    to {
+      scale: 1;
+    }
+  }
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Empieza con la foto completa y se acerca un poco mientras la portada sale de pantalla. */
+  @keyframes deriva {
+    from {
+      transform: none;
+    }
+    to {
+      transform: scale(1.08);
     }
   }
 </style>

@@ -1,25 +1,27 @@
 ---
 /**
  * Logotipo tipográfico. Para cambiarlo por una imagen, reemplazar solo este componente.
+ * - "normal": marca con el descriptor debajo, en pequeño.
+ * - "monumento": marca al tamaño display con el descriptor en línea, para la banda de la portada.
  */
 interface Props {
-  tamano?: "grande" | "normal";
-  etiqueta?: "h1" | "p";
+  tamano?: "monumento" | "normal";
+  etiqueta?: "h1" | "p" | "span";
+  /** Copias decorativas (la banda de la portada repite la marca). */
+  decorativo?: boolean;
 }
 
-const { tamano = "normal", etiqueta: Etiqueta = "p" } = Astro.props;
+const { tamano = "normal", etiqueta: Etiqueta = "p", decorativo = false } = Astro.props;
 ---
 
-<Etiqueta class:list={["logo", tamano]}>
-  <span class="marca">XIO</span>
-  <span class="descriptor">Active Wear</span>
+<Etiqueta class:list={["logo", tamano]} aria-hidden={decorativo ? "true" : undefined}>
+  <span class="marca">Active Wear</span>
+  <span class="descriptor">Xio</span>
 </Etiqueta>
 
 <style>
   .logo {
     display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
     margin: 0;
     font-family: var(--fuente-titulos);
     line-height: 1;
@@ -27,27 +29,47 @@ const { tamano = "normal", etiqueta: Etiqueta = "p" } = Astro.props;
 
   .marca {
     font-weight: 700;
-    letter-spacing: -0.04em;
-    font-size: var(--texto-titulo);
+    letter-spacing: var(--tracking-display);
   }
 
   .descriptor {
-    margin-top: var(--espacio-1);
     font-family: var(--fuente-base);
-    font-size: var(--texto-pequeno);
     font-weight: 500;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
     color: var(--color-salvia);
   }
 
-  .grande .marca {
-    font-size: var(--texto-display);
-    line-height: 0.85;
+  .normal {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .grande .descriptor {
-    margin-top: var(--espacio-2);
-    padding-left: 0.2em;
+  .normal .marca {
+    font-size: var(--texto-titulo);
+  }
+
+  .normal .descriptor {
+    margin-top: 0.25rem;
+    font-size: var(--texto-pequeno);
+  }
+
+  /* La marca enorme y el descriptor al pie de sus letras, en la misma línea. */
+  .monumento {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.35em;
+    line-height: 0.82;
+    white-space: nowrap;
+  }
+
+  .monumento .marca {
+    font-size: var(--texto-display);
+    line-height: 0.82;
+  }
+
+  .monumento .descriptor {
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-titulo);
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 </style>

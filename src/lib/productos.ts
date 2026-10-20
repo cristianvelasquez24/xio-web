@@ -116,6 +116,15 @@ function peso(p: Producto): number {
 
 export const productos: Producto[] = cargar().sort((a, b) => peso(a) - peso(b));
 
+/** Cifras del catálogo para la portada y el cierre. Las unisex cuentan para mujer y para hombre. */
+export const resumen = {
+  total: productos.length,
+  mujer: productos.filter((p) => p.genero !== "hombre").length,
+  hombre: productos.filter((p) => p.genero !== "mujer").length,
+  unaTalla: productos.filter((p) => p.tallas.length === 1).length,
+  porLinea: Object.fromEntries(LINEAS.map((l) => [l, productos.filter((p) => p.linea === l).length])) as Record<Linea, number>,
+};
+
 export function altProducto(p: Producto): string {
   return `${p.nombre}, línea ${NOMBRE_LINEA[p.linea]}`;
 }
