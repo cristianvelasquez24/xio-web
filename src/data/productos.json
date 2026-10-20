@@ -127,18 +127,6 @@
     "agotado": false
   },
   {
-    "id": "camiseta-marron-adidas",
-    "nombre": "Camiseta adidas marrón",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 90000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "camiseta-marron-adidas.jpg",
-    "agotado": false
-  },
-  {
     "id": "camiseta-rosa-under-armour",
     "nombre": "Camiseta Under Armour rosada",
     "genero": "mujer",
@@ -147,7 +135,7 @@
     "tallas": [
       "XS"
     ],
-    "imagen": "camiseta-rosa-under-armour.jpeg",
+    "imagen": "camiseta-rosa-under-armour.png",
     "agotado": false
   },
   {
@@ -450,9 +438,21 @@
     "linea": "sport",
     "precio": 120000,
     "tallas": [
-      "37"
+      "XS"
     ],
     "imagen": "blusa-deportiva-rosa-under.jpeg",
+    "agotado": false
+  },
+   {
+    "id": "camiseta-adidas-marron-animal",
+    "nombre": "Camiseta Adidas Marron Animal",
+    "genero": "mujer",
+    "linea": "casual",
+    "precio": 100000,
+    "tallas": [
+      "M"
+    ],
+    "imagen": "camiseta-adidas-marron-animal.jpg",
     "agotado": false
   },
   {
