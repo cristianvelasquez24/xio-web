@@ -1,6 +1,6 @@
 ---
 /**
- * Portada en mosaico: la marca enorme corre de lado a lado en una banda, debajo las líneas,
+ * Portada en mosaico: la marca enorme, fija, en una banda; debajo las líneas,
  * la foto de portada con la frase que dice qué es XIO, una prenda destacada, las marcas
  * y una columna de bloques de color con las cifras del catálogo y el botón principal.
  */
@@ -20,27 +20,25 @@ const cifras = [
   { valor: resumen.unaTalla, texto: "en una sola talla" },
 ];
 
-/** Copias de la marca en la banda: suficientes para cubrir el ancho de una pantalla grande. */
-const COPIAS = 3;
+/** Fotos candidatas por bloque; el navegador elige una al azar y las demás nunca se descargan. */
+const MAX_CANDIDATAS = 6;
+const disponibles = productos.filter((p) => !p.agotado && p !== destacada);
+
+// Fondo del bloque de la frase (solo escritorio): una prenda de Sport.
+const fondosFrase = disponibles.filter((p) => p.linea === "sport").slice(0, MAX_CANDIDATAS);
+
+// Cada marca muestra una de sus prendas: se reconocen por la primera palabra de la marca
+// en el nombre o el id ("Victoria's Secret" → "victoria").
+const marcas = config.portada.marcas.map((nombre) => {
+  const clave = nombre.toLowerCase().split(/[\s']/)[0];
+  const prendas = disponibles.filter((p) => `${p.nombre} ${p.id}`.toLowerCase().includes(clave)).slice(0, MAX_CANDIDATAS);
+  return { nombre, prendas };
+});
 ---
 
 <header class="portada">
-  <div class="banda marquee">
-    <div class="pista">
-      {
-        [0, 1].map((mitad) => (
-          <div class="mitad" aria-hidden={mitad === 1 ? "true" : undefined}>
-            {Array.from({ length: COPIAS }, (_, i) =>
-              mitad === 0 && i === 0 ? (
-                <Logo tamano="monumento" etiqueta="h1" />
-              ) : (
-                <Logo tamano="monumento" etiqueta="span" decorativo />
-              ),
-            )}
-          </div>
-        ))
-      }
-    </div>
+  <div class="banda">
+    <span class="mascara"><Logo tamano="monumento" etiqueta="h1" /></span>
   </div>
 
   <nav class="enlaces" aria-label="Ir a una línea">
@@ -69,6 +67,21 @@ const COPIAS = 3;
   </div>
 
   <div class="frase" data-carga style="--d: 420ms">
+    <div class="frase-fondo" data-azar aria-hidden="true">
+      {
+        fondosFrase.map((p, j) => (
+          <Picture
+            src={p.fotos[0]}
+            alt=""
+            formats={["avif", "webp"]}
+            widths={[400, 800]}
+            sizes="(min-width: 60rem) 33vw, 1px"
+            class="foto"
+            pictureAttributes={{ class: "foto-marco", "data-candidata": "", hidden: j !== 0 }}
+          />
+        ))
+      }
+    </div>
     <p>{config.portada.frase}</p>
     {config.lemaPortada && <p class="lema">{config.lemaPortada}</p>}
   </div>
@@ -89,7 +102,35 @@ const COPIAS = 3;
   <div class="marcas" data-carga style="--d: 360ms">
     <p class="rotulo">Marcas</p>
     <ul>
-      {config.portada.marcas.map((m) => <li>{m}</li>)}
+      {
+        marcas.map(({ nombre, prendas }) => (
+          <li>
+            {prendas.length > 0 ? (
+              <a class="marca" href={`#producto-${prendas[0].id}`} data-abrir-producto={prendas[0].id} data-azar>
+                <span class="miniatura">
+                  {prendas.map((p, j) => (
+                    <Picture
+                      src={p.fotos[0]}
+                      alt={altProducto(p)}
+                      formats={["avif", "webp"]}
+                      widths={[200, 400]}
+                      sizes="(min-width: 60rem) 3rem, 28vw"
+                      class="foto"
+                      pictureAttributes={{ class: "foto-marco", "data-candidata": "", "data-id": p.id, hidden: j !== 0 }}
+                    />
+                  ))}
+                </span>
+                <span class="nombre-marca">{nombre}</span>
+              </a>
+            ) : (
+              <span class="marca">
+                <span class="miniatura" />
+                <span class="nombre-marca">{nombre}</span>
+              </span>
+            )}
+          </li>
+        ))
+      }
     </ul>
   </div>
 
@@ -112,6 +153,24 @@ const COPIAS = 3;
   </a>
 </header>
 
+<!--
+  Foto al azar en cada visita para el fondo de la frase y cada marca. Corre en línea, antes de que
+  se vean: las fotos son diferidas y las ocultas nunca se descargan. El enlace de cada marca
+  apunta a la prenda elegida. Sin JavaScript se ve la primera candidata.
+-->
+<script is:inline>
+  for (const bloque of document.querySelectorAll(".portada [data-azar]")) {
+    const fotos = bloque.querySelectorAll("[data-candidata]");
+    const elegida = Math.floor(Math.random() * fotos.length);
+    fotos.forEach((foto, i) => (foto.hidden = i !== elegida));
+    const id = fotos[elegida]?.dataset.id;
+    if (id && bloque.dataset.abrirProducto) {
+      bloque.dataset.abrirProducto = id;
+      bloque.href = `#producto-${id}`;
+    }
+  }
+</script>
+
 <style>
   /* ---------- Móvil: los bloques se apilan ---------- */
   .portada {
@@ -133,44 +192,32 @@ const COPIAS = 3;
     border-radius: var(--radio);
   }
 
-  /* Banda con la marca: corre de lado a lado, recortada por los bordes. */
+  /* Banda con la marca, fija. El tamaño se ajusta al ancho para que quepa en una línea
+     en el celular sin cortarse. */
   .banda {
     grid-column: 1 / -1;
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding-block: 0.5rem 0.75rem;
+    padding: 0.75rem var(--espacio-2) 1rem;
     background: var(--color-superficie);
   }
 
-  .pista {
-    display: flex;
-    flex: none;
+  .mascara {
+    display: block;
+    overflow: clip;
+    padding-bottom: 0.08em;
   }
 
-  .mitad {
-    display: flex;
-    flex: none;
+  /* "Active Wear" mide unas 6 veces su tamaño de letra: se reparte el ancho libre de la banda. */
+  .banda {
+    --tamano-marca: min((100vw - 4.5rem) / 6.2, 11rem);
   }
 
-  .mitad > :global(*) {
-    padding-right: 0.4em;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .pista {
-      animation: correr 28s linear infinite;
-    }
-
-    .banda:hover .pista {
-      animation-play-state: paused;
-    }
-  }
-
-  @keyframes correr {
-    to {
-      transform: translateX(-50%);
-    }
+  /* El descriptor va al pie de la marca, sin restarle ancho en pantallas angostas. */
+  .banda :global(.logo) {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
   }
 
   /* Líneas */
@@ -226,7 +273,8 @@ const COPIAS = 3;
 
   /* Tablet: misma proporción, pero sin pasar de una pantalla de alto. */
   @media (min-width: 30rem) and (max-width: 59.99rem) {
-    .principal {
+    .principal,
+    .frase {
       justify-self: center;
       width: min(100%, 72svh * 4 / 5);
     }
@@ -242,15 +290,25 @@ const COPIAS = 3;
     object-fit: cover;
   }
 
+  /* Móvil: la frase va sobre el pie de la foto principal, sobre una sombra del color de fondo
+     que la hace legible. Así la foto y lo que dice XIO se ven juntos en la primera pantalla. */
   .frase {
     grid-column: 1 / -1;
+    align-self: end;
+    z-index: 1;
     display: grid;
     gap: var(--espacio-1);
-    padding: var(--espacio-2) var(--espacio-2) var(--espacio-3);
-    background: var(--color-fondo);
+    padding: var(--espacio-4) var(--espacio-2) var(--espacio-2);
+    border-radius: 0 0 var(--radio) var(--radio);
+    background: linear-gradient(to top, var(--color-fondo) 35%, transparent);
   }
 
-  .frase p:first-child {
+  /* El fondo con foto es solo para el bloque de escritorio. */
+  .frase-fondo {
+    display: none;
+  }
+
+  .frase > p:first-of-type {
     max-width: 22ch;
     font-family: var(--fuente-titulos);
     font-size: var(--texto-titulo);
@@ -279,14 +337,53 @@ const COPIAS = 3;
     font-size: var(--texto-pequeno);
   }
 
+  /* Móvil: una fila de tarjetas que se desliza de lado, cada una con una prenda de la marca. */
   .marcas ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1rem;
-    margin: 0.5rem 0 0;
-    padding: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 28vw;
+    gap: var(--separacion-mosaico);
+    margin: 0.75rem calc(var(--espacio-2) * -1) 0;
+    padding: 0 var(--espacio-2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--espacio-2);
+    scrollbar-width: none;
     list-style: none;
     font-weight: 500;
+  }
+
+  .marcas li {
+    scroll-snap-align: start;
+  }
+
+  .marca {
+    display: grid;
+    gap: 0.4rem;
+    text-decoration: none;
+  }
+
+  .miniatura {
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: clip;
+    border-radius: calc(var(--radio) * 0.75);
+    background: var(--color-fondo);
+  }
+
+  .nombre-marca {
+    font-size: var(--texto-pequeno);
+    line-height: 1.25;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .miniatura .foto {
+      transition: scale 600ms var(--ease-soft);
+    }
+
+    .marca:hover .miniatura .foto {
+      scale: 1.08;
+    }
   }
 
   /* Cifras en bloques de color, de claro a oscuro. */
@@ -370,21 +467,19 @@ const COPIAS = 3;
     }
   }
 
-  /* Móvil: la marca, qué es, la foto y el botón caben en la primera pantalla. */
+  /* Móvil: la marca, la foto con lo que dice XIO y el botón caben en la primera pantalla. */
   .banda {
     grid-row: 1;
   }
+  .principal,
   .frase {
     grid-row: 2;
   }
-  .principal {
+  .accion {
     grid-row: 3;
   }
-  .accion {
-    grid-row: 4;
-  }
   .enlaces {
-    grid-row: 5;
+    grid-row: 4;
   }
 
   /* ---------- Escritorio: mosaico de una pantalla ---------- */
@@ -417,12 +512,43 @@ const COPIAS = 3;
       object-position: 50% 28%;
     }
 
+    /* Escritorio: bloque propio con una prenda de Sport de fondo, a la derecha; la sombra
+       del color de la superficie deja la frase legible a la izquierda. */
     .frase {
       grid-column: 1 / 5;
       grid-row: 3 / 5;
+      align-self: stretch;
       align-content: end;
-      padding: var(--espacio-3);
+      position: relative;
+      isolation: isolate;
+      overflow: clip;
+      padding: clamp(var(--espacio-2), 2vw, var(--espacio-3));
+      border-radius: var(--radio);
       background: var(--color-superficie);
+    }
+
+    /* La frase ocupa la mitad izquierda y la foto la derecha: nunca se montan. */
+    .frase > p:first-of-type {
+      max-width: 55%;
+      font-size: clamp(1.125rem, 1.6vw, 1.75rem);
+    }
+
+    .frase-fondo {
+      position: absolute;
+      inset: 0 0 0 55%;
+      z-index: -1;
+      display: block;
+    }
+
+    .frase-fondo .foto {
+      object-position: 50% 20%;
+    }
+
+    .frase-fondo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--color-superficie), transparent 30%);
     }
 
     .retrato {
@@ -455,8 +581,28 @@ const COPIAS = 3;
       display: grid;
     }
 
+    /* Escritorio: lista vertical, cada marca con su prenda en miniatura redonda. */
     .marcas ul {
-      flex-direction: column;
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .marca {
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .miniatura {
+      aspect-ratio: 1;
+      border-radius: 50%;
+    }
+
+    .nombre-marca {
+      font-size: var(--texto-base);
     }
 
     .cifras {
@@ -502,6 +648,11 @@ const COPIAS = 3;
     .banda {
       animation: aparecer 500ms ease-out both;
     }
+
+    /* La marca sube una sola vez desde detrás de su máscara y se queda quieta. */
+    .mascara > :global(*) {
+      animation: emerger 900ms var(--ease-expo) 80ms both;
+    }
   }
 
   /* Al bajar, la foto se desliza un poco dentro de su marco. */
@@ -533,6 +684,12 @@ const COPIAS = 3;
   @keyframes asentar {
     to {
       scale: 1;
+    }
+  }
+
+  @keyframes emerger {
+    from {
+      transform: translateY(105%);
     }
   }
 

@@ -1,0 +1,50 @@
+---
+/**
+ * Cursor acompañante (inspirado en la plantilla Nino): un aro que sigue al mouse con un leve
+ * retraso y se agranda sobre lo que se puede tocar. Solo con mouse y sin movimiento reducido;
+ * el cursor del sistema se mantiene. En el celular no existe.
+ */
+---
+
+<div class="aro" data-cursor aria-hidden="true"></div>
+
+<script>
+  import "../scripts/cursor";
+</script>
+
+<style>
+  .aro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: -1.25rem 0 0 -1.25rem;
+    border: 1.5px solid var(--color-texto-suave);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity var(--t-ui) ease,
+      scale 300ms var(--ease-out),
+      background-color 300ms ease,
+      border-color 300ms ease;
+  }
+
+  .aro.visible {
+    opacity: 1;
+  }
+
+  /* Sobre algo que se toca: crece y se rellena suave en salvia (el borde sigue visible
+     sobre fondos claros, como el botón principal). */
+  .aro.sobre {
+    scale: 1.8;
+    border-color: var(--color-salvia);
+    background: color-mix(in srgb, var(--color-salvia) 25%, transparent);
+  }
+
+  .aro.presionado {
+    scale: 0.8;
+  }
+</style>

@@ -1,0 +1,258 @@
+---
+/**
+ * Apertura de la colección (inspirada en la portada de Elena Voss): una foto llena la pantalla
+ * y, al bajar, se encoge hasta el centro de un mosaico mientras las demás prendas aparecen
+ * alrededor. Todo con animaciones ligadas al scroll, sin JavaScript.
+ * Donde el navegador no las soporta (o con movimiento reducido) es un mosaico normal.
+ *
+ * El mosaico es de 5 × 3 en escritorio (casillas casi cuadradas para fotos verticales)
+ * y de 3 × 3 en el celular, donde las columnas de los bordes no se muestran ni se descargan.
+ */
+import { Picture } from "astro:assets";
+import { altProducto, LINEAS, productos, resumen, NOMBRE_LINEA } from "../lib/productos";
+
+const COLUMNAS = 5;
+const FILAS = 3;
+const CASILLAS = COLUMNAS * FILAS;
+/** La casilla del medio es la que llena la pantalla. */
+const CENTRO = Math.floor(CASILLAS / 2);
+const columna = (i: number) => i % COLUMNAS;
+const fila = (i: number) => Math.floor(i / COLUMNAS);
+/** Distancia al centro, en casillas: las más lejanas llegan después. */
+const anillo = (i: number) => Math.max(Math.abs(columna(i) - (COLUMNAS - 1) / 2), Math.abs(fila(i) - (FILAS - 1) / 2));
+
+// Una prenda de cada línea por turnos, para que el mosaico muestre de todo.
+const disponibles = productos.filter((p) => !p.agotado);
+const porLinea = LINEAS.map((l) => disponibles.filter((p) => p.linea === l));
+const turnos: typeof productos = [];
+for (let ronda = 0; turnos.length < CASILLAS && porLinea.some((g) => g.length > ronda); ronda++) {
+  porLinea.forEach((g) => g[ronda] && turnos.length < CASILLAS && turnos.push(g[ronda]));
+}
+// La protagonista (de Sport) va al centro.
+const protagonista = turnos.find((p) => p.linea === "sport") ?? turnos[0];
+const resto = turnos.filter((p) => p !== protagonista);
+const casillas = [...resto.slice(0, CENTRO), protagonista, ...resto.slice(CENTRO)];
+---
+
+<section class="apertura" aria-labelledby="apertura-titulo">
+  <div class="escenario">
+    <div class="mosaico">
+      {
+        casillas.map((p, i) => (
+          <a
+            class:list={["casilla", { centro: p === protagonista, borde: columna(i) === 0 || columna(i) === COLUMNAS - 1 }]}
+            href={`#producto-${p.id}`}
+            data-abrir-producto={p.id}
+            style={`--anillo: ${anillo(i)}`}
+          >
+            <Picture
+              src={p.fotos[0]}
+              alt={altProducto(p)}
+              formats={["avif", "webp"]}
+              widths={p === protagonista ? [400, 800, 1200, 1600] : [400, 800]}
+              sizes={p === protagonista ? "100vw" : "(min-width: 60rem) 20vw, 34vw"}
+              class="foto"
+              pictureAttributes={{ class: "marco" }}
+            />
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="titular">
+      <h2 id="apertura-titulo">
+        {resumen.total} prendas.
+      </h2>
+      <p>{LINEAS.map((l) => NOMBRE_LINEA[l]).join(" · ")}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Sin animación: un mosaico normal con el titular encima ---------- */
+  .apertura {
+    padding: var(--espacio-seccion) var(--margen) 0;
+  }
+
+  .escenario {
+    display: grid;
+    gap: var(--espacio-2);
+  }
+
+  .titular {
+    grid-row: 1;
+    display: grid;
+    gap: var(--espacio-1);
+  }
+
+  h2 {
+    font-size: var(--texto-display);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: var(--tracking-display);
+  }
+
+  .titular p {
+    color: var(--color-texto-suave);
+  }
+
+  .mosaico {
+    /* Cuánto se agranda la casilla del centro para cubrir la pantalla (ver `encoger`). */
+    --escala-inicial: 3.6;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--separacion-mosaico);
+  }
+
+  .casilla.borde {
+    display: none;
+  }
+
+  @media (min-width: 60rem) {
+    .mosaico {
+      --escala-inicial: 5.6;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .casilla.borde {
+      display: block;
+    }
+  }
+
+  .casilla {
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: clip;
+    border-radius: var(--radio);
+    background: var(--color-superficie);
+  }
+
+  .marco {
+    height: 100%;
+  }
+
+  .foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .foto {
+      transition: scale 600ms var(--ease-soft);
+    }
+
+    .casilla:hover .foto {
+      scale: 1.05;
+    }
+  }
+
+  /* ---------- Con animación ligada al scroll ---------- */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* El recorrido largo da tiempo a la animación; el escenario queda fijo mientras tanto. */
+      .apertura {
+        height: 260svh;
+        padding: 0;
+        margin-top: var(--espacio-seccion);
+        view-timeline: --apertura block;
+      }
+
+      .escenario {
+        position: sticky;
+        top: 0;
+        display: block;
+        height: 100svh;
+        overflow: clip;
+      }
+
+      .mosaico {
+        height: 100%;
+        padding: var(--margen);
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+
+      .casilla {
+        aspect-ratio: auto;
+        animation-name: llegar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --apertura;
+        /* Las del anillo de afuera llegan un poco después. */
+        animation-range: contain calc(8% + var(--anillo) * 6%) contain 62%;
+      }
+
+      /* La del centro empieza cubriendo toda la pantalla: se agranda de más en el lado corto
+         y el escenario recorta lo que sobra. */
+      .casilla.centro {
+        position: relative;
+        z-index: 1;
+        animation-name: encoger;
+        animation-range: contain 0% contain 60%;
+      }
+
+      .centro::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, var(--color-fondo), transparent 70%);
+        animation-name: aclarar;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --apertura;
+        animation-range: contain 0% contain 30%;
+      }
+
+      /* El titular va sobre la foto grande y se despide mientras se encoge. */
+      .titular {
+        position: absolute;
+        z-index: 2;
+        inset: auto var(--margen) calc(var(--margen) * 2);
+        animation-name: despedir;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --apertura;
+        animation-range: contain 0% contain 28%;
+        pointer-events: none;
+      }
+
+      .titular p {
+        color: var(--color-texto);
+      }
+    }
+  }
+
+  @keyframes encoger {
+    from {
+      transform: scale(var(--escala-inicial));
+      border-radius: 0;
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes llegar {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes aclarar {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes despedir {
+    to {
+      opacity: 0;
+      transform: translateY(-3rem);
+    }
+  }
+</style>
