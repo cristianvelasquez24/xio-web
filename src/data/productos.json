@@ -354,6 +354,18 @@
     "agotado": false
   },
   {
+    "id": "pantaloneta-verde-adidas",
+    "nombre": "Pantaloneta verde adidas",
+    "genero": "hombre",
+    "linea": "sport",
+    "precio": 130000,
+    "tallas": [
+      "L"
+    ],
+    "imagen": "pantaloneta-verde-adidas.jpg",
+    "agotado": false
+  },
+  {
     "id": "crema-biscott-delight-victoria",
     "nombre": "Crema PINK Biscott Delight",
     "genero": "mujer",
@@ -548,7 +560,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "bralette-negro-victoria.jpg",
+    "imagen": "bralette-negro-victoria.jpeg",
     "agotado": false
   },
   {
@@ -560,7 +572,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "bralettes-algodon-cafe-negro.jpg",
+    "imagen": "bralettes-algodon-cafe-negro.jpeg",
     "agotado": false
   },
   {
@@ -608,7 +620,7 @@
     "tallas": [
       "L"
     ],
-    "imagen": "polo-verde-tommy.jpg",
+    "imagen": "polo-verde-tommy.png",
     "agotado": false
   },
   {
