@@ -1,0 +1,426 @@
+---
+/**
+ * V2 · "Mira el look.": pasarela horizontal de modelos de cuerpo entero (fotos recortadas).
+ * El look del centro se ve nítido y los de los lados se achican y desenfocan.
+ * Debajo, la ficha del look activo: la prenda y dos piezas para combinarla
+ * (un bolso y algo de la órbita: tenis, sandalias o Beauty). Todo abre el detalle; no hay compra.
+ */
+import { Picture } from "astro:assets";
+import { altProducto, NOMBRE_GENERO, NOMBRE_LINEA } from "../../lib/productos";
+import { contador, precioV2, v2, type PiezaV2 } from "../../lib/v2";
+
+const bolsos = v2.orbita.filter((p) => p.linea === "bolsos");
+const otros = v2.orbita.filter((p) => p.linea !== "bolsos");
+
+const looks = v2.looks.map((prenda, i) => ({
+  prenda,
+  piezas: [prenda, bolsos[i % bolsos.length], otros[i % otros.length]].filter(Boolean) as PiezaV2[],
+}));
+---
+
+<section class="looks" aria-labelledby="looks-titulo" data-looks>
+  <div class="cabecera" data-entra>
+    <h2 id="looks-titulo">Mira el look.</h2>
+    <p>{looks.length} looks de pies a cabeza. Desliza y toca el punto para ver la prenda.</p>
+  </div>
+
+  <ul class="pasarela" data-pasarela aria-label="Looks. Desliza para ver más.">
+    {
+      looks.map(({ prenda }, i) => (
+        <li class="look" data-look style={`--i: ${i}`}>
+          <a class="modelo" href={`#producto-${prenda.id}`} data-abrir-producto={prenda.id} tabindex="-1">
+            <Picture
+              src={prenda.recorte}
+              alt={altProducto(prenda)}
+              formats={["avif", "webp"]}
+              widths={[320, 640, 960]}
+              sizes="(min-width: 60rem) 22rem, 60vw"
+              loading={i < 3 ? "eager" : "lazy"}
+            />
+          </a>
+          <a class="punto" href={`#producto-${prenda.id}`} data-abrir-producto={prenda.id} aria-label={`Ver ${prenda.nombre}`}>
+            <span>1</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="progreso" aria-hidden="true"><span data-progreso></span></div>
+
+  <div class="fichas">
+    {
+      looks.map(({ prenda, piezas }, i) => (
+        <article class="ficha" data-ficha hidden={i !== 0} aria-label={`Look ${i + 1}`}>
+          <header>
+            <h3>
+              Look {String(i + 1).padStart(2, "0")}
+              <span>
+                {NOMBRE_LINEA[prenda.linea]} · {NOMBRE_GENERO[prenda.genero]}
+              </span>
+            </h3>
+            <p class="cuenta">{contador(i, looks.length)}</p>
+          </header>
+          <ul class="piezas">
+            {piezas.map((p, j) => {
+              const precio = precioV2(p);
+              return (
+                <li>
+                  <a class="pieza" href={`#producto-${p.id}`} data-abrir-producto={p.id}>
+                    <span class="miniatura">
+                      <Picture src={p.recorte} alt="" formats={["avif", "webp"]} widths={[120, 240]} sizes="4.5rem" />
+                      <span class="numero">{j + 1}</span>
+                    </span>
+                    <span class="datos">
+                      <span class="linea">{j === 0 ? "En el look" : "Combínalo con"}</span>
+                      <span class="nombre">{p.nombre}</span>
+                      {precio && <span class="precio">{precio}</span>}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <a class="boton-tinta" href={`#producto-${prenda.id}`} data-abrir-producto={prenda.id}>
+            Ver la prenda del look
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  import "../../scripts/v2/looks";
+</script>
+
+<style>
+  .looks {
+    --ancho-look: clamp(11rem, 50vw, 22rem);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-2);
+    padding: var(--espacio-4) 0 var(--espacio-3);
+    background: var(--color-fondo);
+  }
+
+  .cabecera {
+    display: grid;
+    gap: var(--espacio-1);
+    padding: 0 var(--margen);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 7vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .cabecera p {
+    max-width: 28rem;
+    color: var(--color-texto-suave);
+    font-size: var(--texto-pequeno);
+  }
+
+  /* ---------- Pasarela ---------- */
+  .pasarela {
+    display: flex;
+    margin: 0;
+    /* Los looks vecinos se montan un poco sobre el del centro. */
+    gap: calc(var(--ancho-look) * -0.08);
+    padding: var(--espacio-2) calc(50% - var(--ancho-look) / 2) var(--espacio-2);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .pasarela::-webkit-scrollbar {
+    display: none;
+  }
+
+  .look {
+    --d: 1; /* distancia al centro, en looks: la calcula looks.ts */
+
+    position: relative;
+    z-index: calc(10 - var(--d) * 4);
+    flex: 0 0 var(--ancho-look);
+    height: clamp(22rem, 58svh, 36rem);
+    scroll-snap-align: center;
+  }
+
+  .modelo {
+    display: block;
+    height: 100%;
+    transform: scale(calc(1 - min(var(--d), 1.5) * 0.2));
+    transform-origin: 50% 100%;
+    opacity: calc(1 - min(var(--d), 1.5) * 0.35);
+    filter: blur(calc(min(var(--d), 1.5) * 3px));
+  }
+
+  /* Sombra en el piso. */
+  .modelo::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: -0.4rem;
+    left: 20%;
+    right: 20%;
+    height: 1rem;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(0 0 0 / 0.18), transparent);
+  }
+
+  .modelo :global(picture),
+  .modelo :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .modelo :global(img) {
+    object-fit: contain;
+    object-position: 50% 100%;
+  }
+
+  /* Punto sobre la prenda: solo en el look del centro. */
+  .punto {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -1.375rem 0 0 -1.375rem;
+    text-decoration: none;
+    opacity: calc(1 - min(var(--d), 1) * 2);
+    pointer-events: none;
+  }
+
+  .look.activo .punto {
+    pointer-events: auto;
+  }
+
+  .punto span {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--v2-etiqueta);
+    box-shadow: 0 0.2rem 0.6rem rgb(0 0 0 / 0.2);
+    color: var(--color-texto);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .punto span {
+      animation: latido 2.4s var(--ease-in-out) infinite;
+    }
+
+    @keyframes latido {
+      0%,
+      100% {
+        box-shadow: 0 0.2rem 0.6rem rgb(0 0 0 / 0.2), 0 0 0 0 color-mix(in srgb, var(--v2-etiqueta) 80%, transparent);
+      }
+      50% {
+        box-shadow: 0 0.2rem 0.6rem rgb(0 0 0 / 0.2), 0 0 0 0.6rem transparent;
+      }
+    }
+  }
+
+  .progreso {
+    position: relative;
+    justify-self: center;
+    width: 8rem;
+    height: 2px;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--color-texto) 15%, transparent);
+  }
+
+  .progreso span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--ancho, 20%);
+    border-radius: 1px;
+    background: var(--color-texto);
+    transform: translateX(var(--x, 0%));
+  }
+
+  /* ---------- Ficha del look ---------- */
+  .fichas {
+    padding: var(--espacio-2) var(--margen) 0;
+  }
+
+  .ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-2);
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ficha:not([hidden]) {
+      animation: aparecer 420ms var(--ease-out);
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(0.5rem);
+      }
+    }
+  }
+
+  .ficha header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--espacio-2);
+  }
+
+  h3 {
+    display: grid;
+    gap: 0.3rem;
+    font-size: 1.375rem;
+  }
+
+  h3 span {
+    color: var(--color-texto-suave);
+    font-family: var(--fuente-base);
+    font-size: var(--texto-pequeno);
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .cuenta {
+    color: var(--color-texto-suave);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+  }
+
+  .piezas {
+    display: flex;
+    gap: var(--espacio-1);
+    margin: 0 calc(var(--margen) * -1);
+    padding: 0 var(--margen);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .piezas li {
+    flex: 0 0 min(78%, 17rem);
+    scroll-snap-align: start;
+  }
+
+  .pieza {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    height: 100%;
+    padding: 0.6rem;
+    border-radius: var(--radio);
+    background: var(--color-superficie);
+    text-decoration: none;
+    transition: transform var(--t-press) var(--ease-out);
+  }
+
+  .pieza:active {
+    transform: scale(0.97);
+  }
+
+  .miniatura {
+    position: relative;
+    flex: none;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0.3rem;
+    border-radius: calc(var(--radio) - 0.3rem);
+    background: var(--color-fondo);
+  }
+
+  .miniatura :global(picture),
+  .miniatura :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .miniatura :global(img) {
+    object-fit: contain;
+  }
+
+  .numero {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.35rem;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+    font-size: 0.6875rem;
+    font-weight: 700;
+  }
+
+  .datos {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .linea {
+    color: var(--color-texto-suave);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nombre {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--texto-pequeno);
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .precio {
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+  }
+
+  .boton-tinta {
+    display: grid;
+    place-items: center;
+    min-height: 3.25rem;
+    border-radius: var(--radio);
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform var(--t-press) var(--ease-out);
+  }
+
+  .boton-tinta:active {
+    transform: scale(0.98);
+  }
+
+  @media (min-width: 60rem) {
+    .cabecera {
+      padding-inline: var(--espacio-4);
+    }
+
+    .look {
+      height: min(62svh, 38rem);
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+/**
+ * V2: nueva propuesta de diseño, en paralelo a la página principal.
+ * Base clara con degradado pastel, fotos recortadas sin fondo y tres escenas
+ * (colgador, looks y órbita) antes del catálogo de siempre.
+ * Las secciones se configuran en src/data/v2.json; la paleta, en tokens.css ([data-version="v2"]).
+ */
+import Catalogo from "../components/Catalogo.astro";
+import CabeceraV2 from "../components/v2/CabeceraV2.astro";
+import Colgador from "../components/v2/Colgador.astro";
+import Looks from "../components/v2/Looks.astro";
+import Orbita from "../components/v2/Orbita.astro";
+import Base from "../layouts/Base.astro";
+---
+
+<Base version="v2" titulo="XIO · Active Wear — V2">
+  <CabeceraV2 />
+  <main>
+    <h1 class="visualmente-oculto">XIO · Active Wear</h1>
+    <Colgador />
+    <Looks />
+    <Orbita />
+    <Catalogo />
+  </main>
+</Base>
+
+<script>
+  import "../scripts/entradas";
+</script>
+
+<style is:global>
+  html[data-version="v2"] {
+    color-scheme: light;
+  }
+
+  /* La cabecera es fija: los saltos a una sección (#catalogo) no deben quedar debajo. */
+  html[data-version="v2"] main > section {
+    scroll-margin-top: 3.75rem;
+  }
+</style>

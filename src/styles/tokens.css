@@ -38,3 +38,31 @@
   /* Estados */
   --opacidad-agotado: 0.4;
 }
+
+/*
+ * V2 (página /v2): base clara con degradado pastel, como un estudio de fotos.
+ * Redefine los mismos tokens, así los componentes compartidos (catálogo, detalle)
+ * cambian de tema sin tocarlos.
+ */
+[data-version="v2"] {
+  --color-fondo: #f4f1ec;
+  --color-superficie: #e9e5de;
+  --color-texto: #1d211f;
+  --color-texto-suave: #5a5f5a;  /* 6:1 sobre el fondo */
+  --color-salvia: #7f9479;
+  --color-lavanda: #a99fc0;
+  --color-arena: #cbb796;
+  --color-sobre-acento: #151916;
+
+  /* Degradado del colgador: lavanda → arena → menta. */
+  --v2-degradado-1: #e6def0;
+  --v2-degradado-2: #f1e9df;
+  --v2-degradado-3: #cfe6d6;
+  /* Barra metálica y etiquetas de precio. */
+  --v2-metal-claro: #f6f6f4;
+  --v2-metal-oscuro: #9a9c9a;
+  --v2-etiqueta: #fbf8f2;
+  /* Marca de agua y tinta de los botones oscuros. */
+  --v2-tinta: #151916;
+  --v2-sobre-tinta: #f4f1ec;
+}

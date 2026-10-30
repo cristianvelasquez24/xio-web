@@ -1,0 +1,423 @@
+---
+/**
+ * V2 · Portada "colgador": prendas recortadas colgando de una barra, sobre un degradado pastel.
+ * Se deslizan con el dedo, se mecen como péndulos (al hacer scroll o al pasar por encima),
+ * la primera vez que se tocan giran y la segunda abren el detalle.
+ * Sin JavaScript, cada prenda es un enlace a su tarjeta del catálogo.
+ */
+import { Picture } from "astro:assets";
+import { config } from "../../config";
+import { altProducto, NOMBRE_LINEA } from "../../lib/productos";
+import { contador, precioV2, v2 } from "../../lib/v2";
+
+const piezas = v2.colgador;
+---
+
+<section class="colgador" aria-labelledby="colgador-titulo" data-colgador>
+  <h2 id="colgador-titulo" class="rotulo">
+    <span>Nueva colección</span>
+    <span class="separador" aria-hidden="true"></span>
+    <span class="suave">Colgado en XIO</span>
+  </h2>
+
+  <div class="escena">
+    <div class="barra" aria-hidden="true"></div>
+    <ul class="riel" data-riel aria-label="Prendas colgadas. Desliza para ver más.">
+      {
+        piezas.map((p, i) => {
+          const precio = precioV2(p);
+          return (
+            <li class="pieza" style={`--i: ${i}`}>
+              <a
+                class="percha"
+                href={`#producto-${p.id}`}
+                data-abrir-producto={p.id}
+                data-percha
+                aria-label={`${p.nombre}${precio ? `, ${precio}` : ""}. ${contador(i, piezas.length)}`}
+              >
+                <svg class="gancho" viewBox="0 0 100 64" aria-hidden="true">
+                  <path d="M50 54V32c0-8 11-10 11-19 0-7-5-12-11-12s-11 4-11 10" />
+                  <rect x="12" y="52" width="76" height="8" rx="4" />
+                </svg>
+                <span class="hilo" aria-hidden="true" />
+                <span class="etiqueta" aria-hidden="true">
+                  {precio ?? NOMBRE_LINEA[p.linea]}
+                </span>
+                <span class="prenda">
+                  <Picture
+                    src={p.recorte}
+                    alt={altProducto(p)}
+                    formats={["avif", "webp"]}
+                    widths={[240, 480, 720]}
+                    sizes="(min-width: 60rem) 15rem, 42vw"
+                    loading={i < 4 ? "eager" : "lazy"}
+                    fetchpriority={i < 3 ? "high" : undefined}
+                  />
+                </span>
+                {p.agotado && <span class="agotado">Agotado</span>}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+
+  <div class="pie">
+    <div class="pista">
+      <p><span class="raya" aria-hidden="true"></span>Toca una prenda para girarla · toca otra vez para verla de cerca</p>
+      <div class="progreso" aria-hidden="true"><span data-progreso></span></div>
+    </div>
+    <div class="texto">
+      <p>{config.portada.frase}</p>
+      <a class="ir" href="#catalogo">
+        Ver la colección
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/v2/colgador";
+</script>
+
+<style>
+  .colgador {
+    --ancho-pieza: clamp(8.5rem, 42vw, 15rem);
+    --alto-prenda: clamp(15rem, 50svh, 30rem);
+
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: min(100svh - 3.75rem, 46rem);
+    overflow: hidden;
+    padding-top: var(--espacio-3);
+    background: linear-gradient(165deg, var(--v2-degradado-1) 0%, var(--v2-degradado-2) 48%, var(--v2-degradado-3) 100%);
+  }
+
+  .rotulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 var(--margen);
+    font-family: var(--fuente-base);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .separador {
+    width: 1px;
+    height: 1rem;
+    background: var(--color-texto-suave);
+  }
+
+  .suave {
+    color: var(--color-texto-suave);
+    font-weight: 600;
+  }
+
+  /* ---------- Barra y riel ---------- */
+  .escena {
+    position: relative;
+    align-self: center;
+    padding-top: 2.5rem;
+  }
+
+  /* Barra metálica, fija: las prendas se deslizan por debajo. */
+  .barra {
+    position: absolute;
+    z-index: 0;
+    top: 3.5rem;
+    left: 0;
+    right: 0;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background: linear-gradient(180deg, var(--v2-metal-claro) 0%, var(--v2-metal-oscuro) 55%, var(--v2-metal-claro) 100%);
+    box-shadow: 0 0.35rem 0.8rem rgb(0 0 0 / 0.12);
+    pointer-events: none;
+  }
+
+  /* El riel empieza 1rem por encima de la barra: el scroll horizontal recorta todo lo que sale
+     de la caja, y la curva del gancho tiene que verse sobre la barra. */
+  .riel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: clamp(0.25rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 1rem var(--margen) 2rem;
+    scroll-padding-inline: var(--margen);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .riel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .riel.arrastrando {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .pieza {
+    flex: 0 0 var(--ancho-pieza);
+    scroll-snap-align: start;
+  }
+
+  /* ---------- La prenda colgada ---------- */
+  .percha {
+    position: relative;
+    display: block;
+    /* El gancho se monta sobre la barra: el péndulo gira desde ahí. */
+    margin-top: -0.35rem;
+    transform: rotate(var(--sw, 0deg));
+    transform-origin: 50% 0.4rem;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x pan-y;
+  }
+
+  .gancho {
+    display: block;
+    width: 3.2rem;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  .gancho path {
+    fill: none;
+    stroke: var(--v2-metal-oscuro);
+    stroke-width: 3.2;
+    stroke-linecap: round;
+  }
+
+  .gancho rect {
+    fill: var(--v2-tinta);
+  }
+
+  .hilo {
+    position: absolute;
+    top: 1.9rem;
+    left: 56%;
+    width: 1px;
+    height: 1.4rem;
+    background: var(--v2-metal-oscuro);
+  }
+
+  .etiqueta {
+    position: absolute;
+    z-index: 1;
+    top: 3.2rem;
+    left: 56%;
+    padding: 0.55rem 0.45rem 0.3rem;
+    border-radius: 0.2rem;
+    background: var(--v2-etiqueta);
+    box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 0.14);
+    color: var(--color-texto);
+    font-family: var(--fuente-titulos);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transform: translateX(-30%) rotate(-5deg);
+    transform-origin: 30% 0;
+  }
+
+  /* Ojal de la etiqueta. */
+  .etiqueta::before {
+    content: "";
+    position: absolute;
+    top: 0.18rem;
+    left: 30%;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-radius: 50%;
+    background: var(--v2-metal-oscuro);
+  }
+
+  .prenda {
+    display: block;
+    height: var(--alto-prenda);
+    margin-top: -0.2rem;
+    perspective: 900px;
+  }
+
+  .prenda :global(picture),
+  .prenda :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .prenda :global(img) {
+    object-fit: contain;
+    object-position: 50% 0;
+    filter: drop-shadow(0 1.1rem 1rem rgb(0 0 0 / 0.16));
+    transform-style: preserve-3d;
+  }
+
+  .agotado {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radio-chip);
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+    font-size: var(--texto-pequeno);
+    transform: translateX(-50%);
+  }
+
+  .percha:has(.agotado) .prenda {
+    opacity: var(--opacidad-agotado);
+  }
+
+  /* La prenda elegida (primer toque) se adelanta un poco. */
+  .percha[aria-current="true"] .prenda :global(img) {
+    filter: drop-shadow(0 1.6rem 1.4rem rgb(0 0 0 / 0.24));
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .prenda :global(img) {
+      transition: filter var(--t-ui) ease, transform 500ms var(--ease-out);
+    }
+
+    .percha[aria-current="true"] .prenda :global(img) {
+      transform: scale(1.04);
+    }
+
+    /* Giro: una vuelta completa sobre el eje del gancho. La espalda se ve más oscura. */
+    .percha.girando .prenda :global(img) {
+      animation: girar 1100ms var(--ease-in-out);
+    }
+
+    @keyframes girar {
+      0% {
+        transform: rotateY(0) scale(1);
+      }
+      50% {
+        transform: rotateY(180deg) scale(1.04);
+        filter: drop-shadow(0 1.6rem 1.4rem rgb(0 0 0 / 0.24)) brightness(0.82);
+      }
+      100% {
+        transform: rotateY(360deg) scale(1.04);
+      }
+    }
+
+    /* Al cargar, las prendas bajan a la barra una tras otra. */
+    :global(.js) .pieza {
+      animation: colgar 900ms var(--ease-expo) both;
+      animation-delay: calc(150ms + var(--i) * 70ms);
+    }
+
+    @keyframes colgar {
+      from {
+        opacity: 0;
+        transform: translateY(-2.5rem);
+      }
+    }
+  }
+
+  .percha:focus-visible {
+    outline-offset: -0.5rem;
+  }
+
+  /* ---------- Pie ---------- */
+  .pie {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: var(--espacio-2);
+    padding: 0 var(--margen) var(--espacio-3);
+  }
+
+  .pista {
+    display: grid;
+    gap: var(--espacio-2);
+    color: var(--color-texto-suave);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  .raya {
+    display: inline-block;
+    width: 0.75rem;
+    height: 1px;
+    margin-right: 0.6rem;
+    vertical-align: middle;
+    background: currentColor;
+  }
+
+  .progreso {
+    position: relative;
+    height: 2px;
+    max-width: 8rem;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--color-texto) 18%, transparent);
+  }
+
+  .progreso span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--ancho, 20%);
+    border-radius: 1px;
+    background: var(--color-texto);
+    transform: translateX(var(--x, 0%));
+  }
+
+  .texto {
+    display: grid;
+    justify-items: end;
+    gap: var(--espacio-2);
+    text-align: right;
+  }
+
+  .texto p {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(0.9375rem, 1.6vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .ir {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    border-bottom: 1px solid currentColor;
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  @media (min-width: 60rem) {
+    .colgador {
+      --ancho-pieza: 15rem;
+      --alto-prenda: min(48svh, 28rem);
+    }
+
+    .riel {
+      padding-inline: var(--espacio-4);
+      scroll-snap-type: none;
+    }
+
+    .pie {
+      padding-inline: var(--espacio-4);
+    }
+
+    .pista {
+      max-width: 18rem;
+    }
+  }
+</style>

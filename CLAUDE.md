@@ -74,6 +74,25 @@ Una sola página:
 - El estado de los filtros se refleja en la URL (`?linea=casual&genero=mujer`) para que los accesos
   de la portada lleven al catálogo ya filtrado.
 
+## V2 (página `/v2`, propuesta de diseño en paralelo)
+Rediseño inspirado en una tienda tipo lookbook de estudio. **No reemplaza la página principal**:
+se llega con el botón pequeño "V2" en la banda del título ("Active Wear") de la portada.
+- Base clara con degradado pastel: tokens en `tokens.css` bajo `[data-version="v2"]`
+  (redefine los mismos tokens, así catálogo y detalle se re-tematizan sin tocarlos).
+- Secciones (`src/components/v2/`, scripts en `src/scripts/v2/`):
+  1. **Colgador**: prendas recortadas colgando de una barra, con gancho y etiqueta de precio.
+     Se mecen como péndulos (resorte amortiguado) al deslizar, hacer scroll o pasar el mouse.
+     Primer toque: la prenda gira. Segundo toque: abre el detalle.
+  2. **Mira el look**: pasarela de modelos de cuerpo entero; el del centro nítido, los lados
+     achicados y desenfocados. Ficha con la prenda y dos piezas para combinarla (bolso + órbita).
+  3. **Órbita**: bolsos, tenis y Beauty sobre un arco que se gira con una "rueda".
+  4. El **catálogo** de siempre (mismo componente).
+- Qué prendas van en cada sección: `src/data/v2.json` (por id). Validado en build.
+- Fotos sin fondo en `src/assets/productos_v2/<id>.webp`. Se generan con
+  `scripts/recortar-v2.mjs` (ver cabecera del script; la librería de recorte no va en package.json).
+  Para el colgador sirven fotos de la prenda sola (sin modelo); para los looks, de cuerpo entero.
+- Sin carrito ni acciones de compra, igual que la principal.
+
 ## Esquema de `productos.json`
 ```json
 [
