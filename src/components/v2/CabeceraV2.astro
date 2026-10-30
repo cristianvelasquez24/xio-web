@@ -1,0 +1,76 @@
+---
+/** V2 · Barra superior: la marca, la etiqueta "V2" y el enlace de vuelta a la versión actual. */
+import Logo from "../Logo.astro";
+---
+
+<header class="cabecera">
+  <a class="inicio" href="/v2" aria-label="XIO Active Wear, versión 2">
+    <Logo etiqueta="span" />
+    <span class="v2" aria-hidden="true">V2</span>
+  </a>
+  <a class="volver" href="/">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path d="M20 12H5M10 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    Versión actual
+  </a>
+</header>
+
+<style>
+  .cabecera {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 3.75rem;
+    padding: 0.5rem var(--margen);
+    background: color-mix(in srgb, var(--color-fondo) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .inicio {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .inicio :global(.marca) {
+    font-size: 1.375rem;
+  }
+
+  .inicio :global(.descriptor) {
+    margin-top: 0.1rem;
+    font-size: 0.6875rem;
+  }
+
+  .v2 {
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radio-chip);
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    color: var(--color-texto-suave);
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .volver:hover {
+      color: var(--color-texto);
+    }
+  }
+</style>

@@ -1,0 +1,351 @@
+---
+/**
+ * V2 · Órbita: bolsos, tenis y Beauty recortados, girando sobre un arco.
+ * Se mueve arrastrando la rueda de abajo (o el escenario, o con las flechas del teclado).
+ * Arriba, los datos de la pieza que queda al frente. Tocarla abre el detalle.
+ * Sin JavaScript, las piezas se muestran en una fila con scroll.
+ */
+import { Picture } from "astro:assets";
+import { altProducto, NOMBRE_LINEA } from "../../lib/productos";
+import { contador, precioV2, v2 } from "../../lib/v2";
+
+const piezas = v2.orbita;
+const inicial = Math.min(1, piezas.length - 1);
+---
+
+<section class="orbita" aria-labelledby="orbita-titulo" data-orbita data-inicial={inicial}>
+  <h2 id="orbita-titulo" class="visualmente-oculto">Bolsos, tenis y Beauty</h2>
+
+  <div class="datos">
+    {
+      piezas.map((p, i) => {
+        const precio = precioV2(p);
+        return (
+          <div class="dato" data-dato hidden={i !== inicial}>
+            <p class="cuenta">
+              {contador(i, piezas.length)} · {NOMBRE_LINEA[p.linea]}
+            </p>
+            <h3>{p.nombre}</h3>
+            {precio && <p class="precio">{precio}</p>}
+            <a class="ver" href={`#producto-${p.id}`} data-abrir-producto={p.id}>
+              Ver detalle
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            {p.tallas.length > 0 && (
+              <ul class="tallas" aria-label={p.linea === "beauty" ? "Presentación" : "Tallas"}>
+                {p.tallas.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+            )}
+            {p.agotado && <p class="agotado">Agotado por ahora</p>}
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <div class="escenario" data-escenario>
+    <svg class="arco" aria-hidden="true">
+      <circle cx="0" cy="0" r="1" data-arco></circle>
+    </svg>
+    <ul class="objetos">
+      {
+        piezas.map((p, i) => (
+          <li class="objeto" data-objeto>
+            <a href={`#producto-${p.id}`} data-abrir-producto={p.id} tabindex={i === inicial ? undefined : "-1"}>
+              <Picture
+                src={p.recorte}
+                alt={altProducto(p)}
+                formats={["avif", "webp"]}
+                widths={[240, 480, 720]}
+                sizes="(min-width: 60rem) 20rem, 55vw"
+                loading="lazy"
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="control">
+    <div
+      class="rueda"
+      data-rueda
+      role="slider"
+      tabindex="0"
+      aria-label="Girar la órbita"
+      aria-valuemin="1"
+      aria-valuemax={piezas.length}
+      aria-valuenow={inicial + 1}
+    >
+      <span class="estrias" data-estrias></span>
+    </div>
+    <div class="rotulos" aria-hidden="true">
+      <span>01</span>
+      <span>Arrastra la rueda</span>
+      <span>{String(piezas.length).padStart(2, "0")}</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/v2/orbita";
+</script>
+
+<style>
+  .orbita {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--espacio-2);
+    padding: var(--espacio-4) var(--margen) var(--espacio-3);
+    overflow: hidden;
+    background: var(--color-fondo);
+  }
+
+  /* ---------- Datos de la pieza al frente ---------- */
+  .datos {
+    position: relative;
+    z-index: 2;
+    min-height: 9.5rem;
+  }
+
+  .dato {
+    display: grid;
+    justify-items: start;
+    gap: 0.4rem;
+    max-width: 22rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dato:not([hidden]) {
+      animation: entrar 380ms var(--ease-out);
+    }
+
+    @keyframes entrar {
+      from {
+        opacity: 0;
+        transform: translateX(-0.5rem);
+      }
+    }
+  }
+
+  .cuenta {
+    color: var(--color-texto-suave);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 6vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .precio {
+    font-family: var(--fuente-titulos);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    border-bottom: 1px solid currentColor;
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .tallas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tallas li {
+    min-width: 2.75rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--color-texto) 22%, transparent);
+    border-radius: 0.4rem;
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .agotado {
+    color: var(--color-texto-suave);
+    font-size: var(--texto-pequeno);
+  }
+
+  /* ---------- Escenario ---------- */
+  .escenario {
+    position: relative;
+    height: clamp(20rem, 52svh, 34rem);
+    margin: calc(var(--espacio-3) * -1) calc(var(--margen) * -1) 0;
+    /* Arriba y abajo se recorta (no tapa la rueda); a los lados el arco sale de la pantalla. */
+    overflow: clip;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .escenario.arrastrando {
+    cursor: grabbing;
+  }
+
+  .arco {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .arco circle {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-texto) 22%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .objetos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Sin JS: una fila con scroll. */
+  :global(.no-js) .objetos {
+    display: flex;
+    gap: var(--espacio-2);
+    height: 100%;
+    overflow-x: auto;
+  }
+
+  :global(.no-js) .objeto {
+    flex: 0 0 60%;
+  }
+
+  :global(.js) .objeto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--tam, 12rem);
+    height: var(--tam, 12rem);
+    /* La posición, la escala y la opacidad las pone orbita.ts. */
+    will-change: transform, opacity;
+  }
+
+  .objeto a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .objeto :global(picture),
+  .objeto :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .objeto :global(img) {
+    object-fit: contain;
+    filter: drop-shadow(0 1.2rem 1rem rgb(0 0 0 / 0.18));
+    -webkit-user-drag: none;
+  }
+
+  /* ---------- Rueda ---------- */
+  .control {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+  }
+
+  :global(.no-js) .control {
+    display: none;
+  }
+
+  .rueda {
+    position: relative;
+    width: min(100%, 22rem);
+    height: 2.75rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-texto) 18%, transparent);
+    border-radius: var(--radio-chip);
+    background: var(--color-superficie);
+    cursor: ew-resize;
+    touch-action: none;
+  }
+
+  /* Estrías que ruedan; los bordes se oscurecen como un cilindro. */
+  .estrias {
+    position: absolute;
+    inset: 0.35rem;
+    border-radius: var(--radio-chip);
+    background:
+      linear-gradient(90deg, var(--v2-tinta) 0%, transparent 22%, transparent 78%, var(--v2-tinta) 100%),
+      repeating-linear-gradient(90deg, var(--v2-metal-oscuro) 0 2px, var(--v2-metal-claro) 2px 12px);
+    background-position: 0 0, var(--giro, 0px) 0;
+    opacity: 0.85;
+  }
+
+  .rueda::after {
+    content: "";
+    position: absolute;
+    top: -0.1rem;
+    left: 50%;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--color-salvia);
+    transform: translate(-50%, -0.45rem);
+  }
+
+  .rotulos {
+    display: flex;
+    justify-content: space-between;
+    width: min(100%, 22rem);
+    color: var(--color-texto-suave);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 60rem) {
+    .orbita {
+      grid-template-columns: 22rem 1fr;
+      align-items: center;
+      padding-inline: var(--espacio-4);
+    }
+
+    .datos {
+      grid-row: 1;
+    }
+
+    .escenario {
+      grid-row: 1;
+      height: min(70svh, 38rem);
+      margin: 0;
+    }
+
+    .control {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -39,6 +39,7 @@ const marcas = config.portada.marcas.map((nombre) => {
 <header class="portada">
   <div class="banda">
     <span class="mascara"><Logo tamano="monumento" etiqueta="h1" /></span>
+    <a class="ir-v2" href="/v2" aria-label="Ver la versión 2 del diseño">V2</a>
   </div>
 
   <nav class="enlaces" aria-label="Ir a una línea">
@@ -201,6 +202,50 @@ const marcas = config.portada.marcas.map((nombre) => {
     overflow: hidden;
     padding: 0.75rem var(--espacio-2) 1rem;
     background: var(--color-superficie);
+  }
+
+  /* Acceso a la propuesta de diseño V2 (/v2): pequeño, en la esquina de la banda. */
+  .banda {
+    position: relative;
+  }
+
+  /* Área táctil de 44px; la píldora visible es más pequeña (::before). */
+  .ir-v2 {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0.25rem;
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-salvia);
+    font-family: var(--fuente-titulos);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: color var(--t-hover) ease;
+  }
+
+  .ir-v2::before {
+    content: "";
+    position: absolute;
+    inset: 0.8rem 0.35rem;
+    z-index: -1;
+    border: 1px solid var(--color-salvia);
+    border-radius: var(--radio-chip);
+    transition: background-color var(--t-hover) ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ir-v2:hover {
+      color: var(--color-sobre-acento);
+    }
+
+    .ir-v2:hover::before {
+      background: var(--color-salvia);
+    }
   }
 
   .mascara {
