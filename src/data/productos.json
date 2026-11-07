@@ -182,7 +182,7 @@
     "tallas": [
       "XS"
     ],
-    "imagen": "sudadera-adidas-algodon.jpg",
+    "imagen": "sudadera-adidas-algodon.jpeg",
     "agotado": false
   },
   {
@@ -235,15 +235,15 @@
     "agotado": false
   },
   {
-    "id": "pantalon-pijama-gris-victoria",
-    "nombre": "Short de pijama Victoria's Secret gris",
+    "id": "pijama-blusa-victoria-secret",
+    "nombre": "Blusa Pijama Victoria's Secret",
     "genero": "mujer",
     "linea": "casual",
     "precio": 80000,
     "tallas": [
       "S"
     ],
-    "imagen": "pantalon-pijama-gris-victoria.webp",
+    "imagen": "pijama-blusa-victoria-secret.jpeg",
     "agotado": false
   },
   {
@@ -279,7 +279,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "pantalon-pijama-victoria.jpg",
+    "imagen": "pantalon-pijama-victoria.jpeg",
     "agotado": true
   },
   {
@@ -353,6 +353,16 @@
     "agotado": false
   },
   {
+    "id": "splash-cherry-milkshake",
+    "nombre": "Splash Victoria's Secret cherry milkshake",
+    "genero": "mujer",
+    "linea": "beauty",
+    "precio": 80000,
+    "tallas": [],
+    "imagen": "splash-cherry-milkshake.jpeg",
+    "agotado": false
+  },
+  {
     "id": "splash-pure-seduction-victoria",
     "nombre": "Splash Victoria's Secret Pure Seduction Brûlée",
     "genero": "mujer",
@@ -397,6 +407,30 @@
     "agotado": false
   },
   {
+    "id": "tenis-beige-adidas",
+    "nombre": "Tenis adidas spiritain 2000",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 400000,
+    "tallas": [
+      "42/10.5"
+    ],
+    "imagen": "tenis-beige-adidas.jpg",
+    "agotado": false
+  },
+  {
+    "id": "zapatilla-vl-court-2-azul",
+    "nombre": "Tenis adidas spiritain 2000",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 400000,
+    "tallas": [
+      "42/10.5"
+    ],
+    "imagen": "zapatilla-vl-court-2-azul.jpg",
+    "agotado": false
+  },
+  {
     "id": "tenis-gris-skechers",
     "nombre": "Tenis gris skechers",
     "genero": "mujer",
@@ -429,7 +463,19 @@
     "tallas": [
       "M"
     ],
-    "imagen": "licra-capri-fucsia-under-armour.webp",
+    "imagen": "licra-capri-fucsia-under-armour.jpeg",
+    "agotado": false
+  },
+  {
+    "id": "polo-oversize-rojo-jordan",
+    "nombre": "polo oversize rojo jordan",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 150000,
+    "tallas": [
+      "L"
+    ],
+    "imagen": "polo-oversize-rojo-jordan.jpeg",
     "agotado": false
   },
   {
@@ -501,7 +547,7 @@
     "tallas": [
       "M"
     ],
-    "imagen": "licra-capri-negra-under-armour.webp",
+    "imagen": "licra-capri-negra-under-armour.jpeg",
     "agotado": false
   },
   {
@@ -537,7 +583,7 @@
     "tallas": [
       "S"
     ],
-    "imagen": "bralettes-encaje-negro-rojo.jpg",
+    "imagen": "bralettes-encaje-negro-rojo.jpeg",
     "agotado": false
   },
   {
@@ -697,6 +743,18 @@
     "agotado": false
   },
   {
+    "id": "medias-new-balance-blancas",
+    "nombre": "Medias New Balance (paquete de 3 pares)",
+    "genero": "unisex",
+    "linea": "sport",
+    "precio": 90000,
+    "tallas": [
+      "35-39"
+    ],
+    "imagen": "medias-new-balance-blancas.jpeg",
+    "agotado": false
+  },
+  {
     "id": "sudadera-adidas-dayready-negra",
     "nombre": "Sudadera adidas Dayready negra",
     "genero": "mujer",
@@ -704,6 +762,16 @@
     "precio": 145000,
     "tallas": ["S"],
     "imagen": "sudadera-adidas-dayready-negra.jpg",
+    "agotado": false
+  },
+  {
+    "id": "camiseta-adidas-celeste",
+    "nombre": "Camiseta adidas celeste corazones",
+    "genero": "mujer",
+    "linea": "sport",
+    "precio": 80000,
+    "tallas": ["S Mujer / L Niña"],
+    "imagen": "camiseta-adidas-celeste.png",
     "agotado": false
   }
 ]

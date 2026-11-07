@@ -2,7 +2,7 @@
 import { Picture } from "astro:assets";
 import { config } from "../config";
 import { formatearPrecio } from "../lib/precio";
-import { altProducto, NOMBRE_GENERO, NOMBRE_LINEA, type Producto } from "../lib/productos";
+import { altProducto, NOMBRE_GENERO, NOMBRE_LINEA, tallasFiltro, type Producto } from "../lib/productos";
 
 interface Props {
   producto: Producto;
@@ -24,6 +24,7 @@ const variasFotos = p.fotos.length > 1;
   data-id={p.id}
   data-genero={p.genero}
   data-linea={p.linea}
+  data-tallas={JSON.stringify(tallasFiltro(p))}
   data-detalle={JSON.stringify({
     nombre: p.nombre,
     linea: NOMBRE_LINEA[p.linea],

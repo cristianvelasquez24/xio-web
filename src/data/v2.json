@@ -3,7 +3,6 @@
     "licra-corta-rosa-under-armour",
     "short-azul-marino-under-armour",
     "blusa-deportiva-rosa-under",
-    "pantalon-pijama-gris-victoria",
     "licra-capri-fucsia-under-armour",
     "short-vinotinto-under-armour",
     "bralettes-encaje-negro-rojo",
@@ -17,6 +16,9 @@
   "looks": [
     "polo-golf-blanco-rayas-adidas",
     "bralette-negro-victoria",
+    "sudadera-adidas-algodon",
+    "camiseta-adidas-celeste",
+    "pantalon-largo-rosa-victoria",
     "us-polo-negra",
     "short-pijama-negro-victoria",
     "sudadera-verde-adidad-mujer",
@@ -29,11 +31,14 @@
   ],
   "orbita": [
     "tenis-rosa-new-balance",
-    "splash-love-spell-victoria",
-    "bolso-blanco-polo",
+    "tenis-blanco-new-balance",
+    "tenis-beige-adidas",
     "tenis-gris-skechers",
-    "splash-vanilla-gelato",
+    "zapatilla-vl-court-2-azul",
     "sandalias-adidas",
-    "bolso-blanco-polo-cuadrado"
+    "bolso-blanco-polo",
+    "splash-love-spell-victoria",
+    "splash-vanilla-gelato",
+    "splash-pure-seduction-victoria"
   ]
 }

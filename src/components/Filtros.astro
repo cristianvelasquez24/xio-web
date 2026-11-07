@@ -1,10 +1,21 @@
 ---
-import { FILTROS } from "../scripts/filtros-estado";
+import { tallasCatalogo } from "../lib/productos";
+import { DEFECTO, FILTROS } from "../scripts/filtros-estado";
+
+// La talla se arma con las tallas que existen en el catálogo (sin Beauty).
+const grupos = [
+  ...FILTROS,
+  {
+    clave: "talla",
+    etiqueta: "Talla",
+    opciones: [{ valor: DEFECTO.talla, texto: "Todas las tallas" }, ...tallasCatalogo.map((t) => ({ valor: t, texto: t }))],
+  },
+];
 ---
 
 <div class="filtros">
   {
-    FILTROS.map((filtro) => (
+    grupos.map((filtro) => (
       <div class="grupo" role="group" aria-label={filtro.etiqueta}>
         {filtro.opciones.map((opcion, i) => (
           <button
