@@ -26,18 +26,6 @@
     "destacado": true
   },
   {
-    "id": "polo-golf-verde-adidas",
-    "nombre": "Camisa polo golf adidas verde puntos blancos",
-    "genero": "hombre",
-    "linea": "casual",
-    "precio": 220000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "polo-golf-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
     "id": "polo-rosa-us-polo",
     "nombre": "Camisa polo U.S. Polo Assn. rosada",
     "genero": "mujer",
@@ -60,17 +48,6 @@
     ],
     "imagen": "polo-vestido-tommy.jpg",
     "agotado": false
-  },
-  {
-    "id": "bolso-cuadrado-rosa-guess",
-    "nombre": "Bolso Guess rosado cuadrado",
-    "genero": "mujer",
-    "linea": "bolsos",
-    "precio": 250000,
-    "tallas": [],
-    "imagen": "bolso-cuadrado-rosa-guess.webp",
-    "agotado": false,
-    "destacado": true
   },
   {
     "id": "bolso-rosa-guess-redondo",
@@ -243,7 +220,7 @@
       "M"
     ],
     "imagen": "sudarera-amarilla-puma.jpg",
-    "agotado": false
+    "agotado": true
   },
   {
     "id": "pantalon-largo-rosa-victoria",
@@ -303,7 +280,7 @@
       "S"
     ],
     "imagen": "pantalon-pijama-victoria.jpg",
-    "agotado": false
+    "agotado": true
   },
   {
     "id": "sandalias-adidas",
@@ -363,30 +340,6 @@
       "L"
     ],
     "imagen": "pantaloneta-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "crema-biscott-delight-victoria",
-    "nombre": "Crema PINK Biscott Delight",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-biscott-delight-victoria.jpg",
-    "agotado": false
-  },
-  {
-    "id": "crema-vanilla-dream-victoria",
-    "nombre": "Crema PINK Vanilla Dream",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [
-      "236 ml"
-    ],
-    "imagen": "crema-vanilla-dream-victoria.jpg",
     "agotado": false
   },
   {
@@ -455,18 +408,6 @@
     "imagen": "blusa-deportiva-rosa-under.jpeg",
     "agotado": false
   },
-   {
-    "id": "camiseta-adidas-marron-animal",
-    "nombre": "Camiseta Adidas Marron Animal",
-    "genero": "mujer",
-    "linea": "casual",
-    "precio": 100000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "camiseta-adidas-marron-animal.jpg",
-    "agotado": false
-  },
   {
     "id": "licra-capri-fucsia-under-armour",
     "nombre": "Licra capri Under Armour fucsia",
@@ -476,7 +417,7 @@
     "tallas": [
       "M"
     ],
-    "imagen": "licra-capri-fucsia-under-armour.jpg",
+    "imagen": "licra-capri-fucsia-under-armour.webp",
     "agotado": false
   },
   {
@@ -488,7 +429,7 @@
     "tallas": [
       "M"
     ],
-    "imagen": "licra-capri-coral-under-armour.jpg",
+    "imagen": "licra-capri-coral-under-armour.webp",
     "agotado": false
   },
   {
@@ -609,7 +550,7 @@
       "S"
     ],
     "imagen": "shorts-pijama-victoria-blanco-negro.jpg",
-    "agotado": false
+    "agotado": true
   },
   {
     "id": "polo-verde-tommy",
@@ -751,16 +692,6 @@
     "precio": 145000,
     "tallas": ["S"],
     "imagen": "sudadera-adidas-dayready-negra.jpg",
-    "agotado": false
-  },
-  {
-    "id": "camiseta-verde-agua-under",
-    "nombre": "Camiseta Under Verde Aguamarina",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 95000,
-    "tallas": ["S"],
-    "imagen": "camiseta-verde-agua-under.jpeg",
     "agotado": false
   }
 ]

@@ -5,7 +5,6 @@
  * y una columna de bloques de color con las cifras del catálogo y el botón principal.
  */
 import { Picture } from "astro:assets";
-import foto from "../assets/portada.png";
 import { config } from "../config";
 import { altProducto, NOMBRE_LINEA, productos, resumen, type Linea } from "../lib/productos";
 import Logo from "./Logo.astro";
@@ -19,6 +18,13 @@ const cifras = [
   { valor: resumen.hombre, texto: "para hombre" },
   { valor: resumen.unaTalla, texto: "en una sola talla" },
 ];
+
+// Carrusel de la foto principal: un id mal escrito rompe el build, no la página.
+const carrusel = config.portada.carrusel.map((id) => {
+  const p = productos.find((p) => p.id === id);
+  if (!p) throw new Error(`config.portada.carrusel: "${id}" no está en productos.json`);
+  return p;
+});
 
 /** Fotos candidatas por bloque; el navegador elige una al azar y las demás nunca se descargan. */
 const MAX_CANDIDATAS = 6;
@@ -53,18 +59,22 @@ const marcas = config.portada.marcas.map((nombre) => {
     }
   </nav>
 
-  <div class="principal" data-carga-foto>
-    <Picture
-      src={foto}
-      alt={config.portada.alt}
-      formats={["avif", "webp"]}
-      widths={[400, 800, 1200, 1600]}
-      sizes="(min-width: 60rem) 66vw, 100vw"
-      loading="eager"
-      fetchpriority="high"
-      class="foto"
-      pictureAttributes={{ class: "foto-marco" }}
-    />
+  <div class="principal" data-carga-foto data-carrusel data-intervalo={config.portada.intervaloCarrusel}>
+    {
+      carrusel.map((p, i) => (
+        <Picture
+          src={p.fotos[0]}
+          alt={altProducto(p)}
+          formats={["avif", "webp"]}
+          widths={[400, 800, 1200]}
+          sizes="(min-width: 60rem) 50vw, 100vw"
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchpriority={i === 0 ? "high" : "auto"}
+          class="foto"
+          pictureAttributes={{ class: i === 0 ? "foto-marco activa" : "foto-marco", "aria-hidden": i === 0 ? undefined : "true" }}
+        />
+      ))
+    }
   </div>
 
   <div class="frase" data-carga style="--d: 420ms">
@@ -169,6 +179,45 @@ const marcas = config.portada.marcas.map((nombre) => {
       bloque.dataset.abrirProducto = id;
       bloque.href = `#producto-${id}`;
     }
+  }
+</script>
+
+<!--
+  Carrusel de la foto principal: cambia de prenda cada `intervaloCarrusel` ms con un fundido.
+  Se detiene mientras la portada no se ve o la pestaña está oculta. Sin JavaScript queda la primera.
+-->
+<script>
+  const carrusel = document.querySelector<HTMLElement>(".portada [data-carrusel]");
+  const fotos = carrusel ? [...carrusel.querySelectorAll<HTMLElement>(".foto-marco")] : [];
+
+  if (carrusel && fotos.length > 1) {
+    const intervalo = Number(carrusel.dataset.intervalo) || 2000;
+    let actual = 0;
+    let temporizador: number | undefined;
+    let visible = true;
+
+    const avanzar = () => {
+      fotos[actual].classList.remove("activa");
+      fotos[actual].setAttribute("aria-hidden", "true");
+      actual = (actual + 1) % fotos.length;
+      fotos[actual].classList.add("activa");
+      fotos[actual].removeAttribute("aria-hidden");
+    };
+
+    const actualizar = () => {
+      const correr = visible && !document.hidden;
+      if (correr && temporizador === undefined) temporizador = window.setInterval(avanzar, intervalo);
+      if (!correr && temporizador !== undefined) {
+        clearInterval(temporizador);
+        temporizador = undefined;
+      }
+    };
+
+    new IntersectionObserver(([entrada]) => {
+      visible = entrada.isIntersecting;
+      actualizar();
+    }).observe(carrusel);
+    document.addEventListener("visibilitychange", actualizar);
   }
 </script>
 
@@ -311,9 +360,28 @@ const marcas = config.portada.marcas.map((nombre) => {
   /* Foto principal: de cuerpo entero (4:5). En el celular se ve completa, sin recortes. */
   .principal {
     grid-column: 1 / -1;
+    position: relative;
     overflow: clip;
     aspect-ratio: 4 / 5;
     background: var(--color-superficie);
+  }
+
+  /* Carrusel: las fotos van una sobre otra y solo la activa se ve. */
+  .principal .foto-marco {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 700ms var(--ease-in-out);
+  }
+
+  .principal .foto-marco.activa {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .principal .foto-marco {
+      transition: none;
+    }
   }
 
   /* Tablet: misma proporción, pero sin pasar de una pantalla de alto. */
