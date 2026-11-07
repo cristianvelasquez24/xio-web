@@ -381,7 +381,19 @@
     "tallas": [
       "37"
     ],
-    "imagen": "tenis-rosa-new-balance.jpeg",
+    "imagen": "tenis-rosa-new-balance.webp",
+    "agotado": false
+  },
+  {
+    "id": "tenis-blanco-new-balance",
+    "nombre": "Tenis new balance 408",
+    "genero": "hombre",
+    "linea": "casual",
+    "precio": 400000,
+    "tallas": [
+      "42/10.5"
+    ],
+    "imagen": "tenis-blanco-new-balance.webp",
     "agotado": false
   },
   {
@@ -393,7 +405,7 @@
     "tallas": [
       "37"
     ],
-    "imagen": "tenis-gris-skechers.jpeg",
+    "imagen": "tenis-gris-skechers.webp",
     "agotado": false
   },
   {
