@@ -128,3 +128,44 @@ export const resumen = {
 export function altProducto(p: Producto): string {
   return `${p.nombre}, línea ${NOMBRE_LINEA[p.linea]}`;
 }
+
+/** Orden de las tallas de letra en el filtro. */
+const TALLAS_LETRA = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
+
+/**
+ * Tallas de una prenda tal como se filtran. Beauty no tiene tallas (es la presentación).
+ * - "S Mujer / L Niña" → S y L (se extraen las tallas de letra que aparezcan).
+ * - "Unica" / "única" → "Única".
+ * - Lo demás ("37", "35-39", "42/10.5") se usa tal cual.
+ */
+export function tallasFiltro(p: Pick<Producto, "linea" | "tallas">): string[] {
+  if (p.linea === "beauty") return [];
+  const resultado = new Set<string>();
+  for (const talla of p.tallas) {
+    if (/^[uú]nica$/i.test(talla)) {
+      resultado.add("Única");
+      continue;
+    }
+    const letras = talla.toUpperCase().match(/\b(XXS|XS|XXL|XL|S|M|L)\b/g);
+    if (letras && !/\d/.test(talla)) letras.forEach((l) => resultado.add(l));
+    else resultado.add(talla);
+  }
+  return [...resultado];
+}
+
+/** Todas las tallas del catálogo, ordenadas: letras (XS→XXL), Única, y luego numéricas. */
+export const tallasCatalogo: string[] = (() => {
+  const todas = new Set(productos.flatMap(tallasFiltro));
+  const rango = (t: string) => {
+    const i = TALLAS_LETRA.indexOf(t);
+    if (i >= 0) return [0, i];
+    if (t === "Única") return [1, 0];
+    const n = parseFloat(t);
+    return Number.isNaN(n) ? [3, 0] : [2, n];
+  };
+  return [...todas].sort((a, b) => {
+    const [ga, va] = rango(a);
+    const [gb, vb] = rango(b);
+    return ga - gb || va - vb || a.localeCompare(b, "es");
+  });
+})();

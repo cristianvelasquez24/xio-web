@@ -1,26 +1,40 @@
 ---
-import Apertura from "../components/Apertura.astro";
+/**
+ * V2: página principal. Base clara con degradado pastel, fotos recortadas sin fondo y
+ * dos escenas (looks y órbita) antes del catálogo de siempre.
+ * El colgador está oculto (descomentarlo abajo para volver a mostrarlo).
+ * La versión anterior sigue en /v1.
+ * Las secciones se configuran en src/data/v2.json; la paleta, en tokens.css ([data-version="v2"]).
+ */
 import Catalogo from "../components/Catalogo.astro";
-import Cierre from "../components/Cierre.astro";
-import Cursor from "../components/Cursor.astro";
-import Piezas from "../components/Piezas.astro";
-import Portada from "../components/Portada.astro";
-import Vitrina from "../components/Vitrina.astro";
+import CabeceraV2 from "../components/v2/CabeceraV2.astro";
+import Looks from "../components/v2/Looks.astro";
+import Orbita from "../components/v2/Orbita.astro";
 import Base from "../layouts/Base.astro";
 ---
 
-<Base>
-  <Portada />
+<Base version="v2">
+  <CabeceraV2 />
   <main>
-    <Vitrina />
-    <Piezas />
-    <Apertura />
+    <h1 class="visualmente-oculto">XIO · Active Wear</h1>
+    {/* Colgador oculto a pedido del dueño: import Colgador from "../components/v2/Colgador.astro"; <Colgador /> */}
+    <Looks />
+    <Orbita />
     <Catalogo />
   </main>
-  <Cierre />
-  <Cursor />
 </Base>
 
 <script>
   import "../scripts/entradas";
 </script>
+
+<style is:global>
+  html[data-version="v2"] {
+    color-scheme: light;
+  }
+
+  /* La cabecera es fija: los saltos a una sección (#catalogo) no deben quedar debajo. */
+  html[data-version="v2"] main > section {
+    scroll-margin-top: 3.75rem;
+  }
+</style>

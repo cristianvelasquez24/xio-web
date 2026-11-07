@@ -1,8 +1,8 @@
 /**
  * Filtros del catálogo. Todas las prendas ya están en el HTML; aquí solo se
- * muestran u ocultan y se sincroniza el estado con la URL (?linea=casual&genero=mujer).
+ * muestran u ocultan y se sincroniza el estado con la URL (?linea=casual&genero=mujer&talla=M).
  */
-import { coincide, escribirEstado, estadoPorDefecto, leerEstado, type ClaveFiltro, type Estado } from "./filtros-estado";
+import { coincide, escribirEstado, estadoPorDefecto, leerEstado, type ClaveFiltro, type Estado, type Validos } from "./filtros-estado";
 
 const catalogo = document.getElementById("catalogo");
 
@@ -12,12 +12,24 @@ if (catalogo) {
   const vacio = catalogo.querySelector<HTMLElement>("[data-vacio]");
   const contador = catalogo.querySelector<HTMLElement>("[data-contador]");
 
-  let estado = leerEstado(location.search);
+  // Valores válidos de cada filtro, según los chips que hay en el HTML.
+  const validos: Validos = {};
+  for (const chip of chips) {
+    const clave = chip.dataset.filtro as ClaveFiltro;
+    validos[clave] = [...(validos[clave] ?? []), chip.dataset.valor!];
+  }
+
+  let estado = leerEstado(location.search, validos);
 
   function aplicar() {
     let visibles = 0;
     for (const tarjeta of tarjetas) {
-      const visible = coincide(estado, tarjeta.dataset.genero ?? "", tarjeta.dataset.linea ?? "");
+      const visible = coincide(
+        estado,
+        tarjeta.dataset.genero ?? "",
+        tarjeta.dataset.linea ?? "",
+        JSON.parse(tarjeta.dataset.tallas ?? "[]"),
+      );
       tarjeta.hidden = !visible;
       if (visible) visibles++;
     }

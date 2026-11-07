@@ -1,18 +1,18 @@
 ---
-/** V2 · Barra superior: la marca, la etiqueta "V2" y el enlace de vuelta a la versión actual. */
+/** V2 · Barra superior: la marca, la etiqueta "V2" y el botón "V1" que lleva al diseño anterior (/v1). */
 import Logo from "../Logo.astro";
 ---
 
 <header class="cabecera">
-  <a class="inicio" href="/v2" aria-label="XIO Active Wear, versión 2">
+  <a class="inicio" href="/" aria-label="XIO Active Wear, inicio">
     <Logo etiqueta="span" />
     <span class="v2" aria-hidden="true">V2</span>
   </a>
-  <a class="volver" href="/">
+  <a class="volver" href="/v1" aria-label="Ver la versión 1 del diseño">
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <path d="M20 12H5M10 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
-    Versión actual
+    V1
   </a>
 </header>
 

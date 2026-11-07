@@ -53,7 +53,7 @@ Mantener contraste de texto mínimo WCAG AA.
 - JavaScript mínimo, sin framework de UI.
 - Despliegue: Netlify o Vercel conectado al repo (por decidir). `git push` = publicar.
 
-## Estructura de la página
+## Estructura de la página (V1, ahora en `/v1`)
 Una sola página:
 1. **Portada**: imagen destacada grande + marca.
 2. ~~**Tres accesos**~~ (sección "Elige tu línea" eliminada a pedido del dueño; no volver a añadirla).
@@ -67,20 +67,24 @@ Una sola página:
 - **Filtros** como chips horizontales:
   - Género: Todos / Mujer / Hombre (las prendas `unisex` aparecen en ambos).
   - Línea: Todo / Sport / Casual / Bolsos / Beauty. El grid se ordena en ese mismo orden.
+  - Talla: Todas las tallas + las tallas que existan en el catálogo (se generan solas desde los datos;
+    Beauty no cuenta porque ahí `tallas` es la presentación). Orden: XS→XXL, Única, numéricas.
+    "S Mujer / L Niña" cuenta como S y L; "Unica" se muestra como "Única". Ver `tallasFiltro` en `src/lib/productos.ts`.
 - Todas las prendas se renderizan en el HTML; los filtros solo muestran/ocultan con JS ligero.
 - **Detalle**: tocar la foto o el nombre abre un modal (`<dialog>` nativo) con la foto grande, galería,
   línea, género, precio y tallas. Tocar la foto dentro del modal la muestra a pantalla completa.
   La URL cambia a `#producto-<id>` (enlace compartible; "atrás" cierra). Sin acciones de compra.
-- El estado de los filtros se refleja en la URL (`?linea=casual&genero=mujer`) para que los accesos
+- El estado de los filtros se refleja en la URL (`?linea=casual&genero=mujer&talla=M`) para que los accesos
   de la portada lleven al catálogo ya filtrado.
 
-## V2 (página `/v2`, propuesta de diseño en paralelo)
-Rediseño inspirado en una tienda tipo lookbook de estudio. **No reemplaza la página principal**:
-se llega con el botón pequeño "V2" en la banda del título ("Active Wear") de la portada.
+## V2 (página principal, `/`)
+Rediseño inspirado en una tienda tipo lookbook de estudio. **Es la página principal** (`src/pages/index.astro`).
+La V1 sigue en `/v1` (`src/pages/v1.astro`): se llega con el botón "V1" de la barra superior de la V2,
+y desde la V1 el botón "V2" de la portada vuelve a `/`. `/v2` redirige a `/` (astro.config.mjs).
 - Base clara con degradado pastel: tokens en `tokens.css` bajo `[data-version="v2"]`
   (redefine los mismos tokens, así catálogo y detalle se re-tematizan sin tocarlos).
 - Secciones (`src/components/v2/`, scripts en `src/scripts/v2/`):
-  1. **Colgador**: prendas recortadas colgando de una barra, con gancho y etiqueta de precio.
+  1. **Colgador** (OCULTO a pedido del dueño; comentado en index.astro, el componente sigue existiendo): prendas recortadas colgando de una barra, con gancho y etiqueta de precio.
      Se mecen como péndulos (resorte amortiguado) al deslizar, hacer scroll o pasar el mouse.
      Primer toque: la prenda gira. Segundo toque: abre el detalle.
   2. **Mira el look**: pasarela de modelos de cuerpo entero; el del centro nítido, los lados
@@ -143,7 +147,7 @@ se llega con el botón pequeño "V2" en la banda del título ("Active Wear") de 
 - ❌ Pie de página con redes o contacto.
 - ❌ Estilos en JSON (se usan variables CSS en `tokens.css`).
 - ❌ Cargar el catálogo con fetch en el navegador (se genera en build, por SEO).
-- ❌ Más filtros que género y línea (el volumen no lo justifica).
+- ❌ Más filtros que género, línea y talla (el volumen no lo justifica).
 
 ## Primera tarea sugerida
 Crear el proyecto base con: `tokens.css`, `config.ts`, portada, accesos Sport/Casual, catálogo con
