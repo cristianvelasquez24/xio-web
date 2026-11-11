@@ -26,18 +26,6 @@
     "destacado": true
   },
   {
-    "id": "polo-rosa-us-polo",
-    "nombre": "Camisa polo U.S. Polo Assn. rosada",
-    "genero": "mujer",
-    "linea": "casual",
-    "precio": 130000,
-    "tallas": [
-      "XS"
-    ],
-    "imagen": "polo-rosa-us-polo.jpg",
-    "agotado": false
-  },
-  {
     "id": "polo-vestido-tommy",
     "nombre": "Vestido polo Tommy Hilfiger vinotinto",
     "genero": "mujer",
@@ -57,16 +45,6 @@
     "precio": 200000,
     "tallas": [],
     "imagen": "bolso-rosa-guess-redondo.jpeg",
-    "agotado": false
-  },
-  {
-    "id": "bolso-blanco-polo",
-    "nombre": "Bolso U.S. Polo Blanco",
-    "genero": "mujer",
-    "linea": "bolsos",
-    "precio": 100000,
-    "tallas": [],
-    "imagen": "bolso-blanco-polo.jpeg",
     "agotado": false
   },
   {
@@ -350,26 +328,6 @@
     "precio": 80000,
     "tallas": [],
     "imagen": "splash-love-spell-victoria.jpg",
-    "agotado": false
-  },
-  {
-    "id": "splash-cherry-milkshake",
-    "nombre": "Splash Victoria's Secret cherry milkshake",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [],
-    "imagen": "splash-cherry-milkshake.jpeg",
-    "agotado": false
-  },
-  {
-    "id": "splash-pure-seduction-victoria",
-    "nombre": "Splash Victoria's Secret Pure Seduction Brûlée",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [],
-    "imagen": "splash-pure-seduction-victoria.jpg",
     "agotado": false
   },
   {
