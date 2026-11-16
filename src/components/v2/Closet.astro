@@ -1,0 +1,962 @@
+---
+/**
+ * V2 · Closet: un vestidor de roble claro con nichos iluminados (o la foto `src/assets/closet/fondo.*`
+ * si existe), el modelo inventado en el centro y las prendas en tarjetas de vidrio. Tocar una tarjeta "le pone" la prenda al modelo
+ * (muestra su foto con esa prenda); tocarla otra vez vuelve al modelo base.
+ * Mujer / Hombre cambia de modelo; las pestañas filtran por categoría.
+ * Empieza oculto: se despliega con el botón "Closet" de la barra superior (o con #closet en la URL),
+ * y sus fotos no se descargan hasta entonces.
+ * Qué prendas y qué fotos: src/lib/closet.ts y src/data/v2.json → closet. Sin compra.
+ */
+import { Image, Picture } from "astro:assets";
+import { CATEGORIAS, closet, decoracion, fondo, NOMBRE_CATEGORIA, type GeneroCloset } from "../../lib/closet";
+import { NOMBRE_LINEA } from "../../lib/productos";
+import { precioV2 } from "../../lib/v2";
+
+const NOMBRE: Record<GeneroCloset, string> = { mujer: "Mujer", hombre: "Hombre" };
+const inicial = closet[0];
+const categoriaInicial = inicial?.categorias[0]?.categoria;
+
+/**
+ * Vestidor dibujado: 7 módulos de 4 nichos; el del centro (detrás del modelo) es de colgar.
+ * Algunos nichos llevan productos de la tienda (prenda sola, sin modelo): "módulo-nicho" → id.
+ */
+const MODULOS = 7;
+const CENTRAL = 3;
+const REPISAS: Record<string, string> = {
+  "0-1": "bolso-cuadrado-rosa-guess",
+  "0-3": "tenis-gris-skechers",
+  "1-0": "splash-pure-seduction-victoria",
+  "1-2": "tenis-blanco-new-balance",
+  "2-1": "bolso-blanco-polo",
+  "2-3": "sandalias-adidas",
+  "4-1": "bolso-blanco-polo-cuadrado",
+  "4-3": "tenis-beige-adidas",
+  "5-0": "crema-biscott-delight-victoria",
+  "5-2": "tenis-rosa-new-balance",
+  "6-1": "splash-vanilla-gelato",
+  "6-3": "zapatilla-vl-court-2-azul",
+};
+const objeto = (m: number, n: number) => {
+  const id = REPISAS[`${m}-${n}`];
+  return id ? decoracion([id])[0] : undefined;
+};
+
+const piezas = closet.flatMap((g) =>
+  g.categorias.flatMap((c) => c.piezas.map((p) => ({ ...p, para: g.genero, clave: `${g.genero}-${p.id}` }))),
+);
+---
+
+{
+  inicial && (
+<section class:list={["closet", { "con-foto": fondo }]} aria-labelledby="closet-titulo" id="closet" data-closet hidden>
+  {
+    fondo ? (
+      <div class="foto-fondo" aria-hidden="true">
+        <Picture src={fondo} alt="" formats={["avif", "webp"]} widths={[800, 1400, 2000, 2600]} sizes="100vw" loading="lazy" />
+      </div>
+    ) : (
+      <div class="cuarto" aria-hidden="true">
+        <div class="techo"></div>
+        <div class="estanteria">
+          {Array.from({ length: MODULOS }, (_, m) =>
+            m === CENTRAL ? (
+              <div class="modulo colgar">
+                <div class="nicho" />
+                <div class="nicho">
+                  <span class="tubo" />
+                </div>
+              </div>
+            ) : (
+              <div class="modulo">
+                {[0, 1, 2, 3].map((n) => {
+                  const img = objeto(m, n);
+                  return <div class="nicho">{img && <Image src={img} alt="" widths={[160, 320]} sizes="7rem" loading="lazy" />}</div>;
+                })}
+              </div>
+            ),
+          )}
+        </div>
+        <div class="piso"></div>
+        <div class="cortina"></div>
+        <div class="luz"></div>
+      </div>
+    )
+  }
+  <div class="grano" aria-hidden="true"></div>
+
+  <header class="controles">
+    <h2 id="closet-titulo" class="visualmente-oculto">El closet: toca una prenda y pruébatela</h2>
+    <div class="generos" role="group" aria-label="Modelo" hidden={closet.length < 2}>
+      {
+        closet.map((g) => (
+          <button type="button" data-genero-boton={g.genero} aria-pressed={g === inicial ? "true" : "false"}>
+            {NOMBRE[g.genero]}
+          </button>
+        ))
+      }
+    </div>
+    {
+      closet.map((g) => (
+        <div class="pestanas" role="group" aria-label="Categoría" data-pestanas={g.genero} hidden={g !== inicial}>
+          {CATEGORIAS.filter((c) => g.categorias.some((x) => x.categoria === c)).map((c) => (
+            <button
+              type="button"
+              data-categoria-boton={c}
+              aria-pressed={g === inicial && c === categoriaInicial ? "true" : "false"}
+            >
+              {NOMBRE_CATEGORIA[c]}
+            </button>
+          ))}
+        </div>
+      ))
+    }
+  </header>
+
+  <div class="escenario">
+    {
+      closet.map((g) => (
+        <figure class="modelo" data-base={g.genero} hidden={g !== inicial}>
+          <Picture
+            src={g.base}
+            alt={`Modelo ${NOMBRE[g.genero].toLowerCase()}`}
+            formats={["avif", "webp"]}
+            widths={[320, 640, 960]}
+            sizes="(min-width: 60rem) 22rem, 50vw"
+            loading="lazy"
+          />
+        </figure>
+      ))
+    }
+    {
+      piezas.map((p) =>
+        p.modelo ? (
+          <figure class="modelo" data-vista={p.clave} data-con-modelo hidden>
+            <Picture
+              src={p.modelo}
+              alt={`${p.nombre} puesto en el modelo`}
+              formats={["avif", "webp"]}
+              widths={[320, 640, 960]}
+              sizes="(min-width: 60rem) 22rem, 50vw"
+              loading="lazy"
+            />
+          </figure>
+        ) : (
+          <figure class="flotante" data-vista={p.clave} hidden>
+            <Picture src={p.miniatura} alt={p.nombre} formats={["avif", "webp"]} widths={[240, 480]} sizes="11rem" loading="lazy" />
+          </figure>
+        ),
+      )
+    }
+  </div>
+
+  <div class="carril">
+    <button type="button" class="flecha" data-flecha="-1" aria-label="Prendas anteriores">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    </button>
+    <ul class="tarjetas" data-tarjetas aria-label="Prendas. Desliza para ver más.">
+      {
+        piezas.map((p) => {
+          const precio = precioV2(p);
+          return (
+            <li data-tarjeta data-para={p.para} data-categoria={p.categoria} hidden={!(p.para === inicial.genero && p.categoria === categoriaInicial)}>
+              <button type="button" class="tarjeta" data-clave={p.clave} data-con-foto={p.modelo ? "" : undefined} aria-pressed="false" aria-label={`Probar ${p.nombre}`}>
+                <span class="foto">
+                  <Picture src={p.miniatura} alt="" formats={["avif", "webp"]} widths={[160, 320]} sizes="9rem" loading="lazy" />
+                </span>
+                <span class="nombre">{p.nombre}</span>
+                {precio && <span class="precio">{precio}</span>}
+              </button>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <button type="button" class="flecha" data-flecha="1" aria-label="Más prendas">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+    </button>
+  </div>
+
+  <div class="barras" aria-live="polite">
+    <p class="barra vacia" data-barra="">Toca una prenda para ponérsela al modelo.</p>
+    {
+      piezas.map((p) => {
+        const precio = precioV2(p);
+        return (
+          <div class="barra" data-barra={p.clave} hidden>
+            <span class="mini">
+              <Picture src={p.miniatura} alt="" formats={["avif", "webp"]} widths={[96, 192]} sizes="3rem" loading="lazy" />
+            </span>
+            <div class="datos">
+              <p class="nombre">{p.nombre}</p>
+              <p class="meta">
+                {NOMBRE_LINEA[p.linea]}
+                {precio && <> · <strong>{precio}</strong></>}
+              </p>
+            </div>
+            {p.tallas.length > 0 && (
+              <ul class="tallas" aria-label="Tallas">
+                {p.tallas.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+            )}
+            <a class="ver" href={`#producto-${p.id}`} data-abrir-producto={p.id}>
+              Ver detalle
+            </a>
+          </div>
+        );
+      })
+    }
+  </div>
+</section>
+  )
+}
+
+<script>
+  import "../../scripts/v2/closet";
+</script>
+
+<style>
+  .closet {
+    /* Distancia de los pies del modelo al borde de abajo y alto del piso: móvil primero. */
+    --pies: 14.5rem;
+    --piso: 17.5rem;
+    --techo: 7.5rem;
+
+    position: relative;
+    isolation: isolate;
+    /* clip y no hidden: así ningún scrollIntoView puede desplazar la escena de lado. */
+    overflow: clip;
+    height: clamp(38rem, calc(100svh - 3.75rem), 60rem);
+    background: var(--v2-pared);
+    color: var(--v2-tinta);
+  }
+
+  /* Al desplegarse baja como una cortina. */
+  @media (prefers-reduced-motion: no-preference) {
+    .closet:not([hidden]) {
+      animation: desplegar 480ms var(--ease-out);
+    }
+
+    @keyframes desplegar {
+      from {
+        clip-path: inset(0 0 100% 0);
+      }
+    }
+  }
+
+  /* ---------- El vestidor ----------
+   * Como un vestidor real de roble claro: una pared de módulos con nichos iluminados por LED,
+   * el módulo del centro para colgar, piso en espiga y una cortina a un lado. Levemente
+   * desenfocado (el modelo es lo único nítido) y con grano. Si hay foto de fondo, nada de esto se usa. */
+  .cuarto,
+  .foto-fondo {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+  }
+
+  .foto-fondo :global(picture),
+  .foto-fondo :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .foto-fondo :global(img) {
+    object-fit: cover;
+    object-position: 50% 100%;
+  }
+
+  .cuarto {
+    /* Veta de la madera: ruido estirado en vertical. */
+    --veta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='600'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.008' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.28 0 0 0 0 0.14 0 0 0 0.6 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
+    /* Tablas en espiga: solo juntas y luces; el color lo pone el token de madera. */
+    --espiga: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40'%3E%3Cpath d='M0 0L40 20V40L0 20ZM80 0L40 20V40L80 20Z' fill='%23fff' fill-opacity='0.13'/%3E%3Cpath d='M0 0L40 20L80 0M0 20L40 40L80 20M40 0V40M0 0V40' stroke='%23503714' stroke-opacity='0.35' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
+
+    overflow: hidden;
+    background: var(--v2-pared);
+    filter: blur(1px);
+  }
+
+  .cuarto > div {
+    position: absolute;
+  }
+
+  .techo {
+    inset: 0 0 auto;
+    height: 1rem;
+    background: var(--v2-pared);
+    box-shadow: 0 0.4rem 1rem rgb(60 40 20 / 0.25);
+    z-index: 1;
+  }
+
+  /* La pared de módulos. Más ancha que la pantalla en móvil: se ve la parte central. */
+  .estanteria {
+    top: 0.6rem;
+    bottom: var(--piso);
+    left: 50%;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.6rem;
+    width: max(100%, 62rem);
+    padding: 0.6rem 0.6rem 1.4rem;
+    background:
+      var(--veta),
+      linear-gradient(90deg, var(--v2-roble-claro), var(--v2-roble-canto) 50%, var(--v2-roble-claro));
+    background-size: 20rem 40rem, auto;
+    transform: translateX(-50%);
+  }
+
+  /* Zócalo: la base del mueble, un poco más oscura, y su sombra sobre el piso. */
+  .estanteria::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1rem;
+    background: linear-gradient(var(--v2-roble), var(--v2-roble-oscuro));
+    box-shadow: 0 0.5rem 1rem rgb(50 30 10 / 0.35);
+  }
+
+  .modulo {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .modulo.colgar {
+    grid-template-rows: 1fr 3fr;
+  }
+
+  /* Cada nicho: fondo de madera, la tira LED bajo el entrepaño de arriba y sombra en los costados. */
+  .nicho {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 0;
+    padding: 0 12% 0.15rem;
+    background:
+      linear-gradient(var(--v2-luz-led) 0 2px, rgb(255 236 200 / 0.75) 2px, rgb(255 236 200 / 0) 65%),
+      linear-gradient(90deg, rgb(70 45 20 / 0.28), transparent 16%, transparent 84%, rgb(70 45 20 / 0.28)),
+      linear-gradient(transparent 70%, rgb(70 45 20 / 0.18)),
+      var(--veta),
+      var(--v2-roble);
+    background-size: auto, auto, auto, 20rem 40rem, auto;
+    box-shadow: inset 0 0.4rem 0.6rem rgb(255 245 225 / 0.5);
+  }
+
+  .nicho :global(img) {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 58%;
+    object-fit: contain;
+    filter: drop-shadow(0 0.25rem 0.35rem rgb(40 25 10 / 0.4)) saturate(0.85);
+  }
+
+  .tubo {
+    position: absolute;
+    top: 1.4rem;
+    right: 0.4rem;
+    left: 0.4rem;
+    height: 0.3rem;
+    border-radius: 0.15rem;
+    background: linear-gradient(#f7f4ef, #a8a39b 60%, #dcd7cf);
+    box-shadow: 0 0.35rem 0.5rem rgb(40 25 10 / 0.3);
+  }
+
+  /* Piso en espiga, en perspectiva, con la sombra del mueble y el reflejo de la luz. */
+  .piso {
+    inset: auto 0 0;
+    height: var(--piso);
+    overflow: hidden;
+    background: var(--v2-roble-claro);
+  }
+
+  .piso::before {
+    content: "";
+    position: absolute;
+    right: -60%;
+    bottom: 0;
+    left: -60%;
+    height: 420%;
+    background:
+      var(--espiga),
+      var(--veta),
+      linear-gradient(var(--v2-roble), var(--v2-roble-claro));
+    background-size: 10rem 5rem, 14rem 30rem, auto;
+    transform: perspective(22rem) rotateX(62deg);
+    transform-origin: 50% 100%;
+  }
+
+  .piso::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgb(50 30 10 / 0.35), transparent 14%),
+      radial-gradient(ellipse 45% 60% at 50% 30%, rgb(255 246 230 / 0.45), transparent 70%),
+      linear-gradient(transparent 60%, rgb(50 30 10 / 0.15));
+  }
+
+  /* Cortina de lino a la izquierda (solo en pantallas anchas). */
+  .cortina {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    width: clamp(4rem, 7%, 7.5rem);
+    background:
+      linear-gradient(rgb(255 255 255 / 0.12), transparent 30%, rgb(0 0 0 / 0.18)),
+      repeating-linear-gradient(90deg, var(--v2-cortina-oscura) 0, var(--v2-cortina) 0.8rem, var(--v2-cortina-oscura) 1.7rem);
+    box-shadow: 0.6rem 0 1.5rem rgb(40 25 10 / 0.35);
+  }
+
+  /* Luz de una ventana a la izquierda. */
+  .luz {
+    inset: 0;
+    background: linear-gradient(98deg, rgb(255 250 240 / 0.35), transparent 38%);
+    mix-blend-mode: screen;
+  }
+
+  @media (min-width: 60rem) {
+    .cortina {
+      display: block;
+    }
+  }
+
+
+  /* Grano de foto sobre la escena (también sobre la foto de fondo y el modelo). */
+  .grano {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* ---------- Controles ---------- */
+  .controles {
+    position: absolute;
+    z-index: 3;
+    inset: 0 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.75rem var(--espacio-2);
+    align-items: center;
+    padding: var(--espacio-2) var(--margen) 0;
+  }
+
+  .generos,
+  .pestanas {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--v2-vidrio-borde);
+    border-radius: var(--radio-chip);
+    background: var(--v2-vidrio);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  .generos {
+    justify-self: start;
+  }
+
+  .pestanas {
+    grid-column: 1 / -1;
+    justify-self: start;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .pestanas::-webkit-scrollbar {
+    display: none;
+  }
+
+  .generos button,
+  .pestanas button {
+    flex: none;
+    min-height: 2.25rem;
+    padding: 0 0.9rem;
+    border: 0;
+    border-radius: var(--radio-chip);
+    background: transparent;
+    color: var(--color-texto-suave);
+    font: 500 var(--texto-pequeno) var(--fuente-base);
+    cursor: pointer;
+    transition:
+      background-color var(--t-hover) ease,
+      color var(--t-hover) ease;
+  }
+
+  .generos button[aria-pressed="true"],
+  .pestanas button[aria-pressed="true"] {
+    background: var(--v2-etiqueta);
+    box-shadow: 0 0.15rem 0.5rem rgb(60 40 20 / 0.12);
+    color: var(--v2-tinta);
+  }
+
+  .generos button[aria-pressed="true"] {
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+  }
+
+  /* ---------- El modelo ---------- */
+  .escenario {
+    position: absolute;
+    z-index: 2;
+    inset: var(--techo) 0 var(--pies);
+    pointer-events: none;
+  }
+
+  .modelo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  /* Sombra en el piso. */
+  .modelo::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: -0.9rem;
+    left: 50%;
+    width: min(16rem, 52%);
+    height: 2.2rem;
+    border-radius: 50%;
+    background:
+      radial-gradient(closest-side, rgb(45 25 8 / 0.5), rgb(45 25 8 / 0.2) 45%, transparent),
+      radial-gradient(closest-side, rgb(45 25 8 / 0.15), transparent);
+    filter: blur(2px);
+    transform: translateX(-50%);
+  }
+
+  .modelo :global(picture) {
+    height: 100%;
+  }
+
+  .modelo :global(img) {
+    /* Sombra suave hacia atrás, como la de la luz del vestidor. */
+    filter: drop-shadow(0.6rem 0.4rem 1.2rem rgb(60 35 10 / 0.18));
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    object-position: 50% 100%;
+  }
+
+  /* Prenda sin foto en el modelo todavía: flota al lado del modelo base. */
+  .flotante {
+    position: absolute;
+    top: 18%;
+    left: calc(50% + clamp(3.5rem, 14vw, 9rem));
+    width: clamp(5.5rem, 24vw, 11rem);
+    aspect-ratio: 4 / 5;
+    padding: 0.6rem;
+    border: 1px solid var(--v2-vidrio-borde);
+    border-radius: 1rem;
+    background: var(--v2-vidrio);
+    box-shadow: 0 1rem 2rem rgb(60 40 20 / 0.15);
+    backdrop-filter: blur(14px);
+  }
+
+  .flotante :global(picture),
+  .flotante :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .flotante :global(img) {
+    object-fit: contain;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .escenario > :global(.entra) {
+      animation: vestir 360ms ease both;
+    }
+
+    .escenario > :global(.sale) {
+      animation: desvestir 300ms ease both;
+    }
+
+    .flotante:global(.entra) {
+      animation-name: flotar;
+    }
+
+    @keyframes vestir {
+      from {
+        opacity: 0;
+      }
+    }
+
+    @keyframes desvestir {
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes flotar {
+      from {
+        opacity: 0;
+        transform: translateY(0.3rem);
+      }
+    }
+  }
+
+  /* ---------- Tarjetas ---------- */
+  .carril {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 6.25rem;
+    left: 0;
+  }
+
+  .tarjetas {
+    display: flex;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.5rem var(--margen) 0.75rem;
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--margen);
+    scrollbar-width: none;
+  }
+
+  .tarjetas::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tarjetas li {
+    flex: none;
+    scroll-snap-align: start;
+    transition:
+      opacity var(--t-ui) ease,
+      filter var(--t-ui) ease;
+  }
+
+  /* Tapada por el modelo (escritorio): se ve como vidrio al fondo. */
+  .tarjetas li:global(.detras) {
+    opacity: 0.35;
+    filter: blur(2px);
+  }
+
+  .tarjeta {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 0.2rem;
+    width: 6.5rem;
+    padding: 0.45rem 0.45rem 0.55rem;
+    border: 1px solid var(--v2-vidrio-borde);
+    border-radius: 1rem;
+    background: var(--v2-vidrio);
+    box-shadow: 0 0.6rem 1.4rem rgb(60 40 20 / 0.12);
+    color: var(--v2-tinta);
+    text-align: left;
+    cursor: pointer;
+    backdrop-filter: blur(14px) saturate(1.2);
+    transition:
+      transform var(--t-press) var(--ease-out),
+      background-color var(--t-hover) ease;
+  }
+
+  .tarjeta:active {
+    transform: scale(0.96);
+  }
+
+  .tarjeta[aria-pressed="true"] {
+    background: rgb(255 255 255 / 0.85);
+    outline: 2px solid var(--v2-tinta);
+    outline-offset: -2px;
+  }
+
+  .tarjeta .foto {
+    display: block;
+    height: 4.75rem;
+  }
+
+  .tarjeta .foto :global(picture),
+  .tarjeta .foto :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tarjeta .foto :global(img) {
+    object-fit: contain;
+  }
+
+  .tarjeta .nombre {
+    overflow: hidden;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .tarjeta .precio {
+    color: var(--color-texto-suave);
+    font-size: 0.6875rem;
+  }
+
+  .flecha {
+    display: none;
+  }
+
+  /* ---------- Barra de la prenda ---------- */
+  .barras {
+    position: absolute;
+    z-index: 3;
+    right: var(--margen);
+    bottom: 0.75rem;
+    left: var(--margen);
+  }
+
+  .barra {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    align-items: center;
+    min-height: 4.75rem;
+    margin: 0 auto;
+    max-width: 48rem;
+    padding: 0.6rem 0.6rem 0.6rem 0.6rem;
+    border: 1px solid var(--v2-vidrio-borde);
+    border-radius: 1.1rem;
+    background: rgb(255 252 247 / 0.72);
+    box-shadow: 0 0.8rem 2rem rgb(60 40 20 / 0.15);
+    backdrop-filter: blur(16px) saturate(1.2);
+  }
+
+  .barra.vacia {
+    display: grid;
+    place-items: center;
+    color: var(--color-texto-suave);
+    font-size: var(--texto-pequeno);
+    text-align: center;
+  }
+
+
+  .mini {
+    display: block;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0.2rem;
+    border-radius: 0.7rem;
+    background: var(--v2-etiqueta);
+  }
+
+  .mini :global(picture),
+  .mini :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mini :global(img) {
+    object-fit: contain;
+  }
+
+  .datos {
+    min-width: 0;
+  }
+
+  .datos .nombre {
+    overflow: hidden;
+    font-family: var(--fuente-titulos);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .meta {
+    color: var(--color-texto-suave);
+    font-size: 0.75rem;
+  }
+
+  .meta strong {
+    color: var(--v2-tinta);
+    font-weight: 600;
+  }
+
+  /* En móvil las tallas van debajo, en una fila que se desliza. */
+  .tallas {
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tallas li {
+    flex: none;
+    display: grid;
+    place-items: center;
+    min-width: 2rem;
+    height: 1.75rem;
+    padding: 0 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--v2-tinta) 18%, transparent);
+    border-radius: var(--radio-chip);
+    font-size: 0.6875rem;
+    font-weight: 600;
+  }
+
+  .ver {
+    display: grid;
+    place-items: center;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border-radius: var(--radio-chip);
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-pequeno);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform var(--t-press) var(--ease-out);
+  }
+
+  .ver:active {
+    transform: scale(0.97);
+  }
+
+  /* Con tallas, la barra es más alta en móvil: el carril y el modelo suben. */
+  .closet:has(.barra:not([hidden]) .tallas) {
+    --pies: 16.75rem;
+  }
+
+  .closet:has(.barra:not([hidden]) .tallas) .carril {
+    bottom: 8.5rem;
+  }
+
+  /* ---------- Escritorio: las tarjetas pasan detrás del modelo, como en un showroom ---------- */
+  @media (min-width: 60rem) {
+    .closet {
+      --pies: 7.5rem;
+      --piso: 24%;
+      --techo: 6.5rem;
+    }
+
+    .closet:has(.barra:not([hidden]) .tallas) {
+      --pies: 7.5rem;
+    }
+
+    .controles {
+      grid-template-columns: auto 1fr auto;
+      padding: 1.5rem var(--espacio-4) 0;
+    }
+
+    .pestanas {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: center;
+    }
+
+    .generos {
+      grid-column: 3;
+    }
+
+    .carril,
+    .closet:has(.barra:not([hidden]) .tallas) .carril {
+      top: 34%;
+      bottom: auto;
+    }
+
+    .tarjetas {
+      gap: 1rem;
+      padding-inline: var(--espacio-4);
+      scroll-padding-inline: var(--espacio-4);
+      mask-image: linear-gradient(90deg, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+    }
+
+    .tarjeta {
+      width: 9.5rem;
+      padding: 0.6rem 0.6rem 0.75rem;
+    }
+
+    .tarjeta .foto {
+      height: 8rem;
+    }
+
+    .tarjeta .nombre {
+      display: -webkit-box;
+      white-space: normal;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .flecha {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-top: -1.25rem;
+      border: 1px solid var(--v2-vidrio-borde);
+      border-radius: 50%;
+      background: var(--v2-etiqueta);
+      box-shadow: 0 0.3rem 0.8rem rgb(60 40 20 / 0.15);
+      color: var(--v2-tinta);
+      cursor: pointer;
+    }
+
+    .flecha svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .flecha[data-flecha="-1"] {
+      left: 1rem;
+    }
+
+    .flecha[data-flecha="1"] {
+      right: 1rem;
+    }
+
+    .flecha:disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .flotante {
+      top: 0;
+      left: calc(50% + 8rem);
+      width: 9.5rem;
+    }
+
+    .barras {
+      bottom: 1.25rem;
+    }
+
+    .barra {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      gap: 1rem;
+      padding: 0.6rem 0.6rem 0.6rem 0.7rem;
+    }
+
+    .tallas {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+</style>

@@ -7,3 +7,5 @@ dist/
 .playwright-cli/
 # Capturas y notas de la skill de diseño
 .taste-skill/
+# Originales de las fotos del closet (pesados): solo se sube el .webp de src/assets/closet
+fotos-closet/

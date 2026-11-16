@@ -15,6 +15,8 @@ const esquema = z.strictObject({
   colgador: z.array(z.string()).min(1),
   looks: z.array(z.string()).min(1),
   orbita: z.array(z.string()).min(1),
+  /** Closet: género → categoría → ids. Se valida en src/lib/closet.ts. */
+  closet: z.unknown(),
 });
 
 const recortes = import.meta.glob<{ default: ImageMetadata }>("../assets/productos_v2/*.{webp,png,avif}", {
