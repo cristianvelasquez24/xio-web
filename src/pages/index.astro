@@ -1,12 +1,13 @@
 ---
 /**
  * V2: página principal. Base clara con degradado pastel, fotos recortadas sin fondo y
- * dos escenas (looks y órbita) antes del catálogo de siempre.
+ * tres escenas (closet, looks y órbita) antes del catálogo de siempre.
  * El colgador está oculto (descomentarlo abajo para volver a mostrarlo).
  * La versión anterior sigue en /v1.
  * Las secciones se configuran en src/data/v2.json; la paleta, en tokens.css ([data-version="v2"]).
  */
 import Catalogo from "../components/Catalogo.astro";
+import Closet from "../components/v2/Closet.astro";
 import CabeceraV2 from "../components/v2/CabeceraV2.astro";
 import Looks from "../components/v2/Looks.astro";
 import Orbita from "../components/v2/Orbita.astro";
@@ -17,6 +18,7 @@ import Base from "../layouts/Base.astro";
   <CabeceraV2 />
   <main>
     <h1 class="visualmente-oculto">XIO · Active Wear</h1>
+    <Closet />
     {/* Colgador oculto a pedido del dueño: import Colgador from "../components/v2/Colgador.astro"; <Colgador /> */}
     <Looks />
     <Orbita />

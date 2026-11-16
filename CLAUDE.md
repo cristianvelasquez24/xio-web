@@ -84,6 +84,11 @@ y desde la V1 el botón "V2" de la portada vuelve a `/`. `/v2` redirige a `/` (a
 - Base clara con degradado pastel: tokens en `tokens.css` bajo `[data-version="v2"]`
   (redefine los mismos tokens, así catálogo y detalle se re-tematizan sin tocarlos).
 - Secciones (`src/components/v2/`, scripts en `src/scripts/v2/`):
+  0. **Closet** (primera sección, OCULTA por defecto: se despliega con el botón "Closet" de la barra superior o con `#closet`): vestidor de roble claro con nichos iluminados (o la foto `src/assets/closet/fondo.*`), modelo inventado en el centro
+     y prendas en tarjetas de vidrio por categoría y Mujer/Hombre. Tocar una tarjeta muestra la foto del
+     modelo con esa prenda (una a la vez). Prendas: `v2.json` → `closet`. Fotos generadas con IA en
+     `src/assets/closet/<id>.webp`, preparadas con `scripts/recortar-closet.mjs` desde `fotos-closet/` (no se sube).
+     Solo sale el modelo inventado: sin foto de la prenda, se ve el modelo base y la prenda al lado (`src/lib/closet.ts`).
   1. **Colgador** (OCULTO a pedido del dueño; comentado en index.astro, el componente sigue existiendo): prendas recortadas colgando de una barra, con gancho y etiqueta de precio.
      Se mecen como péndulos (resorte amortiguado) al deslizar, hacer scroll o pasar el mouse.
      Primer toque: la prenda gira. Segundo toque: abre el detalle.

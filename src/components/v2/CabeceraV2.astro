@@ -1,5 +1,8 @@
 ---
-/** V2 · Barra superior: la marca, la etiqueta "V2" y el botón "V1" que lleva al diseño anterior (/v1). */
+/**
+ * V2 · Barra superior: la marca, la etiqueta "V2", el botón "Closet" (despliega el closet; lo maneja
+ * src/scripts/v2/closet.ts y solo se muestra si la página tiene closet) y "V1" (lleva al diseño anterior).
+ */
 import Logo from "../Logo.astro";
 ---
 
@@ -8,12 +11,17 @@ import Logo from "../Logo.astro";
     <Logo etiqueta="span" />
     <span class="v2" aria-hidden="true">V2</span>
   </a>
+  <div class="acciones">
+  <button type="button" class="boton-closet" data-abrir-closet aria-controls="closet" aria-expanded="false" hidden>
+    Closet
+  </button>
   <a class="volver" href="/v1" aria-label="Ver la versión 1 del diseño">
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <path d="M20 12H5M10 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
     V1
   </a>
+  </div>
 </header>
 
 <style>
@@ -55,6 +63,37 @@ import Logo from "../Logo.astro";
     font-size: 0.625rem;
     font-weight: 700;
     letter-spacing: 0.06em;
+  }
+
+  .acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-2);
+  }
+
+  .boton-closet {
+    min-height: 2.25rem;
+    padding: 0 1rem;
+    border: 1px solid color-mix(in srgb, var(--v2-tinta) 25%, transparent);
+    border-radius: var(--radio-chip);
+    background: transparent;
+    color: var(--v2-tinta);
+    font: 600 var(--texto-pequeno) var(--fuente-titulos);
+    cursor: pointer;
+    transition:
+      background-color var(--t-hover) ease,
+      color var(--t-hover) ease,
+      transform var(--t-press) var(--ease-out);
+  }
+
+  .boton-closet:active {
+    transform: scale(0.96);
+  }
+
+  .boton-closet[aria-expanded="true"] {
+    border-color: var(--v2-tinta);
+    background: var(--v2-tinta);
+    color: var(--v2-sobre-tinta);
   }
 
   .volver {

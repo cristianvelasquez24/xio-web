@@ -35,8 +35,92 @@
     "tenis-beige-adidas",
     "tenis-gris-skechers",
     "zapatilla-vl-court-2-azul",
-    "sandalias-adidas",
-    "splash-love-spell-victoria",
-    "splash-vanilla-gelato"
-  ]
+    "sandalias-adidas"
+  ],
+  "closet": {
+    "mujer": {
+      "superior": [
+        "camiseta-adidas-celeste",
+        "camiseta-rosa-under-armour",
+        "camiseta-cuello-v-beige-under-armour",
+        "blusa-deportiva-rosa-under",
+        "top-deportivo-nike-lila",
+        "pijama-blusa-victoria-secret"
+      ],
+      "inferior": [
+        "falda-adidas-azul",
+        "falda-adidas",
+        "licra-corta-rosa-under-armour",
+        "licra-corta-verde-under-armour",
+        "licra-corta-coral-under-armour",
+        "licra-fucsia-media-under-armour",
+        "licra-media-negra-under-armour",
+        "licra-capri-fucsia-under-armour",
+        "licra-capri-coral-under-armour",
+        "licra-capri-negra-under-armour",
+        "short-fucsia-under-armour",
+        "short-vinotinto-under-armour",
+        "short-azul-marino-under-armour",
+        "short-rosas-victoria",
+        "short-pijama-negro-victoria",
+        "sudadera-gris-adidas",
+        "sudadera-adidas-algodon",
+        "sudadera-adidas-roja",
+        "sudadera-nike",
+        "sudadera-adidas-dayready-negra",
+        "sudadera-verde-adidad-mujer"
+      ],
+      "chaquetas": [
+        "buso-tommy-verde-tejido",
+        "buso-lila-under-armour"
+      ],
+      "completos": [
+        "polo-vestido-tommy",
+        "us-polo-larga-negro",
+        "us-polo-negra",
+        "pantalon-largo-rosa-victoria"
+      ],
+      "interior": [
+        "bralette-negro-victoria",
+        "bralettes-algodon-cafe-negro",
+        "bralettes-encaje-negro-rojo",
+        "bralettes-encaje-rosado-lila",
+        "brasieres-victoria-negro-rosado-cafe",
+        "conjunto-encaje-rojo",
+        "conjunto-encaje-beige"
+      ],
+      "calzado": [
+        "tenis-rosa-new-balance",
+        "tenis-gris-skechers",
+        "sandalias-adidas"
+      ],
+      "accesorios": [
+        "gorra-celeste-under-armour",
+        "bolso-rosa-guess-redondo",
+        "bolso-blanco-polo-cuadrado",
+        "medias-new-balance-grises",
+        "medias-new-balance-blancas"
+      ]
+    },
+    "hombre": {
+      "superior": [
+        "polo-golf-blanco-rayas-adidas",
+        "polo-oversize-rojo-jordan",
+        "polo-verde-tommy"
+      ],
+      "inferior": [
+        "pantaloneta-crema-under-armour",
+        "pantaloneta-verde-adidas",
+        "sudadera-adidas-originals-azul"
+      ],
+      "calzado": [
+        "tenis-blanco-new-balance",
+        "tenis-beige-adidas",
+        "zapatilla-vl-court-2-azul"
+      ],
+      "accesorios": [
+        "medias-new-balance-blancas"
+      ]
+    }
+  }
 }

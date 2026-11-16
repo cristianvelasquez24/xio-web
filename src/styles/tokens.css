@@ -65,4 +65,16 @@
   /* Marca de agua y tinta de los botones oscuros. */
   --v2-tinta: #151916;
   --v2-sobre-tinta: #f4f1ec;
+
+  /* Closet: vestidor de roble claro con nichos iluminados y cortina de lino. */
+  --v2-roble-canto: #ecdcc0;
+  --v2-roble-claro: #e2cca8;
+  --v2-roble: #cdb08a;
+  --v2-roble-oscuro: #a48661;
+  --v2-luz-led: #fff6e2;
+  --v2-pared: #f2eee8;
+  --v2-cortina: #7a6555;
+  --v2-cortina-oscura: #5a483b;
+  --v2-vidrio: rgb(255 252 247 / 0.42);
+  --v2-vidrio-borde: rgb(255 255 255 / 0.65);
 }

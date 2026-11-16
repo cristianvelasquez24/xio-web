@@ -189,18 +189,6 @@
     "agotado": false
   },
   {
-    "id": "sudarera-amarilla-puma",
-    "nombre": "Sudadera Puma amarilla",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 150000,
-    "tallas": [
-      "M"
-    ],
-    "imagen": "sudarera-amarilla-puma.jpg",
-    "agotado": true
-  },
-  {
     "id": "pantalon-largo-rosa-victoria",
     "nombre": "Conjunto Pijama calvin klein rosado pijama",
     "genero": "mujer",
@@ -318,26 +306,6 @@
       "L"
     ],
     "imagen": "pantaloneta-verde-adidas.jpg",
-    "agotado": false
-  },
-  {
-    "id": "splash-love-spell-victoria",
-    "nombre": "Splash Victoria's Secret Love Spell Brûlée",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [],
-    "imagen": "splash-love-spell-victoria.jpg",
-    "agotado": false
-  },
-  {
-    "id": "splash-vanilla-gelato",
-    "nombre": "Splash Victoria's Secret Vanilla Gelato",
-    "genero": "mujer",
-    "linea": "beauty",
-    "precio": 80000,
-    "tallas": [],
-    "imagen": "splash-vanilla-gelato.jpg",
     "agotado": false
   },
   {
@@ -583,7 +551,7 @@
   {
     "id": "sudadera-adidas-originals-azul",
     "nombre": "Sudadera adidas Originals azul",
-    "genero": "unisex",
+    "genero": "hombre",
     "linea": "sport",
     "precio": 210000,
     "tallas": [
@@ -643,7 +611,7 @@
   {
     "id": "gorra-celeste-under-armour",
     "nombre": "Gorra Under Armour azul celeste",
-    "genero": "unisex",
+    "genero": "mujer",
     "linea": "sport",
     "precio": 85000,
     "tallas": [
@@ -691,7 +659,7 @@
   {
     "id": "medias-new-balance-grises",
     "nombre": "Medias New Balance (paquete de 3 pares)",
-    "genero": "unisex",
+    "genero": "mujer",
     "linea": "sport",
     "precio": 90000,
     "tallas": [
