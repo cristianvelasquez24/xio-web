@@ -38,6 +38,7 @@ function iniciar(seccion: HTMLElement) {
   const tarjetas = todos<HTMLLIElement>("[data-tarjeta]");
   const botonesGenero = todos<HTMLButtonElement>("[data-genero-boton]");
   const flechas = todos<HTMLButtonElement>("[data-flecha]");
+  const escenario = seccion.querySelector<HTMLElement>(".escenario")!;
 
   let genero = botonesGenero.find((b) => b.ariaPressed === "true")?.dataset.generoBoton ?? "mujer";
   const categoria: Record<string, string> = {};
@@ -59,8 +60,11 @@ function iniciar(seccion: HTMLElement) {
     el.classList.add(clase);
   }
 
-  /** Muestra exactamente estas capas del escenario: las nuevas entran y las que sobran se desvanecen. */
-  async function mostrar(capas: HTMLElement[]) {
+  /**
+   * Muestra exactamente estas capas del escenario: las nuevas entran y las que sobran se desvanecen.
+   * `acercar`: hacia dónde va la cámara (`"pies"` con el calzado) o nada para el cuerpo entero.
+   */
+  async function mostrar(capas: HTMLElement[], acercar?: string) {
     const yo = ++turno;
     capas.forEach(precargar);
     // Esperar a que la foto nueva esté lista evita un fundido hacia el vacío.
@@ -68,6 +72,10 @@ function iniciar(seccion: HTMLElement) {
       capas.flatMap((c) => [...c.querySelectorAll("img")]).map((img) => (img.complete ? null : img.decode().catch(() => null))),
     );
     if (yo !== turno) return;
+
+    // La cámara se mueve junto con el fundido, cuando la foto nueva ya está lista: así no salta.
+    if (acercar) escenario.dataset.acercar = acercar;
+    else delete escenario.dataset.acercar;
 
     for (const el of visible) {
       if (capas.includes(el)) continue;
@@ -97,7 +105,9 @@ function iniciar(seccion: HTMLElement) {
 
     const capa = clave ? vista(clave) : null;
     const conModelo = capa?.hasAttribute("data-con-modelo");
-    void mostrar([conModelo ? null : base(genero), capa].filter((c): c is HTMLElement => !!c));
+    // Calzado con foto puesta: la cámara se acerca a las piernas (ver `data-acercar` en el CSS).
+    const acercar = conModelo ? capa?.dataset.acercar : undefined;
+    void mostrar([conModelo ? null : base(genero), capa].filter((c): c is HTMLElement => !!c), acercar);
   }
 
   function elegirCategoria(c: string) {
@@ -132,7 +142,7 @@ function iniciar(seccion: HTMLElement) {
     const fin = carril.scrollWidth - carril.clientWidth - 2;
     flechas.forEach((f) => (f.disabled = f.dataset.flecha === "-1" ? carril.scrollLeft <= 2 : carril.scrollLeft >= fin));
     // En escritorio las tarjetas pasan detrás del modelo: las que quedan tapadas se atenúan.
-    const cuerpo = seccion.querySelector(".escenario > :not([hidden]):not(.flotante) img")?.getBoundingClientRect();
+    const cuerpo = seccion.querySelector(".camara > :not([hidden]) img")?.getBoundingClientRect();
     tarjetas.forEach((t) => {
       if (t.hidden) return;
       const r = t.getBoundingClientRect();
@@ -164,6 +174,10 @@ function iniciar(seccion: HTMLElement) {
   carril.addEventListener("focusin", anticipar);
   carril.addEventListener("scroll", actualizarFlechas, { passive: true });
   addEventListener("resize", actualizarFlechas, { passive: true });
+  // Al terminar un acercamiento el modelo ocupa otro espacio: recalcular qué tarjetas tapa.
+  escenario.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "transform" && (e.target as HTMLElement).classList.contains("camara")) actualizarFlechas();
+  });
 
   visible = [base(genero)].filter((c): c is HTMLElement => !!c);
   elegirGenero(genero);

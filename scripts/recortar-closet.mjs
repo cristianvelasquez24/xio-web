@@ -5,7 +5,8 @@
  *
  * Origen: la carpeta `fotos-closet/` en la raíz (no se sube al repo, son originales pesados),
  * o la que se pase como argumento. Cada archivo se llama como el id de la prenda
- * (`polo-vestido-tommy.png`), `base-mujer` / `base-hombre` para el modelo base, o `fondo` para
+ * (`polo-vestido-tommy.png`), `<id>-cerca` para el primer plano de las piernas con un calzado
+ * (se usa en el acercamiento), `base-mujer` / `base-hombre` para el modelo base, o `fondo` para
  * la foto del vestidor vacío (esa no se recorta).
  * Formatos: .jpg .jpeg .jfif .png .webp. Las que ya existen en el destino no se rehacen
  * (borrar el .webp para rehacerla).
@@ -88,7 +89,14 @@ for (const archivo of readdirSync(ORIGEN)) {
     .toBuffer();
 
   // Recortar al cuerpo y llevar todas a la misma altura (cabeza arriba, pies abajo).
-  await sharp(conAlfa).trim({ threshold: 8 }).resize({ height: ALTO }).webp({ quality: 88, alphaQuality: 90 }).toFile(salida);
+  // El primer plano de las piernas (`<id>-cerca`) no se iguala a los demás: se deja con toda su
+  // resolución, que es lo que lo hace nítido en el acercamiento.
+  const cerca = nombre.toLowerCase().endsWith("-cerca");
+  await sharp(conAlfa)
+    .trim({ threshold: 8 })
+    .resize(cerca ? { height: 2000, withoutEnlargement: true } : { height: ALTO })
+    .webp({ quality: 88, alphaQuality: 90 })
+    .toFile(salida);
   console.log(`  ✓ ${nombre}`);
 }
 

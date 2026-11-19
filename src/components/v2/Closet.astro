@@ -45,6 +45,8 @@ const objeto = (m: number, n: number) => {
 const piezas = closet.flatMap((g) =>
   g.categorias.flatMap((c) => c.piezas.map((p) => ({ ...p, para: g.genero, clave: `${g.genero}-${p.id}` }))),
 );
+/** Tiene foto puesta en el modelo (de cuerpo entero, o el primer plano si es calzado). */
+const conFoto = (p: (typeof piezas)[number]) => !!p.modelo || (!!p.cerca && p.categoria === "calzado");
 ---
 
 {
@@ -114,38 +116,57 @@ const piezas = closet.flatMap((g) =>
   </header>
 
   <div class="escenario">
-    {
-      closet.map((g) => (
-        <figure class="modelo" data-base={g.genero} hidden={g !== inicial}>
-          <Picture
-            src={g.base}
-            alt={`Modelo ${NOMBRE[g.genero].toLowerCase()}`}
-            formats={["avif", "webp"]}
-            widths={[320, 640, 960]}
-            sizes="(min-width: 60rem) 22rem, 50vw"
-            loading="lazy"
-          />
-        </figure>
-      ))
-    }
-    {
-      piezas.map((p) =>
-        p.modelo ? (
-          <figure class="modelo" data-vista={p.clave} data-con-modelo hidden>
+    {/* La "cámara": todas las fotos del modelo van dentro y se acercan juntas (calzado). */}
+    <div class="camara">
+      {
+        closet.map((g) => (
+          <figure class="modelo" data-base={g.genero} hidden={g !== inicial}>
             <Picture
-              src={p.modelo}
-              alt={`${p.nombre} puesto en el modelo`}
+              src={g.base}
+              alt={`Modelo ${NOMBRE[g.genero].toLowerCase()}`}
               formats={["avif", "webp"]}
               widths={[320, 640, 960]}
               sizes="(min-width: 60rem) 22rem, 50vw"
               loading="lazy"
             />
           </figure>
-        ) : (
-          <figure class="flotante" data-vista={p.clave} hidden>
-            <Picture src={p.miniatura} alt={p.nombre} formats={["avif", "webp"]} widths={[240, 480]} sizes="11rem" loading="lazy" />
-          </figure>
-        ),
+        ))
+      }
+      {
+        piezas.map((p) => {
+          if (!conFoto(p)) return null;
+          const acercar = p.categoria === "calzado" ? "pies" : undefined;
+          const cerca = acercar ? p.cerca : null;
+          // La cámara se acerca con la foto de cuerpo entero (o la base, si solo hay primer plano).
+          const cuerpo = p.modelo ?? closet.find((g) => g.genero === p.para)!.base;
+          return (
+            <figure class="modelo" data-vista={p.clave} data-con-modelo data-acercar={acercar} hidden>
+              <Picture
+                src={cuerpo}
+                alt={`${p.nombre} puesto en el modelo`}
+                formats={["avif", "webp"]}
+                widths={acercar ? [320, 640, 960, 1400] : [320, 640, 960]}
+                sizes={acercar ? "(min-width: 60rem) 50rem, 100vw" : "(min-width: 60rem) 22rem, 50vw"}
+                loading="lazy"
+              />
+              {cerca && (
+                <div class="primer-plano">
+                  <Picture src={cerca} alt="" formats={["avif", "webp"]} widths={[480, 960, 1440]} sizes="(min-width: 60rem) 36rem, 90vw" loading="lazy" />
+                </div>
+              )}
+            </figure>
+          );
+        })
+      }
+    </div>
+    {
+      piezas.map(
+        (p) =>
+          !conFoto(p) && (
+            <figure class="flotante" data-vista={p.clave} hidden>
+              <Picture src={p.miniatura} alt={p.nombre} formats={["avif", "webp"]} widths={[240, 480]} sizes="11rem" loading="lazy" />
+            </figure>
+          ),
       )
     }
   </div>
@@ -160,7 +181,7 @@ const piezas = closet.flatMap((g) =>
           const precio = precioV2(p);
           return (
             <li data-tarjeta data-para={p.para} data-categoria={p.categoria} hidden={!(p.para === inicial.genero && p.categoria === categoriaInicial)}>
-              <button type="button" class="tarjeta" data-clave={p.clave} data-con-foto={p.modelo ? "" : undefined} aria-pressed="false" aria-label={`Probar ${p.nombre}`}>
+              <button type="button" class="tarjeta" data-clave={p.clave} data-con-foto={conFoto(p) ? "" : undefined} aria-pressed="false" aria-label={`Probar ${p.nombre}`}>
                 <span class="foto">
                   <Picture src={p.miniatura} alt="" formats={["avif", "webp"]} widths={[160, 320]} sizes="9rem" loading="lazy" />
                 </span>
@@ -515,12 +536,92 @@ const piezas = closet.flatMap((g) =>
     pointer-events: none;
   }
 
+  /* Calzado: acercamiento a las piernas (de los muslos a los pies), con los pies como punto fijo.
+   * Se mueve la cámara entera, no cada foto: así la foto que sale y la que entra se acercan juntas
+   * y el fundido entre ellas no salta. */
+  .camara {
+    --acercar-pies: 1.9;
+
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 100%;
+  }
+
+  @media (min-width: 60rem) {
+    .camara {
+      --acercar-pies: 2.3;
+    }
+  }
+
+  .escenario[data-acercar="pies"] .camara {
+    transform: scale(var(--acercar-pies));
+  }
+
+  /* Lo que sube por encima del escenario se desvanece (y no tapa las pestañas). */
+  .escenario[data-acercar="pies"] {
+    mask-image: linear-gradient(to bottom, transparent, #000 22%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .camara {
+      transition: transform 1.6s cubic-bezier(0.45, 0, 0.2, 1);
+    }
+  }
+
   .modelo {
     position: absolute;
     inset: 0;
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    transform-origin: 50% 100%;
+  }
+
+  /* Primer plano de las piernas (`<id>-cerca`): dentro de la cámara va achicado, así con la cámara
+   * acercada queda a su tamaño real y nítido. Aparece con un fundido lento al final del acercamiento,
+   * como un enfoque, y se va rápido al alejarse. */
+  .primer-plano {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0;
+    transform: scale(calc(1 / var(--acercar-pies)));
+    transform-origin: 50% 100%;
+    transition: opacity 300ms ease;
+  }
+
+  /* Siempre a todo el alto (aunque se salga de lado): así el corte de los muslos, arriba, cae en
+   * la zona que se desvanece. */
+  .primer-plano :global(picture) {
+    flex-shrink: 0;
+  }
+
+  .primer-plano :global(img) {
+    max-width: none;
+  }
+
+  .modelo:has(.primer-plano) > :global(picture) {
+    transition: opacity 300ms ease;
+  }
+
+  .escenario[data-acercar="pies"] .primer-plano {
+    opacity: 1;
+    transition: opacity 700ms ease 1.1s;
+  }
+
+  /* El cuerpo entero se desvanece a la vez, para que no se vean dos pares de piernas. */
+  .escenario[data-acercar="pies"] .modelo:has(.primer-plano) > :global(picture) {
+    opacity: 0;
+    transition: opacity 700ms ease 1.1s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .escenario[data-acercar="pies"] .primer-plano,
+    .escenario[data-acercar="pies"] .modelo:has(.primer-plano) > :global(picture) {
+      transition: none;
+    }
   }
 
   /* Sombra en el piso. */
@@ -579,11 +680,11 @@ const piezas = closet.flatMap((g) =>
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .escenario > :global(.entra) {
+    .escenario :global(.entra) {
       animation: vestir 360ms ease both;
     }
 
-    .escenario > :global(.sale) {
+    .escenario :global(.sale) {
       animation: desvestir 300ms ease both;
     }
 
