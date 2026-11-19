@@ -1,14 +1,7 @@
 {
   "colgador": [
-    "short-azul-marino-under-armour",
-    "blusa-deportiva-rosa-under",
-    "licra-capri-fucsia-under-armour",
-    "short-vinotinto-under-armour",
     "bralettes-encaje-negro-rojo",
-    "licra-corta-coral-under-armour",
     "pantalon-pijama-victoria",
-    "short-fucsia-under-armour",
-    "licra-capri-coral-under-armour",
     "shorts-pijama-victoria-blanco-negro",
     "medias-new-balance-grises"
   ],
@@ -43,8 +36,7 @@
         "camiseta-rosa-under-armour",
         "camiseta-cuello-v-beige-under-armour",
         "blusa-deportiva-rosa-under",
-        "top-deportivo-nike-lila",
-        "pijama-blusa-victoria-secret"
+        "top-deportivo-nike-lila"
       ],
       "inferior": [
         "falda-adidas-azul",
@@ -59,8 +51,6 @@
         "short-fucsia-under-armour",
         "short-vinotinto-under-armour",
         "short-azul-marino-under-armour",
-        "short-rosas-victoria",
-        "short-pijama-negro-victoria",
         "sudadera-gris-adidas",
         "sudadera-adidas-algodon",
         "sudadera-adidas-roja",
@@ -85,7 +75,10 @@
         "bralettes-encaje-rosado-lila",
         "brasieres-victoria-negro-rosado-cafe",
         "conjunto-encaje-rojo",
-        "conjunto-encaje-beige"
+        "conjunto-encaje-beige",
+        "short-pijama-negro-victoria",
+        "short-rosas-victoria",
+        "pijama-blusa-victoria-secret"
       ],
       "calzado": [
         "tenis-rosa-new-balance",
