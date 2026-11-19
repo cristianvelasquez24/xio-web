@@ -4,6 +4,8 @@
  * - Las prendas se eligen en `src/data/v2.json` → `closet` → mujer|hombre → categoría → ids.
  * - En el escenario SOLO sale el modelo inventado: fotos de `src/assets/closet/`, nunca las de otras modelos.
  *   - `<id>.webp`: el modelo con esa prenda puesta.
+ *   - `<id>-cerca.webp` (opcional, para calzado): primer plano de las piernas con esa prenda, para que
+ *     el acercamiento se vea nítido. Sin él, el acercamiento agranda la foto de cuerpo entero.
  *   - Sin esa foto, se ve el modelo base y la prenda a su lado.
  * - Modelo base: `src/assets/closet/base-mujer.webp` / `base-hombre.webp`. Un género sin modelo base
  *   no sale en el closet (se oculta su botón) hasta que exista la foto.
@@ -56,6 +58,8 @@ export type PiezaCloset = Producto & {
   miniatura: ImageMetadata;
   /** Foto del modelo con la prenda puesta, o `null` (se muestra el modelo base + la prenda). */
   modelo: ImageMetadata | null;
+  /** Primer plano de las piernas con la prenda (calzado), o `null`. */
+  cerca: ImageMetadata | null;
 };
 
 export type GrupoCloset = {
@@ -88,6 +92,7 @@ function cargar(): GrupoCloset[] {
             // En la tarjeta, la prenda sola; si el recorte es de una modelo, la foto del catálogo.
             miniatura: recorte && !cuerpoEntero(recorte) ? recorte : producto.fotos[0],
             modelo: generadas.get(id) ?? null,
+            cerca: generadas.get(`${id}-cerca`) ?? null,
           },
         ];
       });

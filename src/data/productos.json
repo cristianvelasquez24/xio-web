@@ -118,16 +118,6 @@
     "agotado": false
   },
   {
-    "id": "licra-corta-rosa-under-armour",
-    "nombre": "Licra corta Under Armour rosada",
-    "genero": "mujer",
-    "linea": "sport",
-    "precio": 105000,
-    "tallas": ["M"],
-    "imagen": "licra-corta-rosa-under-armour.jpg",
-    "agotado": false
-  },
-  {
     "id": "licra-fucsia-media-under-armour",
     "nombre": "Licra media Under Armour fucsia",
     "genero": "mujer",
@@ -377,7 +367,7 @@
     "tallas": [
       "XS"
     ],
-    "imagen": "blusa-deportiva-rosa-under.jpeg",
+    "imagen": "blusa-deportiva-rosa-under.png",
     "agotado": false
   },
   {
